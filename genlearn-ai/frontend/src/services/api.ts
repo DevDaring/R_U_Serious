@@ -8,6 +8,8 @@
 import axios, { AxiosInstance } from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+// Backend base URL without /api suffix - used for static file URLs (images, media)
+export const BACKEND_URL = API_BASE_URL.replace(/\/api\/?$/, '');
 const API_KEY = 'kd_dreaming007'; // Application API key
 
 class ApiService {

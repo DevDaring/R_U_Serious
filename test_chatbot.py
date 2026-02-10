@@ -54,7 +54,7 @@ import sys
 # 3. Replace the placeholder below with your actual API key
 
 GEMINI_API_KEY = "Loaded_from_env"  # New GCP project key
-MODEL_NAME = "gemini-2.5-flash-lite-preview-09-2025"  # Gemini 2.5 Flash model
+MODEL_NAME = "gemini-3-pro-preview"  # Gemini 2.5 Flash model
 
 # ============================================================
 # DUMMY TEST INPUTS

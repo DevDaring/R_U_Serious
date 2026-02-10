@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
 import { useLanguage } from '../contexts/LanguageContext';
 
@@ -154,7 +154,7 @@ export const TimeTravelPage: React.FC = () => {
                                     <div dangerouslySetInnerHTML={{ __html: formatChatContent(msg.content) }} />
 
                                     {msg.imageUrl && (
-                                        <img src={`http://localhost:8000${msg.imageUrl}`} alt="Historical" className="mt-2 rounded-lg max-w-full sepia" />
+                                        <img src={msg.imageUrl.startsWith('data:') ? msg.imageUrl : `${BACKEND_URL}${msg.imageUrl}`} alt="Historical" className="mt-2 rounded-lg max-w-full sepia" />
                                     )}
 
                                     {msg.historicalContext && (

@@ -8,7 +8,7 @@
 ## Executive Summary
 
 ✅ **Verified:** Both text generation and image generation are properly configured to use Google's Gemini APIs:
-- **Text/Content Generation:** Gemini 2.0 Flash (`gemini-2.0-flash`)
+- **Text/Content Generation:** Gemini 2.0 Flash (`gemini-3-pro-preview`)
 - **Image Generation:** Imagen 3 (`imagen-3.0-generate-002`)
 
 All services use the provider factory pattern for easy switching between providers.
@@ -26,17 +26,17 @@ AI_PROVIDER: str = os.getenv("AI_PROVIDER", "gemini")  # ✅ Defaults to gemini
 
 # API Keys - Gemini
 GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")  # ✅ Latest model
+GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")  # ✅ Latest model
 ```
 
 ### Implementation
 **File:** `backend/app/services/ai_providers/gemini.py`
 
-**Model Used:** `gemini-2.0-flash` (Line 23)
+**Model Used:** `gemini-3-pro-preview` (Line 23)
 ```python
 def __init__(self):
     self.api_key = os.getenv("GEMINI_API_KEY")
-    self.model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")  # ✅ Gemini 2.0 Flash
+    self.model = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")  # ✅ Gemini 2.0 Flash
     self.base_url = "https://generativelanguage.googleapis.com/v1beta"
 ```
 
@@ -165,7 +165,7 @@ GEMINI_IMAGE_MODEL: str = os.getenv("GEMINI_IMAGE_MODEL", "imagen-3.0-generate-0
 def __init__(self):
     self.api_key = os.getenv("GEMINI_API_KEY")
     self.model = os.getenv("GEMINI_IMAGE_MODEL", "imagen-3.0-generate-002")  # ✅ Imagen 3
-    self.vision_model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+    self.vision_model = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
     self.base_url = "https://generativelanguage.googleapis.com/v1beta"
 ```
 
@@ -433,7 +433,7 @@ AI_PROVIDER=gemini        # Text generation provider
 IMAGE_PROVIDER=gemini     # Image generation provider
 
 # Model Selection (Optional - already uses latest models)
-GEMINI_MODEL=gemini-2.0-flash           # Text model
+GEMINI_MODEL=gemini-3-pro-preview          # Text model
 GEMINI_IMAGE_MODEL=imagen-3.0-generate-002  # Image model
 ```
 
@@ -441,7 +441,7 @@ GEMINI_IMAGE_MODEL=imagen-3.0-generate-002  # Image model
 If no environment variables are set, the system automatically uses:
 - ✅ AI Provider: `gemini` (Gemini 2.0 Flash)
 - ✅ Image Provider: `gemini` (Imagen 3)
-- ✅ Text Model: `gemini-2.0-flash`
+- ✅ Text Model: `gemini-3-pro-preview`
 - ✅ Image Model: `imagen-3.0-generate-002`
 
 ---
@@ -577,7 +577,7 @@ image_provider = ProviderFactory.get_image_provider("stability")
 ### Configuration
 - ✅ AI_PROVIDER defaults to "gemini"
 - ✅ IMAGE_PROVIDER defaults to "gemini"
-- ✅ GEMINI_MODEL uses "gemini-2.0-flash"
+- ✅ GEMINI_MODEL uses "gemini-3-pro-preview"
 - ✅ GEMINI_IMAGE_MODEL uses "imagen-3.0-generate-002"
 
 ### Implementation

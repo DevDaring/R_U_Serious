@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/common/Button';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { useAuth } from '../hooks/useAuth';
 
 interface Avatar {
@@ -529,7 +529,7 @@ export const AvatarPage: React.FC = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setUploadStyle('cartoon')}
-                      className={`flex-1 py-2 rounded-lg font-medium ${
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                         uploadStyle === 'cartoon' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'
                       }`}
                     >
@@ -537,7 +537,7 @@ export const AvatarPage: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setUploadStyle('realistic')}
-                      className={`flex-1 py-2 rounded-lg font-medium ${
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                         uploadStyle === 'realistic' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'
                       }`}
                     >
@@ -549,7 +549,7 @@ export const AvatarPage: React.FC = () => {
                     disabled={isGenerating || !uploadedFile || !uploadName.trim()}
                     isLoading={generatingId === 'upload'}
                     variant="primary"
-                    className="w-full"
+                    className="w-full text-sm py-2"
                   >
                     ✨ Generate from Image
                   </Button>
@@ -590,7 +590,7 @@ export const AvatarPage: React.FC = () => {
                   <div className="flex gap-2">
                     <button
                       onClick={() => setDrawingStyle('cartoon')}
-                      className={`flex-1 py-2 rounded-lg font-medium ${
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                         drawingStyle === 'cartoon' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'
                       }`}
                     >
@@ -598,7 +598,7 @@ export const AvatarPage: React.FC = () => {
                     </button>
                     <button
                       onClick={() => setDrawingStyle('realistic')}
-                      className={`flex-1 py-2 rounded-lg font-medium ${
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium ${
                         drawingStyle === 'realistic' ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-700'
                       }`}
                     >
@@ -610,7 +610,7 @@ export const AvatarPage: React.FC = () => {
                     disabled={isGenerating || !drawingName.trim()}
                     isLoading={generatingId === 'drawing'}
                     variant="primary"
-                    className="w-full"
+                    className="w-full text-sm py-2"
                   >
                     ✨ Generate from Drawing
                   </Button>
@@ -644,7 +644,7 @@ export const AvatarPage: React.FC = () => {
                 }`}
               >
                 <img
-                  src={`http://localhost:8000${avatar.image_url}`}
+                  src={`${BACKEND_URL}${avatar.image_url}`}
                   alt={avatar.name}
                   className="w-full aspect-square object-cover"
                   onError={(e) => {

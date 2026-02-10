@@ -105,3 +105,6 @@ temp/
 *.key
 credentials.json
 service-account*.json
+secrets/
+**/secrets/
+genlearn-ai/backend/secrets/

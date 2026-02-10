@@ -1,0 +1,34 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.env.local
+.env.production
+*.log
+.git
+.gitignore
+.DS_Store
+
+# Exclude ephemeral media files but keep avatars, characters, and generated_images
+data/media/generated_videos/*
+data/media/audio/*
+data/media/uploads/*
+data/media/temp/*
+
+# Exclude secrets (use Cloud Run service account)
+secrets/*.json
+
+# Exclude development files
+*.md
+tests/
+.pytest_cache/
+*.bat
+*.sh
+*.ps1
+
+# Keep CSV files - they'll be included in image
+!data/csv/*.csv

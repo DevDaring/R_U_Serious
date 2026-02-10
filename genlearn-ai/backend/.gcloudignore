@@ -1,0 +1,48 @@
+# .gcloudignore - controls what gcloud uploads to Cloud Build
+# Unlike .gitignore, we WANT CSV files included in the container
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.env.local
+.env.production
+*.log
+.git/
+.gitignore
+.DS_Store
+
+# Exclude ephemeral media files but KEEP avatars, characters, and generated_images
+data/media/generated_videos/*
+data/media/audio/*
+data/media/uploads/*
+data/media/temp/*
+
+# Exclude secrets
+secrets/*.json
+
+# Exclude development files
+*.md
+tests/
+.pytest_cache/
+*.bat
+*.sh
+*.ps1
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+.ipynb_checkpoints/
+*.tmp
+*.temp
+tmp/
+temp/
+*.egg-info/
+*.egg
+
+# DO NOT exclude CSV files - they are the database!
+# data/csv/*.csv  <-- intentionally NOT excluded

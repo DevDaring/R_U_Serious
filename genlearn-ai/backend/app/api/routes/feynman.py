@@ -618,13 +618,16 @@ No text in image, just visual elements."""
                 style="cartoon"
             )
             
-            # Save the image - correct argument order: file_data, filename, subfolder
+            # Return base64 inline for immediate display (Cloud Run ephemeral storage)
+            import base64
+            analogy_image_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+            analogy_image_url = analogy_image_base64
+            
+            # Also try to save to disk for history
             image_filename = f"analogy_{generate_unique_id('AIM')}.png"
             success, image_path = file_handler.save_file(image_bytes, image_filename, "generated_images")
-            if success:
-                analogy_image_url = f"/media/{image_path}"
-            else:
-                logger.warning("Failed to save analogy image")
+            if not success:
+                logger.warning("Failed to save analogy image to disk")
             
             # Update tracking - reset counter and increment image count
             feynman_db.update_session(request.session_id, {

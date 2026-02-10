@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
 
 // Types
@@ -939,7 +939,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                                 🎨 Analogy Visualization
                                                             </div>
                                                             <img
-                                                                src={`http://localhost:8000${h.image_url}`}
+                                                                src={h.image_url.startsWith('data:') ? h.image_url : `${BACKEND_URL}${h.image_url}`}
                                                                 alt="Analogy visualization"
                                                                 className="w-full h-auto"
                                                                 onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
 
 interface LearningOpportunity {
@@ -276,7 +276,7 @@ export const LearnFromAnythingPage: React.FC = () => {
                                         }}
                                     />
                                     {msg.imageUrl && (
-                                        <img src={`http://localhost:8000${msg.imageUrl}`} alt="Lesson" className="mt-2 rounded-lg max-w-full" />
+                                        <img src={msg.imageUrl.startsWith('data:') ? msg.imageUrl : `${BACKEND_URL}${msg.imageUrl}`} alt="Lesson" className="mt-2 rounded-lg max-w-full" />
                                     )}
                                 </div>
                             </div>

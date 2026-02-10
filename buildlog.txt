@@ -1,0 +1,189 @@
+﻿----------------------------- REMOTE BUILD OUTPUT ------------------------------
+starting build "a7e763c1-0ee5-40c3-a92c-1b4f4bf47a22"
+FETCHSOURCE
+Fetching storage object: gs://run-sources-silicon-guru-472717-q9-us-central1/services/funlearn-frontend/1770664883.558674-4abd329bc417411d8ecd1530fd736fc3.zip#1770664915244598
+Copying gs://run-sources-silicon-guru-472717-q9-us-central1/services/funlearn-frontend/1770664883.558674-4abd329bc417411d8ecd1530fd736fc3.zip#1770664915244598...
+/ [0 files][    0.0 B/  6.8 MiB]                                                
+/ [1 files][  6.8 MiB/  6.8 MiB]
+Operation completed over 1 objects/6.8 MiB.
+Archive:  /tmp/source-archive.zip
+   creating: /workspace/public/
+   creating: /workspace/src/
+   creating: /workspace/public/assets/
+   creating: /workspace/public/assets/default-avatars/
+   creating: /workspace/public/assets/icons/
+   creating: /workspace/public/assets/site-images/
+   creating: /workspace/src/components/
+   creating: /workspace/src/constants/
+   creating: /workspace/src/contexts/
+   creating: /workspace/src/hooks/
+   creating: /workspace/src/pages/
+   creating: /workspace/src/services/
+   creating: /workspace/src/store/
+   creating: /workspace/src/types/
+   creating: /workspace/src/utils/
+   creating: /workspace/src/components/admin/
+   creating: /workspace/src/components/auth/
+   creating: /workspace/src/components/avatar/
+   creating: /workspace/src/components/characters/
+   creating: /workspace/src/components/chat/
+   creating: /workspace/src/components/common/
+   creating: /workspace/src/components/gamification/
+   creating: /workspace/src/components/layout/
+   creating: /workspace/src/components/learning/
+   creating: /workspace/src/components/voice/
+   creating: /workspace/src/pages/admin/
+  inflating: /workspace/.dockerignore
+  inflating: /workspace/.env
+  inflating: /workspace/.env.example
+  inflating: /workspace/.env.production
+  inflating: /workspace/.gcloudignore
+  inflating: /workspace/.gitignore
+  inflating: /workspace/Dockerfile
+  inflating: /workspace/firebase.json
+  inflating: /workspace/index.html
+  inflating: /workspace/nginx.conf
+  inflating: /workspace/package-lock.json
+  inflating: /workspace/package.json
+  inflating: /workspace/postcss.config.js
+  inflating: /workspace/tailwind.config.js
+  inflating: /workspace/tsconfig.json
+  inflating: /workspace/tsconfig.node.json
+  inflating: /workspace/vite.config.ts
+  inflating: /workspace/public/assets/site-images/richard.png
+  inflating: /workspace/src/App.tsx
+  inflating: /workspace/src/index.css
+  inflating: /workspace/src/main.tsx
+  inflating: /workspace/src/vite-env.d.ts
+  inflating: /workspace/src/components/admin/AdminDashboard.tsx
+  inflating: /workspace/src/components/admin/QuestionUploader.tsx
+  inflating: /workspace/src/components/admin/TeamManager.tsx
+  inflating: /workspace/src/components/admin/TournamentCreator.tsx
+  inflating: /workspace/src/components/admin/UserManager.tsx
+  inflating: /workspace/src/components/auth/LoginForm.tsx
+  inflating: /workspace/src/components/auth/ProtectedRoute.tsx
+  inflating: /workspace/src/components/avatar/AvatarCreator.tsx
+  inflating: /workspace/src/components/avatar/AvatarGallery.tsx
+  inflating: /workspace/src/components/avatar/DrawingCanvas.tsx
+  inflating: /workspace/src/components/avatar/ImageUploader.tsx
+  inflating: /workspace/src/components/characters/CharacterCard.tsx
+  inflating: /workspace/src/components/characters/CharacterManager.tsx
+  inflating: /workspace/src/components/chat/ChatMessage.tsx
+  inflating: /workspace/src/components/chat/ChatWindow.tsx
+  inflating: /workspace/src/components/common/Button.tsx
+  inflating: /workspace/src/components/common/Dropdown.tsx
+  inflating: /workspace/src/components/common/LoadingSpinner.tsx
+  inflating: /workspace/src/components/common/Modal.tsx
+  inflating: /workspace/src/components/common/ProgressBar.tsx
+  inflating: /workspace/src/components/common/Slider.tsx
+  inflating: /workspace/src/components/common/Toast.tsx
+  inflating: /workspace/src/components/gamification/Scoreboard.tsx
+  inflating: /workspace/src/components/gamification/TeamSelector.tsx
+  inflating: /workspace/src/components/gamification/TournamentCard.tsx
+  inflating: /workspace/src/components/gamification/TournamentList.tsx
+  inflating: /workspace/src/components/layout/Layout.tsx
+  inflating: /workspace/src/components/layout/LeftMenu.tsx
+  inflating: /workspace/src/components/layout/MainContent.tsx
+  inflating: /workspace/src/components/layout/RightPanel.tsx
+  inflating: /workspace/src/components/layout/TopNavbar.tsx
+  inflating: /workspace/src/components/learning/CourseSetup.tsx
+  inflating: /workspace/src/components/learning/DescriptiveQuestion.tsx
+  inflating: /workspace/src/components/learning/ImageCard.tsx
+  inflating: /workspace/src/components/learning/ImageCarousel.tsx
+  inflating: /workspace/src/components/learning/LearningSession.tsx
+  inflating: /workspace/src/components/learning/MCQQuiz.tsx
+  inflating: /workspace/src/components/learning/QuizCard.tsx
+  inflating: /workspace/src/components/learning/ResultsSummary.tsx
+  inflating: /workspace/src/components/learning/SceneDisplay.tsx
+  inflating: /workspace/src/components/learning/StoryPlayer.tsx
+  inflating: /workspace/src/components/learning/VideoPlayer.tsx
+  inflating: /workspace/src/components/voice/FullVocalMode.tsx
+  inflating: /workspace/src/components/voice/LanguageSelector.tsx
+  inflating: /workspace/src/components/voice/VoiceInput.tsx
+  inflating: /workspace/src/components/voice/VoiceOutput.tsx
+  inflating: /workspace/src/constants/languages.ts
+  inflating: /workspace/src/contexts/LanguageContext.tsx
+  inflating: /workspace/src/hooks/useApi.ts
+  inflating: /workspace/src/hooks/useAuth.ts
+  inflating: /workspace/src/hooks/useLearningSession.ts
+  inflating: /workspace/src/hooks/useVoice.ts
+  inflating: /workspace/src/pages/AvatarPage.tsx
+  inflating: /workspace/src/pages/CharactersPage.tsx
+  inflating: /workspace/src/pages/ConceptCollisionPage.tsx
+  inflating: /workspace/src/pages/DashboardPage.tsx
+  inflating: /workspace/src/pages/DebateArenaPage.tsx
+  inflating: /workspace/src/pages/DreamProjectPage.tsx
+  inflating: /workspace/src/pages/FeynmanEnginePage.tsx
+  inflating: /workspace/src/pages/HistoryPage.tsx
+  inflating: /workspace/src/pages/HomePage.tsx
+  inflating: /workspace/src/pages/LeaderboardPage.tsx
+  inflating: /workspace/src/pages/LearnFromAnythingPage.tsx
+  inflating: /workspace/src/pages/LearningPage.tsx
+  inflating: /workspace/src/pages/LoginPage.tsx
+  inflating: /workspace/src/pages/MistakeAutopsyPage.tsx
+  inflating: /workspace/src/pages/ProfilePage.tsx
+  inflating: /workspace/src/pages/ReverseClassroomPage.tsx
+  inflating: /workspace/src/pages/RevisionPage.tsx
+  inflating: /workspace/src/pages/SettingsPage.tsx
+  inflating: /workspace/src/pages/TimeTravelPage.tsx
+  inflating: /workspace/src/pages/TournamentsPage.tsx
+  inflating: /workspace/src/pages/YouTubeCoursePage.tsx
+  inflating: /workspace/src/pages/admin/AdminHomePage.tsx
+  inflating: /workspace/src/pages/admin/ManageQuestionsPage.tsx
+  inflating: /workspace/src/pages/admin/ManageTeamsPage.tsx
+  inflating: /workspace/src/pages/admin/ManageTournamentsPage.tsx
+  inflating: /workspace/src/pages/admin/ManageUsersPage.tsx
+  inflating: /workspace/src/services/api.ts
+  inflating: /workspace/src/store/authStore.ts
+  inflating: /workspace/src/store/learningStore.ts
+  inflating: /workspace/src/store/settingsStore.ts
+  inflating: /workspace/src/store/voiceStore.ts
+  inflating: /workspace/src/types/index.ts
+  inflating: /workspace/src/utils/constants.ts
+  inflating: /workspace/src/utils/helpers.ts
+BUILD
+Already have image (with digest): gcr.io/cloud-builders/docker
+Sending build context to Docker daemon  8.334MB
+Step 1/13 : FROM node:18-alpine AS build
+18-alpine: Pulling from library/node
+f18232174bc9: Pulling fs layer
+dd71dde834b5: Pulling fs layer
+1e5a4c89cee5: Pulling fs layer
+25ff2da83641: Pulling fs layer
+1e5a4c89cee5: Verifying Checksum
+1e5a4c89cee5: Download complete
+25ff2da83641: Verifying Checksum
+25ff2da83641: Download complete
+f18232174bc9: Verifying Checksum
+f18232174bc9: Download complete
+f18232174bc9: Pull complete
+dd71dde834b5: Verifying Checksum
+dd71dde834b5: Download complete
+dd71dde834b5: Pull complete
+1e5a4c89cee5: Pull complete
+25ff2da83641: Pull complete
+Digest: sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+Status: Downloaded newer image for node:18-alpine
+ ee77c6cd7c18
+Step 2/13 : WORKDIR /app
+ Running in 2f7c00870b01
+Removing intermediate container 2f7c00870b01
+ 2c809aa83c1b
+Step 3/13 : COPY package*.json ./
+ 8890815a2c88
+Step 4/13 : RUN npm ci
+ Running in 4a0b3ae9666e
+[91mnpm warn deprecated w3c-hr-time@1.0.2: Use your platform's native performance.now() and performance.timeOrigin.
+[0m[91mnpm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+[0m[91mnpm warn deprecated npmlog@5.0.1: This package is no longer supported.
+[0m[91mnpm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+[0m[91mnpm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+[0m[91mnpm warn deprecated domexception@4.0.0: Use your platform's native DOMException instead
+[0m[91mnpm warn deprecated gauge@3.0.2: This package is no longer supported.
+[0m[91mnpm warn deprecated are-we-there-yet@2.0.0: This package is no longer supported.
+[0m[91mnpm warn deprecated abab@2.0.6: Use your platform's native atob() and btoa() methods instead
+[0m[91mnpm warn deprecated @humanwhocodes/object-schema@2.0.3: Use @eslint/object-schema instead
+[0m[91mnpm warn deprecated @humanwhocodes/config-array@0.13.0: Use @eslint/config-array instead
+[0m[91mnpm warn deprecated eslint@8.57.1: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+[0m
+added 320 packages, and audited 321 packages in 12s

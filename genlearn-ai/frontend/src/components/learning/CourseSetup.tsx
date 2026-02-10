@@ -4,7 +4,7 @@ import { Button } from '../common/Button';
 import { Dropdown } from '../common/Dropdown';
 import { Slider } from '../common/Slider';
 import { DIFFICULTY_LEVELS, DURATION_OPTIONS, VISUAL_STYLES, PLAY_MODES, STORY_STYLES } from '../../utils/constants';
-import api from '../../services/api';
+import api, { BACKEND_URL } from '../../services/api';
 
 interface CourseSetupProps {
   onStart: (config: CourseConfig) => void;
@@ -146,7 +146,7 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
                     }`}
                 >
                   <img
-                    src={`http://localhost:8000${avatar.image_url}`}
+                    src={`${BACKEND_URL}${avatar.image_url}`}
                     alt={avatar.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
@@ -186,7 +186,7 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
                       }`}
                   >
                     <img
-                      src={`http://localhost:8000${character.image_url}`}
+                      src={`${BACKEND_URL}${character.image_url}`}
                       alt={character.name}
                       className="w-full aspect-square object-cover"
                       onError={(e) => {

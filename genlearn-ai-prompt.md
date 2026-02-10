@@ -247,7 +247,7 @@ Copy this content to `backend/.env` and fill in your API keys.
 ```env
 # Gemini 3 API
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-3-pro-preview
 
 # GCP Speech-to-Text
 GCP_PROJECT_ID=your_gcp_project_id
@@ -953,7 +953,7 @@ class GeminiProvider(BaseAIProvider):
     
     def __init__(self):
         self.api_key = os.getenv("GEMINI_API_KEY")
-        self.model = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+        self.model = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
         self.base_url = "https://generativelanguage.googleapis.com/v1beta"
         
         if not self.api_key:

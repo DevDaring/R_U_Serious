@@ -3,7 +3,7 @@ import { SceneDisplay } from './SceneDisplay';
 import { QuizCard, QuizResult } from './QuizCard';
 import { ResultsSummary } from './ResultsSummary';
 import { LearningSession } from '../../types';
-import api from '../../services/api';
+import api, { BACKEND_URL } from '../../services/api';
 
 interface TextOverlay {
     text: string;
@@ -302,7 +302,7 @@ export const StoryPlayer: React.FC<StoryPlayerProps> = ({ session, onComplete })
             {phase === 'story' && (
                 <div className="space-y-6">
                     <SceneDisplay
-                        imageUrl={currentSegment.scene_image_url ? `http://localhost:8000${currentSegment.scene_image_url}` : ''}
+                        imageUrl={currentSegment.scene_image_url ? `${BACKEND_URL}${currentSegment.scene_image_url}` : ''}
                         textOverlay={currentSegment.text_overlay}
                         isLoading={!currentSegment.scene_image_url}
                     />

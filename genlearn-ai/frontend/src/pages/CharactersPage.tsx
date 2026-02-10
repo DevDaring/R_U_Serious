@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/common/Button';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 
 interface Character {
   character_id: string;
@@ -645,7 +645,7 @@ export const CharactersPage: React.FC = () => {
                 className="relative rounded-xl overflow-hidden border-2 border-gray-200 hover:border-orange-300 transition-all hover:shadow-lg"
               >
                 <img
-                  src={`http://localhost:8000${character.image_url}`}
+                  src={`${BACKEND_URL}${character.image_url}`}
                   alt={character.name}
                   className="w-full aspect-[3/4] object-cover"
                   onError={(e) => {

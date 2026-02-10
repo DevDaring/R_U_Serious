@@ -144,13 +144,9 @@ async def get_image_lesson(
                     prompt=response["image_prompt"],
                     style=response.get("image_style", "cartoon")
                 )
-                image_filename = f"feature_img_{generate_unique_id('IMG')}.png"
-                image_path = f"generated_images/{image_filename}"
-                
-                from app.database.file_handler import FileHandler
-                file_handler = FileHandler()
-                file_handler.save_file(image_path, image_data)
-                response["image_url"] = f"/media/{image_path}"
+                # Return as base64 inline (Cloud Run ephemeral storage)
+                import base64 as b64
+                response["image_url"] = f"data:image/png;base64,{b64.b64encode(image_data).decode('utf-8')}"
             except Exception as img_err:
                 logger.warning(f"Image generation failed: {img_err}")
         

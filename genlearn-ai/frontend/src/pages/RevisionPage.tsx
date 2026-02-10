@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { SceneDisplay } from '../components/learning/SceneDisplay';
 
 interface TextOverlay {
@@ -174,7 +174,7 @@ export const RevisionPage: React.FC = () => {
             {currentSegment && (
                 <div className="space-y-4">
                     <SceneDisplay
-                        imageUrl={currentSegment.scene_image_url ? `http://localhost:8000${currentSegment.scene_image_url}` : ''}
+                        imageUrl={currentSegment.scene_image_url ? `${BACKEND_URL}${currentSegment.scene_image_url}` : ''}
                         textOverlay={currentSegment.text_overlay}
                         isLoading={false}
                     />

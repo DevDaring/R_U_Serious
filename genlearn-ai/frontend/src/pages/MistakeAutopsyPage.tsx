@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
 
 interface Diagnosis {
@@ -863,7 +863,7 @@ export const MistakeAutopsyPage: React.FC = () => {
 
                                     {msg.imageUrl && (
                                         <img
-                                            src={msg.imageUrl.startsWith('data:') ? msg.imageUrl : `http://localhost:8000${msg.imageUrl}`}
+                                            src={msg.imageUrl.startsWith('data:') ? msg.imageUrl : `${BACKEND_URL}${msg.imageUrl}`}
                                             alt="Explanation"
                                             className="mt-2 rounded-lg max-w-full max-h-64"
                                         />

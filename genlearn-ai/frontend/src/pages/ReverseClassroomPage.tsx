@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../services/api';
+import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
 
 interface ChatMessage {
@@ -159,7 +159,7 @@ export const ReverseClassroomPage: React.FC = () => {
                                     <div dangerouslySetInnerHTML={{ __html: formatChatContent(msg.content) }} />
                                     {msg.imageUrl && (
                                         <div className="mt-2">
-                                            <img src={`http://localhost:8000${msg.imageUrl}`} alt="Understanding" className="rounded-lg max-w-full" />
+                                            <img src={msg.imageUrl.startsWith('data:') ? msg.imageUrl : `${BACKEND_URL}${msg.imageUrl}`} alt="Understanding" className="rounded-lg max-w-full" />
                                             {msg.imageCaption && <p className="text-sm italic mt-1">{msg.imageCaption}</p>}
                                         </div>
                                     )}

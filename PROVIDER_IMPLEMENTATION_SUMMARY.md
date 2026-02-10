@@ -187,7 +187,7 @@ Base Interface → Multiple Implementations → Factory Selection
 ```env
 # Primary AI Provider
 GEMINI_API_KEY=your_gemini_key
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-3-pro-preview
 
 # Primary Image Provider
 FIBO_API_KEY=your_fibo_key

@@ -262,7 +262,7 @@ status = await ProviderFactory.check_all_providers()
 ### For Gemini (Primary AI)
 ```env
 GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-3-pro-preview
 ```
 
 ### For OpenAI (Fallback AI)

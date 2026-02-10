@@ -1,0 +1,11 @@
+# Don't upload node_modules or dist - Docker builds them
+node_modules/
+dist/
+dist-ssr/
+*.log
+.git/
+.DS_Store
+.vscode/
+.idea/
+*.local
+*.md

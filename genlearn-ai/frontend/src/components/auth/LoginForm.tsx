@@ -5,8 +5,8 @@ import { Button } from '../common/Button';
 import { APP_NAME } from '../../utils/constants';
 
 export const LoginForm: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('DebK');
+  const [password, setPassword] = useState('password123');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
@@ -28,14 +28,31 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl flex overflow-hidden">
+        {/* Left: Feynman Image */}
+        <div className="hidden md:flex md:w-1/2 bg-gradient-to-b from-primary-600 to-primary-800 flex-col items-center justify-center p-8 relative">
+          <img
+            src="/assets/site-images/richard.png"
+            alt="Richard Feynman"
+            className="w-72 object-contain rounded-xl border-4 border-white/30 shadow-xl mb-6"
+          />
+          <h2 className="text-white text-xl font-bold text-center">"If you can't explain it simply, you don't understand it well enough."</h2>
+          <p className="text-primary-200 mt-3 text-sm font-medium">— Richard Feynman</p>
+          <div className="absolute bottom-4 text-primary-300 text-xs">Powered by Gemini 3</div>
+        </div>
+
+        {/* Right: Login Form */}
+        <div className="w-full md:w-1/2 p-8">
         <div className="text-center mb-8">
-          <div className="mx-auto mb-4 h-12 w-12 rounded-full bg-primary-600 text-white flex items-center justify-center text-xl font-bold">
-            G
-          </div>
+          {/* Show Feynman image on mobile too */}
+          <img
+            src="/assets/site-images/richard.png"
+            alt="Richard Feynman"
+            className="md:hidden mx-auto mb-4 w-24 object-contain rounded-xl border-2 border-primary-300 shadow-lg"
+          />
           <h1 className="text-2xl font-bold text-gray-900">{APP_NAME}</h1>
-          <p className="text-sm text-gray-500">Sign in to start learning</p>
+          <p className="text-sm text-gray-500">Learn with the Feynman Technique</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -86,9 +103,9 @@ export const LoginForm: React.FC = () => {
 
         <div className="mt-6 text-center text-sm">
           <p className="text-gray-600 mb-2">Demo credentials:</p>
-          <p className="font-mono text-gray-800 font-medium">admin / password123</p>
           <p className="font-mono text-gray-800 font-medium">DebK / password123</p>
         </div>
+      </div>
       </div>
     </div>
   );

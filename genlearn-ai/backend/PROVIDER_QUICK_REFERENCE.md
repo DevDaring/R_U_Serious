@@ -161,7 +161,7 @@ Image providers support:
 ### Gemini (Primary AI)
 ```env
 GEMINI_API_KEY=your_key
-GEMINI_MODEL=gemini-2.0-flash
+GEMINI_MODEL=gemini-3-pro-preview
 ```
 
 ### OpenAI (Fallback AI)
