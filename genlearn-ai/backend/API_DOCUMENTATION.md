@@ -1,6 +1,6 @@
-# Fun Learn - API Documentation
+# R U Serious? - API Documentation
 
-Complete API reference for the Fun Learn backend system.
+Complete API reference for the R U Serious? backend system.
 
 ## Base URL
 
@@ -545,7 +545,7 @@ Convert text to speech.
 **Request Body:**
 ```json
 {
-  "text": "Hello, welcome to Fun Learn",
+  "text": "Hello, welcome to R U Serious?",
   "language": "en",
   "voice_type": "female",
   "speed": 1.0

@@ -1,5 +1,5 @@
 """
-Services package - Business logic services for Fun Learn
+Services package - Business logic services for R U Serious?
 """
 
 from .content_generator import ContentGenerator

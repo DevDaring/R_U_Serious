@@ -1,4 +1,4 @@
-# Fun Learn - Critical Code Review Report
+# R U Serious? - Critical Code Review Report
 
 **Review Date:** December 2024
 **Reviewer:** Senior Developer

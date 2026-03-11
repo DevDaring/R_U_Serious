@@ -1,5 +1,6 @@
 """
-Fun Learn - Main FastAPI Application
+FunLearn - Main FastAPI Application
+Powered by DigitalOcean Gradient AI
 """
 
 from fastapi import FastAPI
@@ -13,18 +14,13 @@ from app.api.routes import (
     auth,
     users,
     learning,
-    avatar,
-    characters,
     quiz,
-    voice,
-    video,
-    tournaments,
-    teams,
     admin,
     chat,
     features,
     feynman,
-    sessions
+    sessions,
+    story_learning
 )
 from app.services.provider_factory import ProviderFactory
 from app.utils.json_utils import NaNSafeJSONResponse
@@ -35,12 +31,12 @@ async def lifespan(app: FastAPI):
     """Application startup and shutdown events."""
     # Startup
     print("=" * 60)
-    print("🚀 Starting Fun Learn...")
+    print("🚀 Starting FunLearn...")
     print("=" * 60)
-    print(f"📦 AI Provider: {os.getenv('AI_PROVIDER', 'gemini')}")
-    print(f"🖼️  Image Provider: {os.getenv('IMAGE_PROVIDER', 'fibo')}")
-    print(f"🔊 TTS Provider: {os.getenv('VOICE_TTS_PROVIDER', 'gcp')}")
-    print(f"🎤 STT Provider: {os.getenv('VOICE_STT_PROVIDER', 'gcp')}")
+    print(f"📦 AI Provider: {os.getenv('AI_PROVIDER', 'digitalocean')}")
+    print(f"🖼️  Image Provider: {os.getenv('IMAGE_PROVIDER', 'none')}")
+    print(f"🔊 TTS Provider: {os.getenv('VOICE_TTS_PROVIDER', 'none')}")
+    print(f"🎤 STT Provider: {os.getenv('VOICE_STT_PROVIDER', 'none')}")
     print("-" * 60)
 
     # Check provider health
@@ -58,7 +54,7 @@ async def lifespan(app: FastAPI):
         print(f"  ⚠️  Provider health check failed: {e}")
 
     print("=" * 60)
-    print("✨ Fun Learn is ready!")
+    print("✨ FunLearn is ready!")
     print(f"📚 API Documentation: http://{settings.BACKEND_HOST}:{settings.BACKEND_PORT}/docs")
     print("=" * 60)
 
@@ -66,13 +62,13 @@ async def lifespan(app: FastAPI):
 
     # Shutdown
     print("\n" + "=" * 60)
-    print("👋 Shutting down Fun Learn...")
+    print("👋 Shutting down FunLearn...")
     print("=" * 60)
 
 
 app = FastAPI(
-    title="Fun Learn",
-    description="Generative AI-Enabled Adaptive Learning System",
+    title="FunLearn",
+    description="Feynman AI for Every Student - Powered by DigitalOcean Gradient AI",
     version="2.0.0",
     lifespan=lifespan,
     default_response_class=NaNSafeJSONResponse  # Handle NaN values globally
@@ -87,7 +83,8 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:3000",
-        "http://[::1]:5173"
+        "http://[::1]:5173",
+        "*"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -108,27 +105,22 @@ if mct_data_dir.exists():
 app.include_router(auth.router, prefix="/api/auth", tags=["Authentication"])
 app.include_router(users.router, prefix="/api/users", tags=["Users"])
 app.include_router(learning.router, prefix="/api/learning", tags=["Learning"])
-app.include_router(avatar.router, prefix="/api/avatar", tags=["Avatar"])
-app.include_router(characters.router, prefix="/api/characters", tags=["Characters"])
 app.include_router(quiz.router, prefix="/api/quiz", tags=["Quiz"])
-app.include_router(voice.router, prefix="/api/voice", tags=["Voice"])
-app.include_router(video.router, prefix="/api/video", tags=["Video"])
-app.include_router(tournaments.router, prefix="/api/tournaments", tags=["Tournaments"])
-app.include_router(teams.router, prefix="/api/teams", tags=["Teams"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
 app.include_router(features.router, prefix="/api/features", tags=["Enhanced Features"])
 app.include_router(feynman.router, prefix="/api")  # Feynman Engine
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])
+app.include_router(story_learning.router)  # Story Learning
 
 
 @app.get("/")
 async def root():
     """Root endpoint with API information"""
     return {
-        "message": "Welcome to Fun Learn",
-        "version": "1.0.0-prototype",
-        "description": "Generative AI-Enabled Adaptive Learning System",
+        "message": "Welcome to FunLearn!",
+        "version": "2.0.0",
+        "description": "Feynman AI for Every Student - Powered by DigitalOcean Gradient AI",
         "docs": "/docs",
         "health": "/health"
     }
@@ -148,13 +140,11 @@ async def health_check():
         return {
             "status": "healthy" if all_healthy else "degraded",
             "providers": providers,
-            "version": "1.0.0-prototype"
+            "version": "2.0.0"
         }
     except Exception as e:
         return {
             "status": "unhealthy",
             "error": str(e),
-            "version": "1.0.0-prototype"
+            "version": "2.0.0"
         }
-
-

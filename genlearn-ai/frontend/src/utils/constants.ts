@@ -2,7 +2,7 @@
  * Application constants
  */
 
-export const APP_NAME = 'Fun Learn';
+export const APP_NAME = 'R U Serious?';
 
 export const DIFFICULTY_LEVELS = [
   { value: 1, label: 'Very Easy' },

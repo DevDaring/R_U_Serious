@@ -11,7 +11,8 @@ Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host ""
 
 # Get API keys
-Write-Host "Enter your API keys (or press Enter to skip optional ones):" -ForegroundColor Yellow
+Write-Host "Enter your Gemini API Key:" -ForegroundColor Yellow
+Write-Host "(Get one free at: https://ai.google.dev/)" -ForegroundColor Gray
 Write-Host ""
 
 $GEMINI_API_KEY = Read-Host "Gemini API Key (REQUIRED)"
@@ -21,12 +22,6 @@ if ([string]::IsNullOrWhiteSpace($GEMINI_API_KEY)) {
     exit 1
 }
 
-# Optional but recommended
-$FIBO_API_KEY = Read-Host "FIBO API Key (optional, for advanced image generation)"
-if ([string]::IsNullOrWhiteSpace($FIBO_API_KEY)) {
-    $FIBO_API_KEY = ""
-}
-
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "Configuration Summary" -ForegroundColor Cyan
@@ -34,8 +29,9 @@ Write-Host "=====================================" -ForegroundColor Cyan
 Write-Host "Project: $PROJECT_ID" -ForegroundColor White
 Write-Host "Region: $REGION" -ForegroundColor White
 Write-Host "Service: $SERVICE_NAME" -ForegroundColor White
-Write-Host "Gemini API: Configured [OK]" -ForegroundColor Green
-if ($FIBO_API_KEY) { Write-Host "FIBO API: Configured [OK]" -ForegroundColor Green }
+Write-Host "Gemini 3 API: Configured [OK]" -ForegroundColor Green
+Write-Host "Image Provider: Gemini (Imagen 3)" -ForegroundColor Green
+Write-Host "Voice Provider: Google Cloud TTS/STT" -ForegroundColor Green
 Write-Host ""
 
 # Set project
@@ -43,7 +39,89 @@ Write-Host "Setting GCP project..." -ForegroundColor Green
 gcloud config set project $PROJECT_ID
 
 # Navigate to backend directory
-Set-Location -Path "D:\Contest\Fun_Learn\genlearn-ai\backend"
+$ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location -Path "$ScriptDir\genlearn-ai\backend"
+Write-Host "Working directory: $(Get-Location)" -ForegroundColor Gray
+Write-Host ""
+
+# Ensure data directories exist
+Write-Host "Setting up data directories..." -ForegroundColor Green
+$DataDirs = @("data/csv", "data/media", "data/mct_images")
+foreach ($dir in $DataDirs) {
+    if (-not (Test-Path $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
+        Write-Host "  Created: $dir" -ForegroundColor Gray
+    } else {
+        Write-Host "  Verified: $dir" -ForegroundColor Gray
+    }
+}
+
+# Check if CSV files exist
+$CsvCount = (Get-ChildItem -Path "data/csv" -Filter "*.csv" -ErrorAction SilentlyContinue).Count
+if ($CsvCount -eq 0) {
+    Write-Host "  WARNING: No CSV files found in data/csv/" -ForegroundColor Yellow
+    Write-Host "  Creating initial CSV data..." -ForegroundColor Yellow
+    
+    # Run create_csv_data.py to initialize database
+    python create_csv_data.py
+    
+    if ($LASTEXITCODE -eq 0) {
+        $CsvCount = (Get-ChildItem -Path "data/csv" -Filter "*.csv" -ErrorAction SilentlyContinue).Count
+        Write-Host "  Created $CsvCount CSV files" -ForegroundColor Green
+    } else {
+        Write-Host "  ERROR: Failed to create CSV files!" -ForegroundColor Red
+        Write-Host "  Run 'python create_csv_data.py' manually first" -ForegroundColor Yellow
+        Read-Host "Press Enter to exit"
+        exit 1
+    }
+} else {
+    Write-Host "  Found $CsvCount CSV files [OK]" -ForegroundColor Green
+}
+
+# Enable required GCP APIs
+Write-Host ""
+Write-Host "Enabling required GCP APIs..." -ForegroundColor Green
+$APIs = @(
+    "run.googleapis.com",
+    "cloudbuild.googleapis.com",
+    "texttospeech.googleapis.com",
+    "speech.googleapis.com",
+    "aiplatform.googleapis.com"
+)
+foreach ($api in $APIs) {
+    Write-Host "  Enabling $api..." -ForegroundColor Gray
+    gcloud services enable $api --project=$PROJECT_ID 2>$null
+}
+Write-Host "  APIs enabled" -ForegroundColor Green
+
+# Get the project number for Compute Engine default service account
+Write-Host ""
+Write-Host "Configuring service account permissions..." -ForegroundColor Green
+$PROJECT_NUMBER = gcloud projects describe $PROJECT_ID --format="value(projectNumber)" 2>$null
+if ([string]::IsNullOrWhiteSpace($PROJECT_NUMBER)) {
+    Write-Host "  WARNING: Could not retrieve project number. Skipping IAM setup." -ForegroundColor Yellow
+    Write-Host "  Voice features may not work without manual IAM configuration." -ForegroundColor Yellow
+} else {
+    # Cloud Run uses the Compute Engine default service account
+    $ServiceAccount = "$PROJECT_NUMBER-compute@developer.gserviceaccount.com"
+    Write-Host "  Service Account: $ServiceAccount" -ForegroundColor Gray
+
+    # Grant necessary IAM permissions for TTS/STT/Imagen
+    $Roles = @(
+        "roles/aiplatform.user",
+        "roles/cloudspeech.client",
+        "roles/cloudtts.client"
+    )
+    foreach ($role in $Roles) {
+        Write-Host "  Granting $role..." -ForegroundColor Gray
+        gcloud projects add-iam-policy-binding $PROJECT_ID `
+            --member="serviceAccount:$ServiceAccount" `
+            --role="$role" `
+            --condition=None `
+            --quiet 2>$null | Out-Null
+    }
+    Write-Host "  Service account configured" -ForegroundColor Green
+}
 
 Write-Host ""
 Write-Host "Building and deploying to Cloud Run..." -ForegroundColor Green
@@ -68,11 +146,8 @@ $ENV_VARS = "APP_ENV=production," +
     "GEMINI_IMAGE_MODEL=gemini-3-pro-image-preview," +
     "APP_API_KEY=kd_dreaming007"
 
-if ($FIBO_API_KEY) {
-    $ENV_VARS += ",FIBO_API_KEY=$FIBO_API_KEY"
-}
-
-# Deploy to Cloud Run
+# Deploy to Cloud Run (uses default Compute Engine service account)
+Write-Host "Deploying to Cloud Run..." -ForegroundColor Green
 gcloud run deploy $SERVICE_NAME `
   --source . `
   --region $REGION `
@@ -94,21 +169,44 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
+# Get the service URL
+Write-Host ""
+Write-Host "Getting service URL..." -ForegroundColor Green
+$ServiceUrl = gcloud run services describe $SERVICE_NAME --region=$REGION --format="value(status.url)"
+
 Write-Host ""
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host "Backend Deployment Complete!" -ForegroundColor Green
 Write-Host "=====================================" -ForegroundColor Green
 Write-Host ""
+Write-Host "Backend URL: $ServiceUrl" -ForegroundColor Cyan
+Write-Host ""
+
+# Test the deployment
+Write-Host "Testing backend health..." -ForegroundColor Yellow
+try {
+    $response = Invoke-RestMethod -Uri "$ServiceUrl/health" -Method Get -TimeoutSec 10
+    if ($response) {
+        Write-Host "  ✅ Backend is healthy and responding!" -ForegroundColor Green
+    }
+} catch {
+    Write-Host "  ⚠️  Backend deployed but health check failed" -ForegroundColor Yellow
+    Write-Host "  Give it a minute and check: $ServiceUrl/health" -ForegroundColor Gray
+}
+
+Write-Host ""
 Write-Host "NEXT STEPS:" -ForegroundColor Yellow
 Write-Host ""
-Write-Host "1. Copy the Service URL from above" -ForegroundColor White
-Write-Host "   Example: https://funlearn-backend-xxxxx-uc.a.run.app" -ForegroundColor Cyan
+Write-Host "1. Save this backend URL:" -ForegroundColor White
+Write-Host "   $ServiceUrl" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "2. Test the backend:" -ForegroundColor White
-Write-Host "   Health: https://[YOUR-URL]/health" -ForegroundColor Cyan
-Write-Host "   API Docs: https://[YOUR-URL]/docs" -ForegroundColor Cyan
+Write-Host "2. Test the API (wait 30s for cold start):" -ForegroundColor White
+Write-Host "   Health: $ServiceUrl/health" -ForegroundColor Cyan
+Write-Host "   API Docs: $ServiceUrl/docs" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "3. Run: .\deploy-frontend.ps1 (and enter the backend URL)" -ForegroundColor White
+Write-Host "3. Deploy frontend:" -ForegroundColor White
+Write-Host "   .\deploy-frontend.ps1" -ForegroundColor Cyan
+Write-Host "   (You'll need to enter the backend URL above)" -ForegroundColor Gray
 Write-Host ""
 
 Read-Host "Press Enter to exit"

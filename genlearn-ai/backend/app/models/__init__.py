@@ -1,5 +1,5 @@
 """
-Models package - Pydantic models for Fun Learn
+Models package - Pydantic models for R U Serious?
 """
 
 from .user import (

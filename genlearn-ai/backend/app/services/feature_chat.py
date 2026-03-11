@@ -16,7 +16,7 @@ class FeatureChatService:
     """Common chat service for all enhanced features"""
     
     FEATURE_PROMPTS = {
-        "learn_from_anything_analyze": """You are an intelligent educational content analyzer for Fun Learn. Analyze the uploaded image and identify 4-6 different educational angles from various subjects.
+        "learn_from_anything_analyze": """You are an intelligent educational content analyzer for R U Serious?. Analyze the uploaded image and identify 4-6 different educational angles from various subjects.
 
 RULES:
 1. Be creative - find non-obvious connections

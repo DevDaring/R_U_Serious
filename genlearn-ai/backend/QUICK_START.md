@@ -1,6 +1,6 @@
-# Fun Learn Backend - Quick Start Guide
+# R U Serious? Backend - Quick Start Guide
 
-Get the Fun Learn backend up and running in minutes!
+Get the R U Serious? backend up and running in minutes!
 
 ## Prerequisites
 

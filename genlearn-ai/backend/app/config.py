@@ -1,5 +1,6 @@
 """
-Configuration settings for Fun Learn
+Configuration settings for FunLearn
+Powered by DigitalOcean Gradient AI
 """
 
 import os
@@ -42,7 +43,7 @@ class Settings(BaseSettings):
     """Application settings with validation"""
 
     # App Settings
-    APP_NAME: str = "Fun Learn"
+    APP_NAME: str = "FunLearn"
     APP_ENV: str = os.getenv("APP_ENV", "development")
     DEBUG: bool = os.getenv("DEBUG", "true").lower() == "true"
     SECRET_KEY: str = get_secret_key()
@@ -59,22 +60,28 @@ class Settings(BaseSettings):
     LOGIN_RATE_LIMIT_WINDOW_SECONDS: int = int(os.getenv("LOGIN_RATE_LIMIT_WINDOW_SECONDS", "60"))
 
     # Provider Selection
-    AI_PROVIDER: str = os.getenv("AI_PROVIDER", "gemini")
-    IMAGE_PROVIDER: str = os.getenv("IMAGE_PROVIDER", "gemini")
-    VOICE_TTS_PROVIDER: str = os.getenv("VOICE_TTS_PROVIDER", "gcp")
-    VOICE_STT_PROVIDER: str = os.getenv("VOICE_STT_PROVIDER", "gcp")
+    AI_PROVIDER: str = os.getenv("AI_PROVIDER", "digitalocean")
+    IMAGE_PROVIDER: str = os.getenv("IMAGE_PROVIDER", "none")
+    VOICE_TTS_PROVIDER: str = os.getenv("VOICE_TTS_PROVIDER", "none")
+    VOICE_STT_PROVIDER: str = os.getenv("VOICE_STT_PROVIDER", "none")
 
-    # API Keys - Gemini
+    # DigitalOcean Gradient AI
+    GRADIENT_API_KEY: str = os.getenv("GRADIENT_API_KEY", "")
+    GRADIENT_BASE_URL: str = os.getenv("GRADIENT_BASE_URL", "https://inference.do-ai.run/v1")
+    GRADIENT_MODEL: str = os.getenv("GRADIENT_MODEL", "meta-llama/Meta-Llama-3.3-70B-Instruct")
+    RITTY_AGENT_UUID: str = os.getenv("RITTY_AGENT_UUID", "")
+
+    # Legacy API Keys (kept for compatibility)
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
     GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
     GEMINI_IMAGE_MODEL: str = os.getenv("GEMINI_IMAGE_MODEL", "gemini-3-pro-image-preview")
 
-    # API Keys - GCP
+    # Legacy GCP
     GCP_PROJECT_ID: str = os.getenv("GCP_PROJECT_ID", "")
     GCP_STT_API_KEY: str = os.getenv("GCP_STT_API_KEY", "")
     GCP_TTS_API_KEY: str = os.getenv("GCP_TTS_API_KEY", "")
 
-    # API Keys - FIBO
+    # Legacy FIBO
     FIBO_API_KEY: str = os.getenv("FIBO_API_KEY", "")
     FIBO_API_ENDPOINT: str = os.getenv("FIBO_API_ENDPOINT", "https://api.fibo.ai/v1")
 

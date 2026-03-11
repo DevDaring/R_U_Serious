@@ -1,12 +1,11 @@
 """
 Feynman Engine AI Service
-Handles all AI interactions using Gemini models
-Fun Learn Application
+Handles all AI interactions for the Feynman Technique
+FunLearn Application - Powered by DigitalOcean Gradient AI
 """
 
 import os
 import json
-import base64
 from typing import Optional, List, Dict, Any, Tuple
 
 from app.models.feynman_models import (
@@ -15,58 +14,21 @@ from app.models.feynman_models import (
 )
 from app.database.feynman_db import feynman_db
 from app.utils.languages import get_language_instruction
+from app.services.provider_factory import ProviderFactory
 
 
 class FeynmanAIService:
-    """AI Service for Feynman Engine using existing Gemini integration"""
-    
+    """AI Service for Feynman Engine using provider factory"""
+
     def __init__(self):
-        self.api_key = os.getenv('GEMINI_API_KEY', '')
-        self.text_model_name = os.getenv('GEMINI_MODEL', 'gemini-3-pro-preview')
-        self.image_model_name = os.getenv('GEMINI_IMAGE_MODEL', 'gemini-3-pro-image-preview')
-        self._client = None
-    
-    def _get_client(self):
-        """Lazy initialization of httpx client"""
-        if self._client is None:
-            import httpx
-            self._client = httpx.Client(timeout=60.0)
-        return self._client
-    
-    async def _call_gemini(self, prompt: str) -> str:
-        """Call Gemini API with prompt"""
-        import httpx
-        
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.text_model_name}:generateContent?key={self.api_key}"
-        
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": 0.7,
-                "topP": 0.9,
-                "maxOutputTokens": 2048
-            }
-        }
-        
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(url, json=payload)
-            
-            if response.status_code != 200:
-                print(f"Gemini API error: {response.status_code} - {response.text[:200]}")
-                return "{}"
-            
-            data = response.json()
-            try:
-                return data['candidates'][0]['content']['parts'][0]['text']
-            except (KeyError, IndexError):
-                return "{}"
-    
+        self.ai_provider = ProviderFactory.get_ai_provider()
+
     def _parse_json_response(self, response: str) -> Dict[str, Any]:
         """Parse JSON from AI response, handling potential formatting issues"""
-        
+
         # Clean the response
         text = response.strip()
-        
+
         # Remove markdown code blocks if present
         if text.startswith('```json'):
             text = text[7:]
@@ -74,25 +36,25 @@ class FeynmanAIService:
             text = text[3:]
         if text.endswith('```'):
             text = text[:-3]
-        
+
         text = text.strip()
-        
+
         try:
             return json.loads(text)
         except json.JSONDecodeError:
             # Try to find JSON object in the response
             start = text.find('{')
             end = text.rfind('}') + 1
-            
+
             if start != -1 and end > start:
                 try:
                     return json.loads(text[start:end])
                 except json.JSONDecodeError:
                     pass
-            
+
             print(f"Failed to parse JSON: {text[:200]}...")
             return {}
-    
+
     def _get_avatar_state(self, confusion: float, curiosity: float) -> str:
         """Determine Ritty's avatar state based on metrics"""
         if confusion > 0.7:
@@ -105,9 +67,9 @@ class FeynmanAIService:
             return "happy"
         else:
             return "neutral"
-    
+
     # ============== LAYER 1: RITTY (CURIOUS CHILD) ==============
-    
+
     async def ritty_respond(
         self,
         session_id: str,
@@ -121,17 +83,49 @@ class FeynmanAIService:
         language: str = "en"
     ) -> RittyResponse:
         """Generate Ritty's response to student's explanation"""
-        
+
+        # Build conversation history for Ritty agent
+        ritty_history = []
+        for turn in conversation_history[-10:]:
+            if turn.get('layer') == 1:
+                ritty_history.append({
+                    "role": turn['role'],
+                    "content": turn['message']
+                })
+
+        # Try to use Ritty agent first (for DigitalOcean provider)
+        if hasattr(self.ai_provider, 'ritty_chat'):
+            try:
+                response_text = await self.ai_provider.ritty_chat(user_message, ritty_history)
+
+                # Parse the response for Ritty-specific fields
+                # If the agent returns just text, we'll create a basic response
+                return RittyResponse(
+                    response=response_text,
+                    confusion_level=0.3,
+                    curiosity_level=0.7,
+                    question_type="curious",
+                    follow_up_question=None,
+                    gap_detected=None,
+                    encouragement="Great explanation!",
+                    emoji_reaction="😊",
+                    layer_complete=False,
+                    avatar_state="curious"
+                )
+            except Exception as e:
+                print(f"Error using Ritty agent: {e}")
+                # Fall through to prompt-based approach
+
         # Build context from history
         context = ""
         for turn in conversation_history[-10:]:
             if turn.get('layer') == 1:
                 role = "Student" if turn['role'] == 'user' else "Ritty"
                 context += f"{role}: {turn['message']}\n"
-        
+
         # Get language instruction for multi-language support
         lang_instruction = get_language_instruction(language)
-        
+
         prompt = f"""You are Ritty, a curious and enthusiastic 8-year-old boy.
 A student is trying to teach you about "{topic}" (subject: {subject}).
 
@@ -175,12 +169,12 @@ Respond with ONLY a valid JSON object:
 IMPORTANT: Return ONLY the JSON object. No other text."""
 
         try:
-            response = await self._call_gemini(prompt)
+            response = await self.ai_provider.chat(prompt, language=language)
             result = self._parse_json_response(response)
-            
+
             confusion = float(result.get('confusion_level', 0.5))
             curiosity = float(result.get('curiosity_level', 0.5))
-            
+
             return RittyResponse(
                 response=result.get('response', "Hmm, can you explain that again?"),
                 confusion_level=confusion,
@@ -193,7 +187,7 @@ IMPORTANT: Return ONLY the JSON object. No other text."""
                 layer_complete=result.get('layer_complete', False),
                 avatar_state=self._get_avatar_state(confusion, curiosity)
             )
-            
+
         except Exception as e:
             print(f"Error in ritty_respond: {e}")
             return RittyResponse(
@@ -205,9 +199,9 @@ IMPORTANT: Return ONLY the JSON object. No other text."""
                 layer_complete=False,
                 avatar_state="thinking"
             )
-    
+
     # ============== LAYER 2: COMPRESSION CHALLENGE ==============
-    
+
     async def evaluate_compression(
         self,
         topic: str,
@@ -219,18 +213,18 @@ IMPORTANT: Return ONLY the JSON object. No other text."""
         language: str = "en"
     ) -> CompressionEvaluation:
         """Evaluate a compression challenge attempt"""
-        
+
         # Get language instruction for multi-language support
         lang_instruction = get_language_instruction(language)
-        
+
         prev_context = ""
         if previous_compressions:
             prev_context = "PREVIOUS ROUNDS:\n"
             for comp in previous_compressions:
                 prev_context += f"- {comp.get('word_limit', '?')} words: {comp.get('explanation', '')} (Score: {comp.get('score', 3)}/5)\n"
-        
+
         actual_word_count = len(compressed_explanation.split())
-        
+
         prompt = f"""You are an expert evaluator for the Compression Challenge.
 The student must progressively compress their explanation while preserving essential meaning.
 
@@ -271,16 +265,16 @@ Word limits: 100 → 50 → 25 → 15 → 10 → 1
 IMPORTANT: Return ONLY the JSON object."""
 
         try:
-            response = await self._call_gemini(prompt)
+            response = await self.ai_provider.chat(prompt, language=language)
             result = self._parse_json_response(response)
-            
+
             # Determine next word limit
             word_limits = [100, 50, 25, 15, 10, 1]
             current_idx = word_limits.index(word_limit) if word_limit in word_limits else 0
             next_limit = word_limits[current_idx + 1] if current_idx < len(word_limits) - 1 else None
-            
+
             passed = result.get('passed', False)
-            
+
             return CompressionEvaluation(
                 score=int(result.get('score', 3)),
                 word_count=actual_word_count,
@@ -292,7 +286,7 @@ IMPORTANT: Return ONLY the JSON object."""
                 passed=passed,
                 next_word_limit=next_limit if passed else word_limit
             )
-            
+
         except Exception as e:
             print(f"Error in evaluate_compression: {e}")
             return CompressionEvaluation(
@@ -306,9 +300,9 @@ IMPORTANT: Return ONLY the JSON object."""
                 passed=False,
                 next_word_limit=word_limit
             )
-    
+
     # ============== LAYER 3: WHY SPIRAL ==============
-    
+
     async def why_spiral_respond(
         self,
         topic: str,
@@ -320,16 +314,16 @@ IMPORTANT: Return ONLY the JSON object."""
         language: str = "en"
     ) -> WhySpiralResponse:
         """Generate the next 'why' question or detect knowledge boundary"""
-        
+
         # Get language instruction for multi-language support
         lang_instruction = get_language_instruction(language)
-        
+
         context = ""
         for turn in conversation_history[-10:]:
             if turn.get('layer') == 3:
                 role = "Student" if turn['role'] == 'user' else "Socratic Questioner"
                 context += f"{role}: {turn['message']}\n"
-        
+
         prompt = f"""You are a Socratic questioner conducting the "Why Spiral."
 Your goal is to probe the student's understanding by asking progressive "why" questions.
 
@@ -373,9 +367,9 @@ Respond with ONLY a valid JSON object:
 IMPORTANT: Return ONLY the JSON object."""
 
         try:
-            response = await self._call_gemini(prompt)
+            response = await self.ai_provider.chat(prompt, language=language)
             result = self._parse_json_response(response)
-            
+
             return WhySpiralResponse(
                 next_question=result.get('next_question'),
                 current_depth=int(result.get('current_depth', current_depth)),
@@ -385,7 +379,7 @@ IMPORTANT: Return ONLY the JSON object."""
                 exploration_offer=result.get('exploration_offer'),
                 can_continue=result.get('can_continue', True)
             )
-            
+
         except Exception as e:
             print(f"Error in why_spiral_respond: {e}")
             return WhySpiralResponse(
@@ -395,9 +389,9 @@ IMPORTANT: Return ONLY the JSON object."""
                 boundary_detected=False,
                 can_continue=True
             )
-    
+
     # ============== LAYER 4: ANALOGY ARCHITECT ==============
-    
+
     async def evaluate_analogy(
         self,
         topic: str,
@@ -409,16 +403,16 @@ IMPORTANT: Return ONLY the JSON object."""
         language: str = "en"
     ) -> AnalogyEvaluation:
         """Evaluate user's analogy and conduct stress test"""
-        
+
         # Get language instruction for multi-language support
         lang_instruction = get_language_instruction(language)
-        
+
         phase_instructions = {
             'create': "This is the CREATE phase. Evaluate the analogy for the first time. Identify strengths, weaknesses, and prepare a stress test question.",
             'defend': f"This is the DEFEND phase. Previous feedback: {previous_feedback}. Student's defense: {defense_response}. Evaluate whether their defense addresses the concerns.",
             'refine': f"This is the REFINE phase. Original feedback: {previous_feedback}. Evaluate the refined version."
         }
-        
+
         prompt = f"""You are an expert at evaluating educational analogies.
 
 {lang_instruction}
@@ -454,9 +448,9 @@ Respond with ONLY a valid JSON object:
 IMPORTANT: Return ONLY the JSON object."""
 
         try:
-            response = await self._call_gemini(prompt)
+            response = await self.ai_provider.chat(prompt, language=language)
             result = self._parse_json_response(response)
-            
+
             return AnalogyEvaluation(
                 phase=phase,
                 score=int(result.get('score', 3)),
@@ -467,7 +461,7 @@ IMPORTANT: Return ONLY the JSON object."""
                 refinement_suggestion=result.get('refinement_suggestion'),
                 save_worthy=result.get('save_worthy', False)
             )
-            
+
         except Exception as e:
             print(f"Error in evaluate_analogy: {e}")
             return AnalogyEvaluation(
@@ -478,9 +472,9 @@ IMPORTANT: Return ONLY the JSON object."""
                 stress_test_question="How does your analogy handle edge cases?",
                 save_worthy=False
             )
-    
+
     # ============== LAYER 5: LECTURE HALL ==============
-    
+
     async def lecture_hall_respond(
         self,
         topic: str,
@@ -490,16 +484,16 @@ IMPORTANT: Return ONLY the JSON object."""
         language: str = "en"
     ) -> LectureHallResponse:
         """Get responses from all 5 Lecture Hall personas"""
-        
+
         # Get language instruction for multi-language support
         lang_instruction = get_language_instruction(language)
-        
+
         context = ""
         for turn in conversation_history[-6:]:
             if turn.get('layer') == 5:
                 role = "Student" if turn['role'] == 'user' else "Audience"
                 context += f"{role}: {turn['message']}\n"
-        
+
         prompt = f"""You control 5 different personas in a "Lecture Hall" setting.
 Each persona has different needs and will evaluate the same explanation differently.
 
@@ -571,15 +565,15 @@ Respond with ONLY a valid JSON object:
     "overall_satisfaction": <0.0-1.0, average of all>,
     "all_satisfied": <true only if ALL personas are satisfied>,
     "dominant_issue": "<main problem preventing full satisfaction, or null>",
-    "suggestion": "<how to improve to satisfy everyone, or null if all satisfied>"
+    "suggestion": "<how to improve to satisfy everyone, or null if all satisfied>
 }}
 
 IMPORTANT: Return ONLY the JSON object."""
 
         try:
-            response = await self._call_gemini(prompt)
+            response = await self.ai_provider.chat(prompt, language=language)
             result = self._parse_json_response(response)
-            
+
             personas = []
             for p in result.get('personas', []):
                 personas.append(PersonaFeedback(
@@ -590,7 +584,7 @@ IMPORTANT: Return ONLY the JSON object."""
                     follow_up_question=p.get('follow_up_question'),
                     is_satisfied=p.get('is_satisfied', False)
                 ))
-            
+
             # Ensure we have 5 personas
             if len(personas) < 5:
                 default_personas = [
@@ -609,7 +603,7 @@ IMPORTANT: Return ONLY the JSON object."""
                             response="I'm still thinking about this...",
                             is_satisfied=False
                         ))
-            
+
             return LectureHallResponse(
                 personas=personas,
                 overall_satisfaction=float(result.get('overall_satisfaction', 0.5)),
@@ -617,7 +611,7 @@ IMPORTANT: Return ONLY the JSON object."""
                 dominant_issue=result.get('dominant_issue'),
                 suggestion=result.get('suggestion')
             )
-            
+
         except Exception as e:
             print(f"Error in lecture_hall_respond: {e}")
             return LectureHallResponse(
@@ -635,9 +629,9 @@ IMPORTANT: Return ONLY the JSON object."""
                 dominant_issue="Need more clarity",
                 suggestion="Try to simplify while maintaining accuracy."
             )
-    
+
     # ============== XP CALCULATION ==============
-    
+
     def calculate_teaching_xp(
         self,
         layers_completed: List[int],
@@ -649,51 +643,51 @@ IMPORTANT: Return ONLY the JSON object."""
         gaps_discovered: int
     ) -> Tuple[int, List[str]]:
         """Calculate Teaching XP earned and achievements unlocked"""
-        
+
         xp = 0
         achievements = []
-        
+
         # Layer completion XP
         layer_xp = {1: 50, 2: 75, 3: 100, 4: 150, 5: 200}
         for layer in layers_completed:
             xp += layer_xp.get(layer, 0)
-        
+
         # Clarity bonus
         if clarity_score >= 90:
             xp += 100
             achievements.append("Crystal Clear Explanation")
         elif clarity_score >= 75:
             xp += 50
-        
+
         # Compression bonus
         xp += compression_rounds_passed * 30
         if compression_rounds_passed >= 5:
             achievements.append("Master Compressor")
-        
+
         # Why Spiral depth bonus
         xp += why_depth_reached * 25
         if why_depth_reached >= 5:
             achievements.append("Deep Diver")
-        
+
         # Analogy bonus
         if analogy_saved:
             xp += 100
             achievements.append("Analogy Architect")
-        
+
         # Lecture Hall bonus
         if all_personas_satisfied:
             xp += 200
             achievements.append("Master Communicator")
-        
+
         # Gap discovery bonus
         xp += gaps_discovered * 15
         if gaps_discovered >= 5:
             achievements.append("Gap Hunter")
-        
+
         # First session achievement
         if len(layers_completed) > 0:
             achievements.append("First Teaching Session")
-        
+
         return xp, achievements
 
 

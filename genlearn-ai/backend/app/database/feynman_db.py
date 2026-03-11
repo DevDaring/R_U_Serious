@@ -1,6 +1,6 @@
 """
 CSV Database handlers for Feynman Engine
-Fun Learn Application
+R U Serious? Application
 """
 
 import os
@@ -39,8 +39,22 @@ class FeynmanDatabase:
                 'id', 'user_id', 'topic', 'subject', 'difficulty_level',
                 'current_layer', 'started_at', 'completed_at', 'clarity_score',
                 'compression_score', 'analogy_score', 'why_depth_reached',
-                'gaps_discovered', 'teaching_xp_earned', 'status'
+                'gaps_discovered', 'teaching_xp_earned', 'status',
+                'analogy_image_count', 'interactions_since_image'
             ]).to_csv(self.sessions_path, index=False)
+        else:
+            # Ensure new columns exist in existing CSV
+            try:
+                df = pd.read_csv(self.sessions_path)
+                changed = False
+                for col in ['analogy_image_count', 'interactions_since_image']:
+                    if col not in df.columns:
+                        df[col] = 0
+                        changed = True
+                if changed:
+                    df.to_csv(self.sessions_path, index=False)
+            except Exception:
+                pass
         
         if not os.path.exists(self.conversations_path):
             pd.DataFrame(columns=[

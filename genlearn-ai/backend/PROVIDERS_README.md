@@ -1,8 +1,8 @@
-# Fun Learn Provider System
+# R U Serious? Provider System
 
 ## Overview
 
-This document describes the complete provider system for Fun Learn backend. All provider interfaces and implementations have been created according to the specifications in `genlearn-ai-prompt.md`.
+This document describes the complete provider system for R U Serious? backend. All provider interfaces and implementations have been created according to the specifications in `genlearn-ai-prompt.md`.
 
 ## Architecture
 
@@ -220,7 +220,7 @@ image_bytes = await image.generate_image(request)
 
 ```python
 audio_bytes = await tts.synthesize_speech(
-    text="Welcome to Fun Learn!",
+    text="Welcome to R U Serious?!",
     language="en",
     voice_type="female",
     speed=1.0

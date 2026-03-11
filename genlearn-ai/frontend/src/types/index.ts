@@ -1,5 +1,5 @@
 /**
- * TypeScript type definitions for Fun Learn
+ * TypeScript type definitions for R U Serious?
  */
 
 // ============================================================

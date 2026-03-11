@@ -2,8 +2,8 @@
 Provider Factory - SINGLE POINT OF CONFIGURATION FOR ALL API PROVIDERS
 
 To switch providers, change the corresponding environment variable:
-- AI_PROVIDER: gemini, openai, anthropic
-- IMAGE_PROVIDER: fibo, stability
+- AI_PROVIDER: digitalocean, gemini, openai, anthropic
+- IMAGE_PROVIDER: fibo, stability, none (none = disable image features)
 - VOICE_TTS_PROVIDER: gcp, azure, none (none = disable voice features)
 - VOICE_STT_PROVIDER: gcp, azure, none (none = disable voice features)
 
@@ -13,6 +13,7 @@ No other code changes required!
 import os
 from typing import Optional
 from app.services.ai_providers.base import BaseAIProvider
+from app.services.ai_providers.digitalocean import DigitalOceanAIProvider
 from app.services.ai_providers.gemini import GeminiProvider
 from app.services.ai_providers.openai import OpenAIProvider
 from app.services.ai_providers.anthropic import AnthropicProvider
@@ -45,6 +46,7 @@ class ProviderFactory:
     # ============================================================
 
     _ai_providers = {
+        "digitalocean": DigitalOceanAIProvider,
         "gemini": GeminiProvider,
         "openai": OpenAIProvider,
         "anthropic": AnthropicProvider,
@@ -62,7 +64,7 @@ class ProviderFactory:
         Returns:
             Configured AI provider instance
         """
-        name = provider_name or os.getenv("AI_PROVIDER", "gemini")
+        name = provider_name or os.getenv("AI_PROVIDER", "digitalocean")
         provider_class = cls._ai_providers.get(name.lower())
 
         if not provider_class:

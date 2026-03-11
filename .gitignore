@@ -105,6 +105,26 @@ temp/
 *.key
 credentials.json
 service-account*.json
-secrets/
-**/secrets/
-genlearn-ai/backend/secrets/
+
+# Deployment scripts and configs (contain project-specific details)
+deploy-*.ps1
+deploy-*.sh
+*-deployment-*.ps1
+pre-flight-check.ps1
+buildlog.txt
+deploy_*.txt
+*_output.txt
+DEPLOYMENT_*.md
+GCP_*.md
+CLOUD_RUN_*.md
+PRE_DEPLOYMENT_*.md
+QUICK_DEPLOY.md
+START_HERE.md
+
+# Docker and GCloud configs (may contain project IDs)
+.dockerignore
+.gcloudignore
+Dockerfile
+docker-compose*.yml
+firebase.json
+nginx.conf

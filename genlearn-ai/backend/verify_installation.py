@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Fun Learn Backend - Installation Verification Script
+R U Serious? Backend - Installation Verification Script
 
 This script verifies that all files are in place and the system is ready to run.
 """
@@ -36,7 +36,7 @@ def print_status(message: str, status: bool):
 def main():
     """Main verification function"""
     print(f"\n{BLUE}{'=' * 60}{RESET}")
-    print(f"{BLUE}Fun Learn Backend - Installation Verification{RESET}")
+    print(f"{BLUE}R U Serious? Backend - Installation Verification{RESET}")
     print(f"{BLUE}{'=' * 60}{RESET}\n")
 
     backend_dir = Path(__file__).parent

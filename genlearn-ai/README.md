@@ -1,12 +1,12 @@
-# 🎓 Fun Learn
+# 🎓 FunLearn — Feynman AI for Every Student
 
 <div align="center">
 
-**🏆 Built for Google Gemini 3 Hackathon**
+**🏆 Built for DigitalOcean Gradient™ AI Hackathon**
 
-*Where AI Becomes Your Student, Not Your Teacher*
+*Learn by Teaching. Powered by DigitalOcean Gradient™ AI.*
 
-[![Gemini](https://img.shields.io/badge/Powered%20by-Gemini%202.0-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://deepmind.google/technologies/gemini/)
+[![DigitalOcean](https://img.shields.io/badge/Powered%20by-DigitalOcean%20Gradient%20AI-0080FF?style=for-the-badge&logo=digitalocean&logoColor=white)](https://www.digitalocean.com/products/ai/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -15,262 +15,241 @@
 
 ---
 
-## 🎯 The Problem
+## Table of Contents
+
+1. [The Problem & Solution](#-the-problem--solution)
+2. [Quick Start](#-quick-start)
+3. [Core Feature: The Feynman Engine](#-core-feature-the-feynman-engine)
+4. [Story-Based Learning](#-story-based-learning)
+5. [Misconception Cascade Tracing](#-misconception-cascade-tracing)
+6. [Multi-Language Support](#-multi-language-support)
+7. [Technical Architecture](#-technical-architecture)
+8. [Project Structure](#-project-structure)
+9. [Environment Variables](#-environment-variables)
+10. [Deployment](#-deployment)
+
+---
+
+## 🎯 The Problem & Solution
 
 **1.5 million students fail board exams in India every year.** Not because they're not smart enough — because passive learning doesn't work. Reading textbooks, watching videos, memorizing answers — it's broken.
 
-## 💡 Our Solution
-
-**Fun Learn** flips the script. Instead of AI teaching students, **students teach the AI**. This activates the Feynman Technique at scale, powered by Gemini's multimodal capabilities.
-
----
-
-## ✨ Core Innovation: The Feynman Engine
-
-The Feynman Technique states: *"If you can't explain it simply, you don't understand it well enough."*
-
-We built **Ritty** — an AI-powered curious 8-year-old who asks "Why?" until you truly understand.
-
-| Layer | Name | How It Works |
-|-------|------|--------------|
-| 🧒 **Layer 1** | Teach Ritty | Explain any concept to an AI child who asks probing questions |
-| 📦 **Layer 2** | Compression Challenge | Compress your explanation: 50 words → 25 → 10 |
-| 🌀 **Layer 3** | The Why Spiral | Ritty asks "Why?" up to 5 levels deep |
-| 🔗 **Layer 4** | Analogy Workshop | Create and defend analogies for concepts |
-| 🎓 **Layer 5** | Lecture Hall | Explain to 5 personas simultaneously |
-
----
-
-## 🚀 8 AI-Powered Learning Features
-
-### 📸 Learn from Anything
-Upload **any image** — textbook page, street sign, menu, nature photo — and Gemini discovers 4-6 learning opportunities across Physics, History, Math, Art, and more.
-
-### 🎓 Reverse Classroom
-Become the teacher! Explain concepts to an AI student who asks clarifying questions, sometimes pretends to be confused, and helps you build deep understanding.
-
-### ⏰ Time Travel Interview
-Chat with historical figures — **Gandhi, Einstein, Marie Curie, APJ Abdul Kalam**. They respond in character, in your selected language, with historical accuracy.
-
-### 🔬 Misconception Cascade Tracing (MCT)
-When you make a mistake, most apps say "Wrong, here's the answer." That's useless. MCT uses a **5-phase Socratic diagnostic**:
-
-```
-Surface Error → Diagnostic Probing → Root Found → Remediation → Verification
-```
-
-The AI traces your mistake to the **root misconception**, then repairs it layer by layer.
-
-### 🔗 Concept Collision
-Discover surprising connections between topics you've learned. "How is the Pythagorean Theorem connected to music?" — let Gemini blow your mind.
-
-### ⚔️ Debate Arena
-Take any position on a topic. Gemini argues the **opposite** using evidence, logic, and fair scoring — building critical thinking skills.
-
-### 📺 YouTube to Course
-Paste a video transcript. Gemini generates a structured course with chapters, summaries, quizzes, and learning objectives.
-
-### 🎯 Dream Project Path
-Describe your dream project (app, robot, art piece). Gemini creates a personalized learning roadmap with milestones and checkpoints.
-
----
-
-## 🌍 Multi-Language Support
-
-Fun Learn speaks **9 languages** natively:
-
-| Language | Native Name |
-|----------|-------------|
-| English | English |
-| Hindi | हिन्दी |
-| Bengali | বাংলা |
-| Spanish | Español |
-| Japanese | 日本語 |
-| Mandarin | 中文 |
-| Arabic | العربية |
-| Portuguese | Português |
-| French | Français |
-
-**One click** in the header dropdown, and **all AI responses** switch to your language — including historical figure interviews!
-
----
-
-## 🔊 Voice & Accessibility
-
-- **Text-to-Speech**: Narration powered by Google Cloud TTS
-- **Speech-to-Text**: Voice input for answers
-- **Full Vocal Mode**: Complete hands-free operation
-- **Multi-voice**: Different voices for different characters
-
----
-
-## 🏆 Gamification
-
-| Feature | Description |
-|---------|-------------|
-| **XP & Levels** | Earn points for learning activities |
-| **Daily Streaks** | Streak bonuses keep you coming back |
-| **Teams** | Create and join learning squads |
-| **Tournaments** | Compete in timed learning events |
-| **Leaderboards** | Global and tournament rankings |
-
----
-
-## 🎨 Avatar & Characters
-
-- **Create Your Avatar**: Draw, upload, or generate with AI
-- **Custom Characters**: Create characters that appear in your stories
-- **Multiple Styles**: Cartoon or realistic visual styles
-- **Story Integration**: Your characters become part of learning narratives
-
----
-
-## 🛠️ Technical Architecture
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                        FRONTEND (React + TypeScript)            │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │LanguageContext│  │ Feature Pages│  │ Chat Components│         │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-└─────────────────────────────────────────────────────────────────┘
-                              │ API Calls
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                      BACKEND (FastAPI + Python)                 │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐          │
-│  │ Feature Routes│  │Chat Service  │  │Feynman Service│         │
-│  └──────────────┘  └──────────────┘  └──────────────┘          │
-│                              │                                  │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │              PROVIDER FACTORY (Plug & Play)              │  │
-│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐     │  │
-│  │  │ Gemini  │  │ Imagen  │  │ GCP TTS │  │ GCP STT │     │  │
-│  │  │   AI    │  │    3    │  │  Voice  │  │  Voice  │     │  │
-│  │  └─────────┘  └─────────┘  └─────────┘  └─────────┘     │  │
-│  └──────────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-### Provider Abstraction
-Switch between AI providers **without code changes**:
-
-```env
-AI_PROVIDER=gemini          # or: openai, anthropic
-IMAGE_PROVIDER=gemini       # or: stability, fibo
-VOICE_TTS_PROVIDER=gcp      # or: azure
-VOICE_STT_PROVIDER=gcp      # or: azure
-```
-
-### Technology Stack
-
-| Layer | Technologies |
-|-------|-------------|
-| **Frontend** | React 18, TypeScript, Tailwind CSS, Vite, Zustand |
-| **Backend** | FastAPI, Python 3.11+, Pydantic, httpx (async) |
-| **AI** | Gemini 2.0 Flash (text), Imagen 3 (images) |
-| **Voice** | Google Cloud TTS/STT |
-| **Data** | CSV files (pandas), local filesystem |
-| **Auth** | JWT + bcrypt |
+**FunLearn** flips the script. Instead of AI teaching students, **students teach the AI**. This activates the Feynman Technique at scale, powered by DigitalOcean's Gradient™ AI.
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.11+
 - Node.js 18+
-- Gemini API Key
+- DigitalOcean Gradient API Key
 
-### Backend Setup
+### Backend
 
-```bash
+```powershell
 cd genlearn-ai/backend
 
 # Create and activate virtual environment
 python -m venv venv
-venv\Scripts\activate        # Windows
-# source venv/bin/activate   # macOS/Linux
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # macOS/Linux
 
 # Install dependencies
 pip install -r requirements.txt
 
 # Configure environment
 copy .env.example .env
-# Edit .env with your API keys
+# Edit .env — add GRADIENT_API_KEY at minimum
 
-# Start server
+# Start the server
 python run.py
 ```
 
-### Frontend Setup
+Backend runs at **http://localhost:8000**
+Interactive API docs at **http://localhost:8000/docs**
 
-```bash
+### Frontend
+
+```powershell
 cd genlearn-ai/frontend
 
-# Install dependencies
 npm install
-
-# Start dev server
 npm run dev
 ```
 
-### Access the App
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:8000/docs
+Frontend runs at **http://localhost:5173**
 
 ### Default Login
-| Username | Password |
-|----------|----------|
-| DebK | password123 |
+
+| Username | Password     |
+|----------|--------------|
+| `DebK`   | `password123`|
 
 ---
 
-## 🔑 Environment Variables
+## ✨ Core Feature: The Feynman Engine
 
-```env
-# Required
-GEMINI_API_KEY=your_gemini_api_key
+> *"If you can't explain it simply, you don't understand it well enough."* — Richard Feynman
 
-# Provider Selection
-AI_PROVIDER=gemini
-IMAGE_PROVIDER=gemini
-VOICE_TTS_PROVIDER=gcp
-VOICE_STT_PROVIDER=gcp
+The Feynman Engine is the heart of FunLearn. Students explain topics to **Ritty** — an AI-powered curious 8-year-old — progressing through 5 progressive layers of depth.
 
-# Google Cloud (for voice)
-GCP_PROJECT_ID=your_project_id
-GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
+### Starting a Session
+
+- Choose any topic (e.g., "Photosynthesis", "Newton's Laws", "The Cold War")
+- Set a subject, difficulty level (1–10), and starting layer
+- Sessions are persisted to CSV and can be resumed
+
+### Layer 1 — Curious Child (Teach Ritty) 🧒
+
+The student explains the concept in plain language. Ritty responds with:
+
+| Response Field | Description |
+|----------------|-------------|
+| `response` | Ritty's reaction to the explanation |
+| `confusion_level` (0–10) | How confused Ritty is — reveals gaps |
+| `curiosity_level` (0–10) | Engagement level |
+| `follow_up_question` | Probing "why?" or "what?" question |
+| `gap_detected` | Knowledge gap Ritty spotted |
+| `emoji_reaction` | Expressive emoji feedback |
+| `avatar_state` | Ritty's visual state (`thinking`, `confused`, `excited`, etc.) |
+| `layer_complete` | True when the explanation satisfies Ritty |
+
+**API endpoints:**
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/feynman/session/start` | Start a session |
+| GET | `/api/feynman/session/{id}` | Get session state |
+| POST | `/api/feynman/teach` | Message Ritty (Layer 1) |
+| POST | `/api/feynman/teach-with-image` | Teach using image |
+| POST | `/api/feynman/compress` | Compression submit (Layer 2) |
+| POST | `/api/feynman/why-spiral` | Why Spiral response (Layer 3) |
+| POST | `/api/feynman/analogy` | Analogy submit (Layer 4) |
+| POST | `/api/feynman/lecture-hall` | Lecture Hall (Layer 5) |
+| POST | `/api/feynman/session/{id}/change-layer` | Jump to a layer |
+| GET | `/api/feynman/session/{id}/summary` | Session summary + gaps |
+| GET | `/api/feynman/gaps/{user_id}` | All detected gaps |
+
+---
+
+## 📖 Story-Based Learning
+
+Our newest feature replaces "Time Travel Interview" with a more focused learning approach.
+
+**How it works:**
+1. Enter any concept (e.g., "Gravity", "Democracy", "Photosynthesis")
+2. AI generates a 150-250 word engaging story with relatable characters
+3. A follow-up question checks understanding
+4. Socratic dialogue continues to deepen knowledge
+
+**API endpoints:**
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/story/generate` | Concept → story with follow-up |
+| POST | `/api/story/discuss` | Continue Socratic discussion |
+| POST | `/api/story/quiz` | Generate quiz from story |
+
+---
+
+## 🔬 Misconception Cascade Tracing (MCT)
+
+The most advanced diagnostic tool. MCT runs a **5-phase Socratic dialogue** to find the *root* of a misunderstanding:
+
+```
+Phase 1: Surface Capture    → Record the wrong answer
+Phase 2: Diagnostic Probing → Probe prerequisite knowledge
+Phase 3: Root Found         → Identify the broken knowledge link
+Phase 4: Remediation        → Fix from root up to surface
+Phase 5: Verification       → Confirm understanding is restored
 ```
 
----
-
-## 📊 Data Storage
-
-| CSV File | Purpose |
-|----------|---------|
-| `users.csv` | User accounts and profiles |
-| `sessions.csv` | Learning sessions |
-| `feynman_sessions.csv` | Feynman Engine sessions |
-| `feynman_conversations.csv` | Layer conversations |
-| `mct_sessions.csv` | MCT diagnostic sessions |
-| `mct_conversations.csv` | MCT chat history |
-| `avatars.csv` | User avatars |
-| `characters.csv` | Custom characters |
-| `tournaments.csv` | Tournament data |
-| `teams.csv` | Team information |
+**API endpoints:**
+| Method | Path | Description |
+|--------|------|-------------|
+| POST | `/api/features/mct/start` | Begin MCT session |
+| POST | `/api/features/mct/chat` | Continue diagnostic conversation |
+| GET | `/api/features/mct/sessions/user/{id}` | User's MCT history |
+| GET | `/api/features/mct/conversation/{id}` | MCT chat log |
 
 ---
 
-## 🎬 Demo Script (3 minutes)
+## 🌍 Multi-Language Support
 
-1. **[0:00-0:20]** Show the problem: passive learning fails
-2. **[0:20-0:45]** Demo Feynman Engine: teach Ritty photosynthesis
-3. **[0:45-1:15]** Demo MCT: enter wrong answer, watch AI trace root cause
-4. **[1:15-1:45]** Demo Time Travel: interview Marie Curie in Bengali
-5. **[1:45-2:15]** Demo Debate Arena: argue about AI replacing teachers
-6. **[2:15-2:45]** Flash architecture: 100% Gemini-powered
-7. **[2:45-3:00]** Close: "Education shouldn't be passive. With Gemini, it finally isn't."
+FunLearn supports **11 languages** across all AI features:
+
+| Code | Language | Script |
+|------|----------|--------|
+| `en` | English | English |
+| `hi` | Hindi | हिन्दी |
+| `bn` | Bengali | বাংলা |
+| `es` | Spanish | Español |
+| `pt` | Portuguese | Português |
+| `zh` | Mandarin Chinese | 中文 |
+| `ja` | Japanese | 日本語 |
+| `ar` | Arabic | العربية |
+| `ru` | Russian | Русский |
+| `pa` | Punjabi | ਪੰਜਾਬੀ |
+| `vi` | Vietnamese | Tiếng Việt |
+
+Language compliance is enforced at the **prompt level** — a critical instruction is injected into every AI request ensuring responses are in the selected language.
+
+---
+
+## 🛠️ Technical Architecture
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│                     FRONTEND  (React 18 + TypeScript + Vite)     │
+│                                                                  │
+│  Pages: Dashboard · Feynman · MCT · Story Learning ·            │
+│         History · Profile · Settings                             │
+│                                                                  │
+│  State: Zustand   Routing: React Router v6   HTTP: Axios         │
+│  Styling: Tailwind CSS                                            │
+└───────────────────────────┬──────────────────────────────────────┘
+                            │ REST API (JSON)
+                            ▼
+┌──────────────────────────────────────────────────────────────────┐
+│                     BACKEND  (FastAPI + Python 3.11+)            │
+│                                                                  │
+│  Routers: auth · users · learning · quiz · features ·            │
+│           feynman · sessions · story · admin                      │
+│                                                                  │
+│  Services: ContentGenerator · QuestionGenerator ·               │
+│            AnswerEvaluator · FeynmanAIService ·                 │
+│            StoryService · ScoringService                         │
+│                                                                  │
+│  ┌──────────────────────────────────────────────────────────┐   │
+│  │           PROVIDER FACTORY  (Plug & Play)                │   │
+│  │                                                          │   │
+│  │  AI:     DigitalOcean Gradient ✓ · OpenAI · Anthropic   │   │
+│  │  Image:  None (disabled for hackathon)                   │   │
+│  │  Voice:  None (disabled for hackathon)                   │   │
+│  └──────────────────────────────────────────────────────────┘   │
+│                                                                  │
+│  Data: CSV files (pandas)   Auth: JWT + bcrypt                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### Technology Stack
+
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Frontend framework | React | 18.3 |
+| Frontend language | TypeScript | 5.2 |
+| Frontend build | Vite | 5.x |
+| Styling | Tailwind CSS | 3.x |
+| State management | Zustand | 4.4 |
+| Routing | React Router | 6.20 |
+| HTTP client | Axios | 1.6 |
+| Backend framework | FastAPI | 0.109 |
+| Backend language | Python | 3.11+ |
+| Data validation | Pydantic v2 | 2.5 |
+| ASGI server | Uvicorn | 0.27 |
+| Data storage | pandas (CSV) | 2.2 |
+| Authentication | JWT + bcrypt | — |
+| AI model | DigitalOcean Gradient | Llama 3.3 70B |
 
 ---
 
@@ -278,44 +257,158 @@ GOOGLE_APPLICATION_CREDENTIALS=path/to/service-account.json
 
 ```
 genlearn-ai/
-├── backend/
-│   ├── app/
-│   │   ├── api/routes/       # API endpoints
-│   │   ├── services/         # Business logic + AI providers
-│   │   ├── database/         # CSV handlers
-│   │   └── utils/            # Helpers + language support
-│   ├── data/
-│   │   ├── csv/              # Database files
-│   │   └── media/            # Generated images
-│   └── requirements.txt
 │
-└── frontend/
-    ├── src/
-    │   ├── components/       # Reusable UI components
-    │   ├── contexts/         # React contexts (Language, Auth)
-    │   ├── pages/            # Feature pages
-    │   ├── services/         # API client
-    │   └── utils/            # Helpers
-    └── package.json
+├── backend/
+│   ├── run.py                      # Dev server runner
+│   ├── requirements.txt
+│   ├── .env                        # Copy from .env.example
+│   │
+│   └── app/
+│       ├── main.py                 # FastAPI app, CORS, router registration
+│       ├── config.py               # pydantic-settings config from env vars
+│       │
+│       ├── api/
+│       │   ├── dependencies.py     # JWT auth, API key verification
+│       │   └── routes/
+│       │       ├── auth.py         # Login
+│       │       ├── users.py        # User CRUD
+│       │       ├── learning.py     # Learning session management
+│       │       ├── quiz.py         # MCQ + descriptive
+│       │       ├── features.py     # MCT + other features
+│       │       ├── feynman.py      # Feynman Engine (5 layers)
+│       │       ├── story_learning.py # Story Learning
+│       │       ├── sessions.py     # Session history
+│       │       └── admin.py        # Admin panel
+│       │
+│       ├── services/
+│       │   ├── provider_factory.py  # Single config point for all providers
+│       │   ├── feynman_service.py   # Feynman Engine AI logic
+│       │   ├── story_service.py     # Story Learning AI logic
+│       │   ├── content_generator.py
+│       │   ├── question_generator.py
+│       │   ├── answer_evaluator.py
+│       │   ├── scoring_service.py
+│       │   └── ai_providers/        # digitalocean · gemini · openai · anthropic
+│       │
+│       ├── models/                  # Pydantic models
+│       │   ├── user.py
+│       │   ├── session.py
+│       │   ├── quiz.py
+│       │   └── feynman_models.py    # Feynman layer models + enums
+│       │
+│       ├── database/
+│       │   ├── csv_handler.py       # Generic CRUD on CSV files
+│       │   ├── feynman_db.py        # Feynman session/conversation persistence
+│       │   └── file_handler.py      # Media file I/O
+│       │
+│       └── utils/
+│           ├── languages.py         # 11-language constants + prompt injection
+│           ├── rate_limiter.py      # Rate limiting
+│           └── error_handler.py
+│
+├── frontend/
+│   ├── index.html
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tailwind.config.js
+│   │
+│   └── src/
+│       ├── App.tsx                  # Routes + layout
+│       ├── pages/
+│       │   ├── DashboardPage.tsx
+│       │   ├── LearningPage.tsx
+│       │   ├── FeynmanEnginePage.tsx
+│       │   ├── StoryLearningPage.tsx
+│       │   ├── MistakeAutopsyPage.tsx
+│       │   └── ...
+│       │
+│       ├── services/
+│       │   └── api.ts               # Axios instance + all API functions
+│       ├── contexts/
+│       │   └── LanguageContext.tsx   # Global language selector
+│       ├── store/
+│       │   └── authStore.ts          # Zustand auth state
+│       └── types/
+│           └── index.ts              # All TypeScript interfaces
+│
+└── data/
+    ├── csv/                          # All CSV database files
+    └── media/                        # Generated images, audio
 ```
 
 ---
 
-## 🙏 Acknowledgments
+## 🔑 Environment Variables
 
-Built with ❤️ using:
-- [Google Gemini](https://deepmind.google/technologies/gemini/) - AI backbone
-- [FastAPI](https://fastapi.tiangolo.com/) - Backend framework
-- [React](https://react.dev/) - Frontend framework
-- [Tailwind CSS](https://tailwindcss.com/) - Styling
-- [Google Cloud Platform](https://cloud.google.com/) - Voice services
+Full `backend/.env` reference:
+
+```env
+# ── Application ───────────────────────────────────────────────
+APP_NAME=FunLearn
+APP_ENV=development
+DEBUG=true
+SECRET_KEY=your_secret_key_here
+
+# ── Server ────────────────────────────────────────────────────
+BACKEND_HOST=0.0.0.0
+BACKEND_PORT=8000
+FRONTEND_URL=http://localhost:5173
+
+# ── Provider Selection ────────────────────────────────────────
+AI_PROVIDER=digitalocean
+IMAGE_PROVIDER=none
+VOICE_TTS_PROVIDER=none
+VOICE_STT_PROVIDER=none
+
+# ── DigitalOcean Gradient AI ──────────────────────────────────
+GRADIENT_API_KEY=your_gradient_api_key_here
+GRADIENT_BASE_URL=https://inference.do-ai.run/v1
+GRADIENT_MODEL=meta-llama/Meta-Llama-3.3-70B-Instruct
+RITTY_AGENT_UUID=your_ritty_agent_uuid_from_terraform
+
+# ── Data Storage ───────────────────────────────────────────────
+DATA_DIR=./data
+CSV_DIR=./data/csv
+MEDIA_DIR=./data/media
+
+# ── Security ──────────────────────────────────────────────────
+APP_API_KEY=kd_dreaming007
+JWT_EXPIRATION_HOURS=24
+```
+
+---
+
+## 🚀 Deployment
+
+### Terraform Infrastructure
+
+We provide Terraform configurations for deploying to DigitalOcean:
+
+```bash
+cd infra/
+
+# Fill in terraform.tfvars with your credentials
+terraform init
+terraform plan
+terraform apply
+```
+
+Resources created:
+- **Droplet**: Ubuntu 22.04 with FastAPI + Nginx
+- **Volume**: 5GB persistent storage for CSV data
+- **Gradient AI Agent**: Ritty persona with NCERT knowledge base
+- **Firewall**: Configured for HTTP/HTTPS/SSH access
+
+See `infra/` directory for complete infrastructure setup.
 
 ---
 
 <div align="center">
 
-**Made for Google Gemini 3 Hackathon 2026**
+**Made for DigitalOcean Gradient™ AI Hackathon**
 
-*Fun Learn — Where understanding happens by teaching, not by being taught.*
+*FunLearn — Where understanding happens by teaching, not by being taught.*
+
+*Powered by DigitalOcean Gradient™ AI — Feynman Technique for Every Student*
 
 </div>

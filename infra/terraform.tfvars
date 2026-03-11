@@ -1,0 +1,5 @@
+do_token         = "YOUR_DIGITALOCEAN_PAT_HERE"
+ssh_key_id       = "YOUR_SSH_KEY_NUMERIC_ID_HERE"
+gradient_api_key = "YOUR_GRADIENT_AI_API_KEY_HERE"
+region           = "blr1"
+droplet_size     = "s-2vcpu-4gb"

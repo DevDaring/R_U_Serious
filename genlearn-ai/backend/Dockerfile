@@ -16,21 +16,25 @@ COPY app/ ./app/
 # Copy data directories (bust cache to ensure fresh CSV files)
 ARG CACHEBUST=1
 COPY data/csv/ ./data/csv/
-COPY data/mct_images/ ./data/mct_images/
 
-# Copy avatar and character images (persistent user-created content)
-COPY data/media/avatars/ ./data/media/avatars/
-COPY data/media/characters/ ./data/media/characters/
-COPY data/media/generated_images/ ./data/media/generated_images/
-
-# Create remaining media directories (ephemeral - will reset on restart)
-RUN mkdir -p data/media/generated_videos \
+# Create all media directories
+RUN mkdir -p data/media/avatars \
+    data/media/characters \
+    data/media/generated_images \
     data/media/generated_videos \
     data/media/audio \
     data/media/uploads \
-    data/media/temp
+    data/media/temp \
+    data/mct_images
 
-# Create secrets directory (Cloud Run will use default service account)
+# Copy existing media files (avatars, characters, generated images) into the image
+# These are persisted across deploys by baking them into the Docker image
+COPY data/media/avatars/ ./data/media/avatars/
+COPY data/media/characters/ ./data/media/characters/
+COPY data/media/generated_images/ ./data/media/generated_images/
+COPY data/mct_images/ ./data/mct_images/
+
+# Create secrets directory (Cloud Run uses default service account)
 RUN mkdir -p secrets
 
 # Expose Cloud Run port

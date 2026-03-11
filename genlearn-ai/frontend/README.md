@@ -1,6 +1,6 @@
-# Fun Learn Frontend
+# R U Serious? Frontend
 
-A modern, responsive frontend for the Fun Learn adaptive learning system built with React, TypeScript, Vite, and Tailwind CSS.
+A modern, responsive frontend for the R U Serious? adaptive learning system built with React, TypeScript, Vite, and Tailwind CSS.
 
 ## Features
 
@@ -147,4 +147,4 @@ For development/testing:
 
 ## License
 
-This project is part of the Fun Learn prototype system.
+This project is part of the R U Serious? prototype system.

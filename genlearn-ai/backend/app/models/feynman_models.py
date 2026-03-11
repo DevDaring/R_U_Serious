@@ -1,6 +1,6 @@
 """
 Pydantic models for Feynman Engine feature
-Fun Learn Application
+R U Serious? Application
 """
 
 from pydantic import BaseModel, Field

@@ -1,6 +1,6 @@
 """
 FastAPI Router for Feynman Engine endpoints
-Fun Learn Application
+R U Serious? Application
 """
 
 import json
@@ -586,6 +586,7 @@ async def submit_analogy(request: AnalogySubmitRequest):
     # ========== SPACED VISUAL ANALOGY GENERATION ==========
     # Intervals: 0, 1, 2, 3... (generate after N more interactions since last image)
     analogy_image_url = None
+    analogy_image_file_url = None
     
     # Get current tracking values from session
     analogy_image_count = int(session.get('analogy_image_count', 0))
@@ -618,16 +619,23 @@ No text in image, just visual elements."""
                 style="cartoon"
             )
             
-            # Return base64 inline for immediate display (Cloud Run ephemeral storage)
+            # Save to disk and get URL for persistent history
             import base64
-            analogy_image_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
-            analogy_image_url = analogy_image_base64
-            
-            # Also try to save to disk for history
             image_filename = f"analogy_{generate_unique_id('AIM')}.png"
             success, image_path = file_handler.save_file(image_bytes, image_filename, "generated_images")
-            if not success:
-                logger.warning("Failed to save analogy image to disk")
+            
+            # Build base64 for immediate display in current session
+            analogy_image_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+            
+            if success:
+                # Use file URL for CSV storage (base64 corrupts CSV parsing)
+                analogy_image_file_url = file_handler.get_file_url(image_path)
+            else:
+                logger.warning("Failed to save analogy image to disk, using base64 fallback")
+                analogy_image_file_url = analogy_image_base64
+            
+            # Return base64 to frontend for immediate display
+            analogy_image_url = analogy_image_base64
             
             # Update tracking - reset counter and increment image count
             feynman_db.update_session(request.session_id, {
@@ -663,7 +671,7 @@ No text in image, just visual elements."""
         layer=4,
         role="assistant",
         message=feedback_msg,
-        image_url=analogy_image_url  # Store image URL in history for persistence
+        image_url=analogy_image_file_url if analogy_image_url else None  # Store file URL (not base64) for history
     )
     
     # Update analogy score

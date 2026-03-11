@@ -1,6 +1,6 @@
-# Fun Learn - Backend
+# R U Serious? - Backend
 
-Production-ready FastAPI backend for the Fun Learn adaptive learning system.
+Production-ready FastAPI backend for the R U Serious? adaptive learning system.
 
 ## Features
 
@@ -334,7 +334,7 @@ cat .env | grep API_KEY
 
 ## License
 
-This project is part of the Fun Learn prototype system.
+This project is part of the R U Serious? prototype system.
 
 ## Support
 

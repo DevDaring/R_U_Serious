@@ -382,7 +382,7 @@ for name, info in status.items():
 
 **Expected Startup Output:**
 ```
-🚀 Starting Fun Learn...
+🚀 Starting R U Serious?...
 📦 AI Provider: gemini
 🖼️  Image Provider: gemini
 Checking provider health...
@@ -390,7 +390,7 @@ Checking provider health...
   ✅ image: GeminiImagenProvider - healthy
   ✅ tts: GCPTTSProvider - healthy
   ✅ stt: GCPSTTProvider - healthy
-✨ Fun Learn is ready!
+✨ R U Serious? is ready!
 ```
 
 ### Health Endpoint

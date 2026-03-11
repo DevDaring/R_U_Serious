@@ -1,8 +1,8 @@
 #!/bin/bash
-# Fun Learn Backend - Quick Start Script for Unix/Linux/macOS
+# R U Serious? Backend - Quick Start Script for Unix/Linux/macOS
 
 echo "============================================================"
-echo "Fun Learn Backend - Quick Start"
+echo "R U Serious? Backend - Quick Start"
 echo "============================================================"
 echo ""
 
@@ -45,7 +45,7 @@ fi
 # Start server
 echo ""
 echo "============================================================"
-echo "Starting Fun Learn Backend Server..."
+echo "Starting R U Serious? Backend Server..."
 echo "============================================================"
 echo ""
 python run.py --reload

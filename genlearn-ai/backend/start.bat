@@ -1,8 +1,8 @@
 @echo off
-REM Fun Learn Backend - Quick Start Script for Windows
+REM R U Serious? Backend - Quick Start Script for Windows
 
 echo ============================================================
-echo Fun Learn Backend - Quick Start
+echo R U Serious? Backend - Quick Start
 echo ============================================================
 echo.
 
@@ -46,7 +46,7 @@ if not exist ".env" (
 REM Start server
 echo.
 echo ============================================================
-echo Starting Fun Learn Backend Server...
+echo Starting R U Serious? Backend Server...
 echo ============================================================
 echo.
 python run.py --reload
