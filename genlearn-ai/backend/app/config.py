@@ -68,7 +68,7 @@ class Settings(BaseSettings):
     # DigitalOcean Gradient AI
     GRADIENT_API_KEY: str = os.getenv("GRADIENT_API_KEY", "")
     GRADIENT_BASE_URL: str = os.getenv("GRADIENT_BASE_URL", "https://inference.do-ai.run/v1")
-    GRADIENT_MODEL: str = os.getenv("GRADIENT_MODEL", "meta-llama/Meta-Llama-3.3-70B-Instruct")
+    GRADIENT_MODEL: str = os.getenv("GRADIENT_MODEL", "llama3.3-70b-instruct")
     RITTY_AGENT_UUID: str = os.getenv("RITTY_AGENT_UUID", "")
 
     # Legacy FIBO (kept for image generation if needed in future)
