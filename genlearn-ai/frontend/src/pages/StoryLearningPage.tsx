@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
 import { AIIllustration, IllustrationData } from "../components/common/AIIllustration";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "";
+
 const StoryLearning: React.FC = () => {
   const { selectedLanguage: language } = useLanguage();
   const [concept, setConcept] = useState("");
@@ -11,6 +13,8 @@ const StoryLearning: React.FC = () => {
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
   const [illustration, setIllustration] = useState<IllustrationData | null>(null);
+  const [storyImageUrl, setStoryImageUrl] = useState<string | null>(null);
+  const [feedbackImageUrl, setFeedbackImageUrl] = useState<string | null>(null);
 
   const generateStory = async () => {
     setLoading(true);
@@ -26,6 +30,8 @@ const StoryLearning: React.FC = () => {
       setFeedback("");
       setStudentAnswer("");
       setIllustration(data.illustration || null);
+      setStoryImageUrl(data.image_url || null);
+      setFeedbackImageUrl(null);
     } catch (e) {
       console.error(e);
       alert("Failed to generate story. Please try again.");
@@ -44,6 +50,7 @@ const StoryLearning: React.FC = () => {
       });
       const data = await res.json();
       setFeedback(data.response);
+      setFeedbackImageUrl(data.image_url || null);
     } catch (e) {
       console.error(e);
       alert("Failed to submit answer. Please try again.");
@@ -90,6 +97,17 @@ const StoryLearning: React.FC = () => {
           {illustration && (
             <AIIllustration data={illustration} />
           )}
+
+          {storyImageUrl && (
+            <div className="flex justify-center">
+              <img
+                src={storyImageUrl.startsWith('data:') ? storyImageUrl : `${BACKEND_URL}${storyImageUrl}`}
+                alt="Story illustration"
+                className="rounded-xl border-2 border-amber-200 shadow-md max-h-64 object-contain"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+              />
+            </div>
+          )}
           
           <div className="bg-amber-50/80 border-l-4 border-amber-400 p-5 rounded-2xl backdrop-blur-sm">
             <h2 className="text-sm font-semibold text-amber-800 mb-2">📚 The Story</h2>
@@ -123,11 +141,21 @@ const StoryLearning: React.FC = () => {
             <div className="bg-green-50/80 border border-green-200/50 p-4 rounded-2xl backdrop-blur-sm">
               <h3 className="text-sm font-semibold text-green-800 mb-2">💡 Feedback</h3>
               <p className="text-gray-800 whitespace-pre-wrap">{feedback}</p>
+              {feedbackImageUrl && (
+                <div className="flex justify-center mt-3">
+                  <img
+                    src={feedbackImageUrl.startsWith('data:') ? feedbackImageUrl : `${BACKEND_URL}${feedbackImageUrl}`}
+                    alt="Feedback illustration"
+                    className="rounded-xl border-2 border-green-200 shadow-md max-h-64 object-contain"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
             </div>
           )}
 
           <button
-            onClick={() => { setStory(""); setFollowUp(""); setFeedback(""); setConcept(""); setIllustration(null); }}
+            onClick={() => { setStory(""); setFollowUp(""); setFeedback(""); setConcept(""); setIllustration(null); setStoryImageUrl(null); setFeedbackImageUrl(null); }}
             className="text-blue-600 hover:text-blue-700 underline text-sm"
           >
             Try another concept

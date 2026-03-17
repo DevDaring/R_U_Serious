@@ -3,6 +3,7 @@ FastAPI Router for Feynman Engine endpoints
 R U Serious? Application
 """
 
+import base64
 import json
 import logging
 from datetime import datetime
@@ -27,6 +28,25 @@ from app.utils.helpers import generate_unique_id
 logger = logging.getLogger(__name__)
 content_generator = ContentGenerator()
 file_handler = FileHandler()
+
+
+async def _generate_context_image(topic: str, context: str, session_id: str, style: str = "cartoon") -> Optional[str]:
+    """Generate an educational image for any Feynman layer response.
+    Returns base64 data URL or None on failure."""
+    try:
+        prompt = f"""Educational illustration about {topic}.
+Context: {context[:300]}
+
+Create a clear, colorful educational diagram or illustration that visually explains this concept.
+Style: Clean, vibrant, child-friendly educational illustration. No text in image."""
+
+        image_bytes = await content_generator.generate_image(prompt=prompt, style=style)
+        image_filename = f"feynman_{generate_unique_id('FIM')}.png"
+        file_handler.save_file(image_bytes, image_filename, "generated_images")
+        return f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+    except Exception as e:
+        logger.warning(f"Image generation failed for session {session_id}: {e}")
+        return None
 
 
 router = APIRouter(prefix="/feynman", tags=["Feynman Engine"])
@@ -326,6 +346,15 @@ async def teach_ritty(request: TeachMessageRequest):
     if illustration:
         response_dict["illustration"] = illustration
     
+    # Generate actual image for the response
+    image_url = await _generate_context_image(
+        topic=session['topic'],
+        context=f"{request.message} - {response.response}",
+        session_id=request.session_id
+    )
+    if image_url:
+        response_dict["image_url"] = image_url
+    
     return response_dict
 
 
@@ -431,6 +460,15 @@ async def submit_compression(request: CompressionSubmitRequest):
     feynman_db.update_session(request.session_id, {
         'compression_score': evaluation.score * 20  # Convert to 0-100
     })
+    
+    # Generate image for the compressed concept
+    image_url = await _generate_context_image(
+        topic=session['topic'],
+        context=f"Compressed explanation: {request.explanation}",
+        session_id=request.session_id
+    )
+    if image_url:
+        evaluation.image_url = image_url
     
     return evaluation
 
@@ -547,6 +585,15 @@ async def respond_why_spiral(request: WhySpiralResponseRequest):
         'why_depth_reached': response.current_depth
     })
     
+    # Generate image for the why spiral context
+    image_url = await _generate_context_image(
+        topic=session['topic'],
+        context=f"Why question: {response.next_question or response.boundary_topic or request.response}",
+        session_id=request.session_id
+    )
+    if image_url:
+        response.image_url = image_url
+    
     return response
 
 
@@ -614,25 +661,12 @@ async def submit_analogy(request: AnalogySubmitRequest):
         previous_feedback=previous_feedback
     )
     
-    # ========== SPACED VISUAL ANALOGY GENERATION ==========
-    # Intervals: 0, 1, 2, 3... (generate after N more interactions since last image)
+    # ========== ALWAYS GENERATE ANALOGY IMAGE ==========
     analogy_image_url = None
     analogy_image_file_url = None
     
-    # Get current tracking values from session
-    analogy_image_count = int(session.get('analogy_image_count', 0) or 0)
-    interactions_since_image = int(session.get('interactions_since_image', 0) or 0)
-    
-    # Calculate next trigger interval (increases by 1 each time)
-    next_trigger_interval = analogy_image_count  # 0, 1, 2, 3...
-    
-    # Check if we should generate an image
-    should_generate_image = (interactions_since_image >= next_trigger_interval)
-    
-    if should_generate_image:
-        try:
-            # Create a visual prompt from the analogy
-            visual_prompt = f"""Educational illustration showing the analogy:
+    try:
+        visual_prompt = f"""Educational illustration showing the analogy:
 "{request.analogy_text}"
 
 Create a split-scene image:
@@ -644,49 +678,26 @@ Style: Clean, colorful educational illustration, labeled diagram style,
 easy to understand, professional educational material quality.
 No text in image, just visual elements."""
 
-            # Generate the image
-            image_bytes = await content_generator.generate_image(
-                prompt=visual_prompt,
-                style="cartoon"
-            )
-            
-            # Save to disk and get URL for persistent history
-            import base64
-            image_filename = f"analogy_{generate_unique_id('AIM')}.png"
-            success, image_path = file_handler.save_file(image_bytes, image_filename, "generated_images")
-            
-            # Build base64 for immediate display in current session
-            analogy_image_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
-            
-            if success:
-                # Use file URL for CSV storage (base64 corrupts CSV parsing)
-                analogy_image_file_url = file_handler.get_file_url(image_path)
-            else:
-                logger.warning("Failed to save analogy image to disk, using base64 fallback")
-                analogy_image_file_url = analogy_image_base64
-            
-            # Return base64 to frontend for immediate display
-            analogy_image_url = analogy_image_base64
-            
-            # Update tracking - reset counter and increment image count
-            feynman_db.update_session(request.session_id, {
-                'analogy_image_count': analogy_image_count + 1,
-                'interactions_since_image': 0
-            })
-            
-            logger.info(f"Generated analogy image #{analogy_image_count + 1} for session {request.session_id}")
-            
-        except Exception as img_err:
-            logger.warning(f"Analogy image generation failed: {img_err}")
-            # Still increment interaction counter even if image fails
-            feynman_db.update_session(request.session_id, {
-                'interactions_since_image': interactions_since_image + 1
-            })
-    else:
-        # Increment interaction counter
-        feynman_db.update_session(request.session_id, {
-            'interactions_since_image': interactions_since_image + 1
-        })
+        image_bytes = await content_generator.generate_image(
+            prompt=visual_prompt,
+            style="cartoon"
+        )
+        
+        image_filename = f"analogy_{generate_unique_id('AIM')}.png"
+        success, image_path = file_handler.save_file(image_bytes, image_filename, "generated_images")
+        
+        analogy_image_base64 = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+        
+        if success:
+            analogy_image_file_url = file_handler.get_file_url(image_path)
+        else:
+            analogy_image_file_url = analogy_image_base64
+        
+        analogy_image_url = analogy_image_base64
+        logger.info(f"Generated analogy image for session {request.session_id}")
+        
+    except Exception as img_err:
+        logger.warning(f"Analogy image generation failed: {img_err}")
     
     # Save evaluation
     feedback_msg = f"Score: {evaluation.score}/5\n"
@@ -809,6 +820,15 @@ async def explain_to_lecture_hall(request: LectureHallMessageRequest):
         role="assistant",
         message="\n\n".join(combined_responses)
     )
+    
+    # Generate image for the lecture hall explanation
+    image_url = await _generate_context_image(
+        topic=session['topic'],
+        context=f"Lecture explanation: {request.message}",
+        session_id=request.session_id
+    )
+    if image_url:
+        response.image_url = image_url
     
     return response
 

@@ -258,53 +258,49 @@ async def mct_chat(
         except Exception as ill_err:
             logger.warning(f"MCT illustration generation skipped: {ill_err}")
 
-        # Spaced Image Generation: Generate at turns 1, 2, 4, 7, 11, 16, 22...
-        # Pattern: 1, +1=2, +2=4, +3=7, +4=11, +5=16, +6=22...
-        image_turns = [1, 2, 4, 7, 11, 16, 22, 29, 37, 46]  # Pre-calculated spaced turns
+        # Always generate an educational image with every MCT response
+        try:
+            image_provider = ProviderFactory.get_image_provider()
 
-        if request.turn_number in image_turns:
-            try:
-                image_provider = ProviderFactory.get_image_provider()
+            # Create educational image prompts based on topic and phase
+            image_prompts = [
+                f"Educational diagram showing {request.topic} concept, clean and simple, colorful cartoon style for students, no text labels",
+                f"Visual metaphor explaining {request.topic} using everyday objects, friendly cartoon illustration, educational",
+                f"Step-by-step visual showing how {request.topic} works, cartoon style, easy to understand, for learners",
+                f"Comparison diagram showing correct vs incorrect understanding of {request.topic}, cartoon style, educational",
+                f"Fun illustrated example of {request.topic} in real life, cartoon style, engaging for students",
+            ]
 
-                # Create educational image prompts based on topic and phase
-                image_prompts = [
-                    f"Educational diagram showing {request.topic} concept, clean and simple, colorful cartoon style for students, no text labels",
-                    f"Visual metaphor explaining {request.topic} using everyday objects, friendly cartoon illustration, educational",
-                    f"Step-by-step visual showing how {request.topic} works, cartoon style, easy to understand, for learners",
-                    f"Comparison diagram showing correct vs incorrect understanding of {request.topic}, cartoon style, educational",
-                    f"Fun illustrated example of {request.topic} in real life, cartoon style, engaging for students",
-                ]
+            # Select prompt based on turn number
+            turn_index = (request.turn_number - 1) % len(image_prompts)
+            prompt = image_prompts[turn_index]
 
-                # Select prompt based on turn index
-                turn_index = image_turns.index(request.turn_number) % len(image_prompts)
-                prompt = image_prompts[turn_index]
+            image_request = ImageGenerationRequest(
+                prompt=prompt,
+                style="cartoon",
+                width=512,
+                height=512
+            )
 
-                image_request = ImageGenerationRequest(
-                    prompt=prompt,
-                    style="cartoon",
-                    width=512,
-                    height=512
-                )
+            image_bytes = await image_provider.generate_image(image_request)
 
-                image_bytes = await image_provider.generate_image(image_request)
+            # Convert to base64 for frontend display
+            image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+            response["image"] = f"data:image/png;base64,{image_base64}"
 
-                # Convert to base64 for frontend display
-                image_base64 = base64.b64encode(image_bytes).decode('utf-8')
-                response["image"] = f"data:image/png;base64,{image_base64}"
+            # Save image to disk for history loading
+            image_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data', 'mct_images')
+            os.makedirs(image_dir, exist_ok=True)
+            image_filename = f"{session_id}_turn{request.turn_number}.png"
+            image_path = os.path.join(image_dir, image_filename)
+            with open(image_path, 'wb') as f:
+                f.write(image_bytes)
+            response["image_path"] = f"/data/mct_images/{image_filename}"
 
-                # Save image to disk for history loading
-                image_dir = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data', 'mct_images')
-                os.makedirs(image_dir, exist_ok=True)
-                image_filename = f"{session_id}_turn{request.turn_number}.png"
-                image_path = os.path.join(image_dir, image_filename)
-                with open(image_path, 'wb') as f:
-                    f.write(image_bytes)
-                response["image_path"] = f"/data/mct_images/{image_filename}"
-
-                logger.info(f"Generated and saved spaced image for MCT turn {request.turn_number}")
-            except Exception as img_err:
-                logger.warning(f"Failed to generate MCT image: {img_err}")
-                # Don't fail the whole response if image fails
+            logger.info(f"Generated and saved image for MCT turn {request.turn_number}")
+        except Exception as img_err:
+            logger.warning(f"Failed to generate MCT image: {img_err}")
+            # Don't fail the whole response if image fails
 
         # Save conversation to history
         try:

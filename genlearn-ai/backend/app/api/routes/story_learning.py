@@ -6,13 +6,39 @@ and conducting Socratic discussions.
 FunLearn Application - Powered by DigitalOcean Gradient AI
 """
 
+import base64
+import logging
 from fastapi import APIRouter, HTTPException, Depends
 from pydantic import BaseModel, Field
 from typing import Optional
 
 from app.services.story_service import story_service
 from app.services.illustration_service import illustration_service
+from app.services.content_generator import ContentGenerator
+from app.database.file_handler import FileHandler
+from app.utils.helpers import generate_unique_id
 from app.api.dependencies import get_current_user
+
+logger = logging.getLogger(__name__)
+content_generator = ContentGenerator()
+file_handler = FileHandler()
+
+
+async def _generate_story_image(concept: str, context: str, style: str = "cartoon") -> Optional[str]:
+    """Generate an educational image for a story response. Returns base64 data URL or None."""
+    try:
+        prompt = f"""Educational illustration about {concept}.
+Context: {context[:300]}
+
+Create a clear, colorful educational diagram or illustration that visually explains this concept.
+Style: Clean, vibrant, child-friendly educational illustration. No text in image."""
+        image_bytes = await content_generator.generate_image(prompt=prompt, style=style)
+        image_filename = f"story_{generate_unique_id('SIM')}.png"
+        file_handler.save_file(image_bytes, image_filename, "generated_images")
+        return f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+    except Exception as e:
+        logger.warning(f"Story image generation failed for concept '{concept}': {e}")
+        return None
 
 
 router = APIRouter(prefix="/api/story", tags=["story-learning"])
@@ -76,6 +102,14 @@ async def generate_story(request: StoryRequest):
         except Exception:
             pass
         
+        # Generate actual image for the story
+        image_url = await _generate_story_image(
+            concept=request.concept,
+            context=result.get("story", request.concept)
+        )
+        if image_url:
+            result["image_url"] = image_url
+        
         return result
     except Exception as e:
         raise HTTPException(
@@ -99,7 +133,18 @@ async def discuss_story(request: StoryDiscussionRequest):
             student_answer=request.student_answer,
             language=request.language
         )
-        return {"response": response}
+        
+        # Generate image for the discussion response
+        image_url = await _generate_story_image(
+            concept=request.concept,
+            context=f"{request.student_answer} - {response[:200] if isinstance(response, str) else str(response)[:200]}"
+        )
+        
+        result = {"response": response}
+        if image_url:
+            result["image_url"] = image_url
+        
+        return result
     except Exception as e:
         raise HTTPException(
             status_code=500,

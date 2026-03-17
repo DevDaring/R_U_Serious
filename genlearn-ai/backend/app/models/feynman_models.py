@@ -130,6 +130,7 @@ class CompressionEvaluation(BaseModel):
     suggestion: Optional[str] = None
     passed: bool
     next_word_limit: Optional[int] = Field(None, description="Next round limit if passed")
+    image_url: Optional[str] = Field(None, description="Generated image for the compression concept")
 
 
 class WhySpiralResponse(BaseModel):
@@ -141,6 +142,7 @@ class WhySpiralResponse(BaseModel):
     boundary_topic: Optional[str] = Field(None)
     exploration_offer: Optional[str] = Field(None, description="What lies beyond + invitation")
     can_continue: bool = Field(default=True)
+    image_url: Optional[str] = Field(None, description="Generated image illustrating the concept")
 
 
 class AnalogyEvaluation(BaseModel):
@@ -173,6 +175,7 @@ class LectureHallResponse(BaseModel):
     all_satisfied: bool
     dominant_issue: Optional[str] = Field(None, description="Main problem if not all satisfied")
     suggestion: Optional[str] = None
+    image_url: Optional[str] = Field(None, description="Generated image illustrating the concept")
 
 
 class SessionResponse(BaseModel):

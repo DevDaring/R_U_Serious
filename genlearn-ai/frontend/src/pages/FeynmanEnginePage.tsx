@@ -20,6 +20,7 @@ interface ChatMessage {
     confusion_level?: number;
     curiosity_level?: number;
     illustration?: IllustrationData;
+    image_url?: string;
 }
 
 interface RittyResponse {
@@ -147,7 +148,7 @@ export const FeynmanEnginePage: React.FC = () => {
     // Layer 2: Compression state
     const [currentWordLimit, setCurrentWordLimit] = useState(100);
     const [compressionInput, setCompressionInput] = useState('');
-    const [compressionHistory, setCompressionHistory] = useState<{ limit: number; text: string; score: number; feedback: string; suggestion?: string }[]>([]);
+    const [compressionHistory, setCompressionHistory] = useState<{ limit: number; text: string; score: number; feedback: string; suggestion?: string; image_url?: string }[]>([]);
 
     // Layer 3: Why Spiral state
     const [whySpiralMessages, setWhySpiralMessages] = useState<ChatMessage[]>([]);
@@ -406,7 +407,8 @@ export const FeynmanEnginePage: React.FC = () => {
                 avatar_state: data.avatar_state,
                 confusion_level: data.confusion_level,
                 curiosity_level: data.curiosity_level,
-                illustration: (data as any).illustration || undefined
+                illustration: (data as any).illustration || undefined,
+                image_url: (data as any).image_url || undefined
             }]);
 
             setAvatarState(data.avatar_state);
@@ -444,7 +446,8 @@ export const FeynmanEnginePage: React.FC = () => {
                 text: compressionInput,
                 score: data.score,
                 feedback: data.feedback,
-                suggestion: data.suggestion
+                suggestion: data.suggestion,
+                image_url: (data as any).image_url
             }]);
 
             if (data.passed && data.next_word_limit) {
@@ -481,12 +484,14 @@ export const FeynmanEnginePage: React.FC = () => {
                 setBoundaryFound(true);
                 setWhySpiralMessages(prev => [...prev, {
                     role: 'assistant',
-                    content: `🎯 **Knowledge Boundary Found!**\n\n${data.boundary_topic ? `Topic: ${data.boundary_topic}` : ''}\n\n${data.exploration_offer || 'This is the edge of your current understanding. Great job exploring!'}`
+                    content: `🎯 **Knowledge Boundary Found!**\n\n${data.boundary_topic ? `Topic: ${data.boundary_topic}` : ''}\n\n${data.exploration_offer || 'This is the edge of your current understanding. Great job exploring!'}`,
+                    image_url: (data as any).image_url || undefined
                 }]);
             } else if (data.next_question) {
                 setWhySpiralMessages(prev => [...prev, {
                     role: 'assistant',
-                    content: data.next_question || ''
+                    content: data.next_question || '',
+                    image_url: (data as any).image_url || undefined
                 }]);
             }
         } catch (err) {
@@ -566,7 +571,7 @@ export const FeynmanEnginePage: React.FC = () => {
                 responseContent += `\n\n💡 **Suggestion:** ${data.suggestion}`;
             }
 
-            setLectureMessages(prev => [...prev, { role: 'assistant', content: responseContent }]);
+            setLectureMessages(prev => [...prev, { role: 'assistant', content: responseContent, image_url: (data as any).image_url || undefined }]);
         } catch (err) {
             console.error('Lecture explain failed:', err);
         } finally {
@@ -791,6 +796,11 @@ export const FeynmanEnginePage: React.FC = () => {
                                                     {msg.illustration && (
                                                         <AIIllustration data={msg.illustration} />
                                                     )}
+                                                    {msg.image_url && (
+                                                        <div className="mt-3 rounded-lg overflow-hidden border border-amber-200">
+                                                            <img src={msg.image_url.startsWith('data:') ? msg.image_url : `${BACKEND_URL}${msg.image_url}`} alt="Educational illustration" className="w-full h-auto" onError={(e) => (e.target as HTMLImageElement).style.display = 'none'} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -854,6 +864,11 @@ export const FeynmanEnginePage: React.FC = () => {
                                                         <p className="text-xs text-blue-600 mt-1">💡 {h.suggestion}</p>
                                                     )}
                                                 </div>
+                                                {h.image_url && (
+                                                    <div className="mt-2 rounded-lg overflow-hidden border border-blue-200">
+                                                        <img src={h.image_url.startsWith('data:') ? h.image_url : `${BACKEND_URL}${h.image_url}`} alt="Concept illustration" className="w-full h-auto" onError={(e) => (e.target as HTMLImageElement).style.display = 'none'} />
+                                                    </div>
+                                                )}
                                             </div>
                                         ))}
 
@@ -896,6 +911,11 @@ export const FeynmanEnginePage: React.FC = () => {
                                                     : 'bg-purple-50 text-gray-800 border border-purple-200'
                                                     }`}>
                                                     <div dangerouslySetInnerHTML={{ __html: formatChatContent(msg.content) }} />
+                                                    {msg.image_url && (
+                                                        <div className="mt-3 rounded-lg overflow-hidden border border-purple-200">
+                                                            <img src={msg.image_url.startsWith('data:') ? msg.image_url : `${BACKEND_URL}${msg.image_url}`} alt="Educational illustration" className="w-full h-auto" onError={(e) => (e.target as HTMLImageElement).style.display = 'none'} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
@@ -1012,6 +1032,11 @@ export const FeynmanEnginePage: React.FC = () => {
                                                     : 'bg-gray-50 text-gray-800 border'
                                                     }`}>
                                                     <div dangerouslySetInnerHTML={{ __html: formatChatContent(msg.content) }} />
+                                                    {msg.image_url && (
+                                                        <div className="mt-3 rounded-lg overflow-hidden border border-gray-200">
+                                                            <img src={msg.image_url.startsWith('data:') ? msg.image_url : `${BACKEND_URL}${msg.image_url}`} alt="Educational illustration" className="w-full h-auto" onError={(e) => (e.target as HTMLImageElement).style.display = 'none'} />
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}
