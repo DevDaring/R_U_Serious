@@ -19,7 +19,7 @@ import { RevisionPage } from './pages/RevisionPage';
 // Core Features Pages
 import { MistakeAutopsyPage } from './pages/MistakeAutopsyPage';
 import { FeynmanEnginePage } from './pages/FeynmanEnginePage';
-import { StoryLearningPage } from './pages/StoryLearningPage';
+import StoryLearningPage from './pages/StoryLearningPage';
 
 // Admin Pages
 import { AdminHomePage } from './pages/admin/AdminHomePage';

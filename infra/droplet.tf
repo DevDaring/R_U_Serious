@@ -6,52 +6,54 @@ resource "digitalocean_droplet" "funlearn_app" {
   ssh_keys = [var.ssh_key_id]
 
   user_data = <<-EOF
-    #!/bin/bash
-    set -e
-    exec > /var/log/user-data.log 2>&1
+#!/bin/bash
+set -e
+exec > /var/log/user-data.log 2>&1
 
-    # Wait for volume to be attached
-    for i in $(seq 1 30); do
-      [ -e /dev/disk/by-id/scsi-0DO_Volume_funlearn-data ] && break
-      echo "Waiting for volume... attempt $i"
-      sleep 5
-    done
+# Wait for volume to be attached
+for i in $(seq 1 30); do
+  [ -e /dev/disk/by-id/scsi-0DO_Volume_funlearn-data ] && break
+  echo "Waiting for volume... attempt $i"
+  sleep 5
+done
 
-    # Mount the volume for persistent CSV storage
-    mkdir -p /mnt/funlearn-data
-    mount -o discard,defaults /dev/disk/by-id/scsi-0DO_Volume_funlearn-data /mnt/funlearn-data || true
-    grep -q funlearn-data /etc/fstab || echo "/dev/disk/by-id/scsi-0DO_Volume_funlearn-data /mnt/funlearn-data ext4 defaults,nofail,discard 0 2" >> /etc/fstab
+# Mount the volume for persistent CSV storage
+mkdir -p /mnt/funlearn-data
+mount -o discard,defaults /dev/disk/by-id/scsi-0DO_Volume_funlearn-data /mnt/funlearn-data || true
+grep -q funlearn-data /etc/fstab || echo "/dev/disk/by-id/scsi-0DO_Volume_funlearn-data /mnt/funlearn-data ext4 defaults,nofail,discard 0 2" >> /etc/fstab
 
-    # Create CSV data directory on volume
-    mkdir -p /mnt/funlearn-data/csv
-    chmod 755 /mnt/funlearn-data/csv
+# Create CSV data directory on volume
+mkdir -p /mnt/funlearn-data/csv
+chmod 755 /mnt/funlearn-data/csv
 
-    # System updates and install dependencies
-    apt-get update -y
-    apt-get install -y python3.11 python3-pip nodejs npm nginx git
+# System updates and install dependencies
+apt-get update -y
+apt-get install -y python3-pip nginx git curl
 
-    # Clone the application repo
-    git clone https://github.com/DevDaring/R_U_Serious.git /opt/funlearn-repo
+# Install Node.js 20 from NodeSource
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+apt-get install -y nodejs
 
-    # Set app root (code is inside genlearn-ai/ subdirectory)
-    APP_ROOT=/opt/funlearn-repo/genlearn-ai
+# Clone the application repo
+git clone https://github.com/DevDaring/R_U_Serious.git /opt/funlearn-repo
 
-    # Backend setup — install globally (no venv)
-    cd $APP_ROOT/backend
-    pip install --break-system-packages -r requirements.txt
+APP_ROOT=/opt/funlearn-repo/genlearn-ai
 
-    # Generate sample CSV data
-    python3.11 create_csv_data.py
-    # Copy generated CSVs to the persistent volume (if volume is empty)
-    if [ -z "$(ls -A /mnt/funlearn-data/csv/ 2>/dev/null)" ]; then
-      cp $APP_ROOT/backend/data/csv/*.csv /mnt/funlearn-data/csv/
-    fi
+# Backend setup — install globally (no venv)
+cd $APP_ROOT/backend
+pip3 install -r requirements.txt
 
-    # Generate a stable secret key for JWT
-    SECRET_KEY=$(python3.11 -c "import secrets; print(secrets.token_urlsafe(32))")
+# Generate sample CSV data
+python3 create_csv_data.py
+if [ -z "$(ls -A /mnt/funlearn-data/csv/ 2>/dev/null)" ]; then
+  cp $APP_ROOT/backend/data/csv/*.csv /mnt/funlearn-data/csv/
+fi
 
-    # Write environment variables
-    cat > $APP_ROOT/backend/.env <<ENVEOF
+# Generate a stable secret key for JWT
+SECRET_KEY=$(python3 -c "import secrets; print(secrets.token_urlsafe(32))")
+
+# Write environment variables
+cat > $APP_ROOT/backend/.env <<ENVEOF
 APP_ENV=production
 SECRET_KEY=$SECRET_KEY
 AI_PROVIDER=digitalocean
@@ -59,13 +61,14 @@ GRADIENT_API_KEY=${var.gradient_api_key}
 GRADIENT_BASE_URL=https://inference.do-ai.run/v1
 GRADIENT_MODEL=meta-llama/Meta-Llama-3.3-70B-Instruct
 DATA_DIR=/mnt/funlearn-data/csv
+CSV_DIR=/mnt/funlearn-data/csv
 IMAGE_PROVIDER=none
 VOICE_TTS_PROVIDER=none
 VOICE_STT_PROVIDER=none
 ENVEOF
 
-    # Create systemd service for FastAPI backend
-    cat > /etc/systemd/system/funlearn-backend.service <<SVCEOF
+# Create systemd service for FastAPI backend
+cat > /etc/systemd/system/funlearn-backend.service <<SVCEOF
 [Unit]
 Description=FunLearn FastAPI Backend
 After=network.target
@@ -73,7 +76,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=$APP_ROOT/backend
-ExecStart=/usr/bin/python3.11 -m uvicorn app.main:app --host 0.0.0.0 --port 8000
+ExecStart=/usr/bin/python3 -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 Restart=always
 EnvironmentFile=$APP_ROOT/backend/.env
 
@@ -81,13 +84,13 @@ EnvironmentFile=$APP_ROOT/backend/.env
 WantedBy=multi-user.target
 SVCEOF
 
-    # Frontend build
-    cd $APP_ROOT/frontend
-    npm install
-    VITE_API_BASE_URL=/api npm run build
+# Frontend build
+cd $APP_ROOT/frontend
+npm install
+VITE_API_BASE_URL=/api npx vite build
 
-    # Nginx config to serve frontend and proxy backend
-    cat > /etc/nginx/sites-available/funlearn <<NGINXEOF
+# Nginx config to serve frontend and proxy backend
+cat > /etc/nginx/sites-available/funlearn <<NGINXEOF
 server {
     listen 80;
     server_name _;
@@ -112,15 +115,15 @@ server {
 }
 NGINXEOF
 
-    ln -sf /etc/nginx/sites-available/funlearn /etc/nginx/sites-enabled/
-    rm -f /etc/nginx/sites-enabled/default
-    systemctl restart nginx
+ln -sf /etc/nginx/sites-available/funlearn /etc/nginx/sites-enabled/
+rm -f /etc/nginx/sites-enabled/default
+systemctl restart nginx
 
-    # Start backend
-    systemctl daemon-reload
-    systemctl enable funlearn-backend
-    systemctl start funlearn-backend
-  EOF
+# Start backend
+systemctl daemon-reload
+systemctl enable funlearn-backend
+systemctl start funlearn-backend
+EOF
 
   tags = ["funlearn", "hackathon"]
 }

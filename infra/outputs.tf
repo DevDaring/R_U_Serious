@@ -3,14 +3,14 @@ output "droplet_ip" {
   value       = digitalocean_droplet.funlearn_app.ipv4_address
 }
 
-output "ritty_agent_uuid" {
-  description = "UUID of the Ritty Gradient AI Agent — add this to backend .env as RITTY_AGENT_UUID"
-  value       = digitalocean_gradientai_agent.ritty.uuid
+output "ritty_agent_id" {
+  description = "ID of the Ritty Gradient AI Agent"
+  value       = digitalocean_gradientai_agent.ritty.id
 }
 
-output "ncert_kb_uuid" {
-  description = "UUID of the NCERT Knowledge Base"
-  value       = digitalocean_gradientai_knowledge_base.ncert_kb.uuid
+output "ncert_kb_id" {
+  description = "ID of the NCERT Knowledge Base"
+  value       = digitalocean_gradientai_knowledge_base.ncert_kb.id
 }
 
 output "volume_id" {

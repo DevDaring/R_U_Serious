@@ -10,6 +10,11 @@
 *.tfstate.backup
 .terraform/
 .terraform.lock.hcl
+tfplan
+tf_schema.json
+schema.json
+infra/bootstrap*.sh
+infra/dump_schema*.py
 
 # Python
 __pycache__/
