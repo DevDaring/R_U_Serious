@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/common/Button';
 import { ProgressBar } from '../components/common/ProgressBar';
 import { xpForNextLevel } from '../utils/helpers';
+import { PageTransition, FadeIn, ScaleIn } from '../components/effects/PageTransition';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
@@ -11,7 +12,9 @@ export const DashboardPage: React.FC = () => {
   if (!user) return null;
 
   return (
+    <PageTransition>
     <div className="space-y-6">
+      <FadeIn>
       <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg p-8 text-white flex items-center gap-6">
         <img
           src="/assets/site-images/ritty.png"
@@ -23,41 +26,34 @@ export const DashboardPage: React.FC = () => {
           <p className="text-primary-100">Ready to continue your learning journey?</p>
         </div>
       </div>
+      </FadeIn>
 
       <div className="grid md:grid-cols-3 gap-6">
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Level</h3>
-            <span className="text-3xl font-bold text-primary-600">{user.level}</span>
-          </div>
-          <ProgressBar
-            value={user.xp_points % 500}
-            max={500}
-            label="XP Progress"
-            color="primary"
-          />
-          <p className="text-sm text-gray-600 mt-2">
-            {xpForNextLevel(user.xp_points)} XP to next level
-          </p>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Total XP</h3>
-            <span className="text-3xl font-bold text-yellow-600">{user.xp_points}</span>
-          </div>
-          <p className="text-gray-600">Keep learning to earn more XP!</p>
-        </div>
-
-        <div className="bg-white rounded-lg p-6 shadow-md">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Streak</h3>
-            <span className="text-3xl font-bold text-orange-600">{user.streak_days}</span>
-          </div>
-          <p className="text-gray-600">Days of consecutive learning</p>
-        </div>
+        {[
+          { title: 'Level', value: user.level, color: 'text-primary-600', hasProgress: true },
+          { title: 'Total XP', value: user.xp_points, color: 'text-yellow-600', subtitle: 'Keep learning to earn more XP!' },
+          { title: 'Streak', value: user.streak_days, color: 'text-orange-600', subtitle: 'Days of consecutive learning' },
+        ].map((stat, i) => (
+          <ScaleIn key={i} delay={0.1 * i}>
+            <div className="bg-white rounded-lg p-6 shadow-md">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">{stat.title}</h3>
+                <span className={`text-3xl font-bold ${stat.color}`}>{stat.value}</span>
+              </div>
+              {stat.hasProgress ? (
+                <>
+                  <ProgressBar value={user.xp_points % 500} max={500} label="XP Progress" color="primary" />
+                  <p className="text-sm text-gray-600 mt-2">{xpForNextLevel(user.xp_points)} XP to next level</p>
+                </>
+              ) : (
+                <p className="text-gray-600">{stat.subtitle}</p>
+              )}
+            </div>
+          </ScaleIn>
+        ))}
       </div>
 
+      <FadeIn delay={0.3}>
       <div className="bg-white rounded-lg p-8 shadow-md">
         <h2 className="text-2xl font-bold mb-6">Quick Actions</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -83,7 +79,9 @@ export const DashboardPage: React.FC = () => {
           </Link>
         </div>
       </div>
+      </FadeIn>
 
+      <FadeIn delay={0.4}>
       <div className="bg-white rounded-lg p-8 shadow-md">
         <h2 className="text-2xl font-bold mb-6">Recent Activity</h2>
         <div className="text-center text-gray-600 py-8">
@@ -91,6 +89,8 @@ export const DashboardPage: React.FC = () => {
           <p className="text-sm mt-2">Start a learning session to see your activity here!</p>
         </div>
       </div>
+      </FadeIn>
     </div>
+    </PageTransition>
   );
 };

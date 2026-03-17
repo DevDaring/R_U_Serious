@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../common/Button';
 import { APP_NAME } from '../../utils/constants';
+import { AmbientParticles } from '../effects/AmbientParticles';
+import { FadeIn, FloatingElement } from '../effects/PageTransition';
 
 export const LoginForm: React.FC = () => {
   const [username, setUsername] = useState('DebK');
@@ -28,15 +30,19 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl flex overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 p-4 relative overflow-hidden">
+      <AmbientParticles theme="fireflies" />
+      <FadeIn className="relative z-10 w-full max-w-4xl">
+      <div className="bg-white rounded-2xl shadow-2xl w-full flex overflow-hidden">
         {/* Left: Feynman Image */}
         <div className="hidden md:flex md:w-1/2 bg-gradient-to-b from-primary-600 to-primary-800 flex-col items-center justify-center p-8 relative">
-          <img
-            src="/assets/site-images/richard.png"
-            alt="Richard Feynman"
-            className="w-72 object-contain rounded-xl border-4 border-white/30 shadow-xl mb-6"
-          />
+          <FloatingElement>
+            <img
+              src="/assets/site-images/richard.png"
+              alt="Richard Feynman"
+              className="w-72 object-contain rounded-xl border-4 border-white/30 shadow-xl mb-6"
+            />
+          </FloatingElement>
           <h2 className="text-white text-xl font-bold text-center">"If you can't explain it simply, you don't understand it well enough."</h2>
           <p className="text-primary-200 mt-3 text-sm font-medium">— Richard Feynman</p>
           <div className="absolute bottom-4 text-primary-300 text-xs">Powered by DigitalOcean Gradient AI</div>
@@ -107,6 +113,7 @@ export const LoginForm: React.FC = () => {
         </div>
       </div>
       </div>
+      </FadeIn>
     </div>
   );
 };

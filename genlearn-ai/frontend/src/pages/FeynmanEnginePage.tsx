@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
+import { AIIllustration, IllustrationData } from '../components/common/AIIllustration';
 
 // Types
 interface Session {
@@ -18,6 +19,7 @@ interface ChatMessage {
     avatar_state?: string;
     confusion_level?: number;
     curiosity_level?: number;
+    illustration?: IllustrationData;
 }
 
 interface RittyResponse {
@@ -403,7 +405,8 @@ export const FeynmanEnginePage: React.FC = () => {
                 content: `${data.emoji_reaction} ${data.response}${data.follow_up_question ? '\n\n' + data.follow_up_question : ''}`,
                 avatar_state: data.avatar_state,
                 confusion_level: data.confusion_level,
-                curiosity_level: data.curiosity_level
+                curiosity_level: data.curiosity_level,
+                illustration: (data as any).illustration || undefined
             }]);
 
             setAvatarState(data.avatar_state);
@@ -783,6 +786,9 @@ export const FeynmanEnginePage: React.FC = () => {
                                                     : 'bg-amber-50 text-gray-800 border border-amber-200'
                                                     }`}>
                                                     <div dangerouslySetInnerHTML={{ __html: formatChatContent(msg.content) }} />
+                                                    {msg.illustration && (
+                                                        <AIIllustration data={msg.illustration} />
+                                                    )}
                                                 </div>
                                             </div>
                                         ))}

@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { AIIllustration, IllustrationData } from "../components/common/AIIllustration";
 
 const StoryLearning: React.FC = () => {
-  const { language } = useLanguage();
+  const { selectedLanguage: language } = useLanguage();
   const [concept, setConcept] = useState("");
   const [story, setStory] = useState("");
   const [followUp, setFollowUp] = useState("");
   const [studentAnswer, setStudentAnswer] = useState("");
   const [feedback, setFeedback] = useState("");
   const [loading, setLoading] = useState(false);
+  const [illustration, setIllustration] = useState<IllustrationData | null>(null);
 
   const generateStory = async () => {
     setLoading(true);
@@ -23,6 +25,7 @@ const StoryLearning: React.FC = () => {
       setFollowUp(data.follow_up_question);
       setFeedback("");
       setStudentAnswer("");
+      setIllustration(data.illustration || null);
     } catch (e) {
       console.error(e);
       alert("Failed to generate story. Please try again.");
@@ -84,6 +87,10 @@ const StoryLearning: React.FC = () => {
 
       {story && (
         <div className="space-y-6">
+          {illustration && (
+            <AIIllustration data={illustration} />
+          )}
+          
           <div className="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-lg">
             <h2 className="text-sm font-semibold text-amber-800 mb-2">📚 The Story</h2>
             <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{story}</p>
@@ -120,7 +127,7 @@ const StoryLearning: React.FC = () => {
           )}
 
           <button
-            onClick={() => { setStory(""); setFollowUp(""); setFeedback(""); setConcept(""); }}
+            onClick={() => { setStory(""); setFollowUp(""); setFeedback(""); setConcept(""); setIllustration(null); }}
             className="text-blue-600 hover:text-blue-700 underline text-sm"
           >
             Try another concept

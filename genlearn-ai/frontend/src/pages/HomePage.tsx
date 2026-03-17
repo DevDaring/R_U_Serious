@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { APP_NAME } from '../utils/constants';
 import { Button } from '../components/common/Button';
+import { AmbientParticles } from '../components/effects/AmbientParticles';
+import { FadeIn, FloatingElement } from '../components/effects/PageTransition';
 
 export const HomePage: React.FC = () => {
   const { isAuthenticated } = useAuth();
@@ -15,38 +17,49 @@ export const HomePage: React.FC = () => {
         style={{ backgroundImage: "url('/assets/site-images/hero-bg.png')" }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-primary-700/85 to-primary-900/85" />
+        <AmbientParticles theme="sparkle" />
         <div className="relative z-10 container mx-auto px-4 text-center">
-          <div className="flex justify-center mb-6">
-            <img
-              src="/assets/site-images/ritty.png"
-              alt="Ritty - AI Learning Companion"
-              className="w-28 h-28 rounded-full border-4 border-white/30 shadow-2xl object-cover"
-            />
-          </div>
-          <h1 className="text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-            {APP_NAME}
-          </h1>
-          <p className="text-2xl text-white/90 mb-3 max-w-2xl mx-auto">
-            Generative AI-Powered Adaptive Learning
-          </p>
-          <p className="text-lg text-white/70 mb-8 max-w-xl mx-auto">
-            Learn anything through stories, the Feynman Technique, and AI-guided mistake analysis
-          </p>
-          <div className="flex justify-center space-x-4">
-            {isAuthenticated ? (
-              <Link to="/dashboard">
-                <Button size="lg" variant="secondary">
-                  Go to Dashboard
-                </Button>
-              </Link>
-            ) : (
-              <Link to="/login">
-                <button className="px-8 py-4 bg-white text-primary-700 font-bold text-lg rounded-xl hover:bg-gray-100 shadow-xl transition-all hover:scale-105">
-                  Get Started Free
-                </button>
-              </Link>
-            )}
-          </div>
+          <FloatingElement>
+            <div className="flex justify-center mb-6">
+              <img
+                src="/assets/site-images/ritty.png"
+                alt="Ritty - AI Learning Companion"
+                className="w-28 h-28 rounded-full border-4 border-white/30 shadow-2xl object-cover"
+              />
+            </div>
+          </FloatingElement>
+          <FadeIn delay={0.1}>
+            <h1 className="text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
+              {APP_NAME}
+            </h1>
+          </FadeIn>
+          <FadeIn delay={0.2}>
+            <p className="text-2xl text-white/90 mb-3 max-w-2xl mx-auto">
+              Generative AI-Powered Adaptive Learning
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.3}>
+            <p className="text-lg text-white/70 mb-8 max-w-xl mx-auto">
+              Learn anything through stories, the Feynman Technique, and AI-guided mistake analysis
+            </p>
+          </FadeIn>
+          <FadeIn delay={0.4}>
+            <div className="flex justify-center space-x-4">
+              {isAuthenticated ? (
+                <Link to="/dashboard">
+                  <Button size="lg" variant="secondary">
+                    Go to Dashboard
+                  </Button>
+                </Link>
+              ) : (
+                <Link to="/login">
+                  <button className="px-8 py-4 bg-white text-primary-700 font-bold text-lg rounded-xl hover:bg-gray-100 shadow-xl transition-all hover:scale-105">
+                    Get Started Free
+                  </button>
+                </Link>
+              )}
+            </div>
+          </FadeIn>
         </div>
       </div>
 
@@ -78,13 +91,15 @@ export const HomePage: React.FC = () => {
                 color: 'from-teal-500 to-green-500'
               },
             ].map((feature, i) => (
-              <div key={i} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow border border-gray-100">
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-3xl mb-5 shadow-md`}>
-                  {feature.icon}
+              <FadeIn key={i} delay={0.1 * i}>
+                <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100 h-full">
+                  <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center text-3xl mb-5 shadow-md`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                  <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.desc}</p>
-              </div>
+              </FadeIn>
             ))}
           </div>
         </div>

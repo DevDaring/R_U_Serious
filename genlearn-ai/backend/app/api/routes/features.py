@@ -17,6 +17,7 @@ from app.database.csv_handler import CSVHandler
 from app.services.feature_chat import feature_chat_service
 from app.services.provider_factory import ProviderFactory
 from app.services.image_providers.base import ImageGenerationRequest
+from app.services.illustration_service import illustration_service
 from app.utils.helpers import generate_unique_id
 
 logger = logging.getLogger(__name__)
@@ -243,6 +244,19 @@ async def mct_chat(
         )
 
         response["session_id"] = session_id
+
+        # Generate educational illustration (first 5 always, then every 2)
+        try:
+            illust = await illustration_service.generate_illustration(
+                topic=request.topic,
+                subject=request.subject,
+                context=request.user_message,
+                turn_number=request.turn_number
+            )
+            if illust:
+                response["illustration"] = illust
+        except Exception as ill_err:
+            logger.warning(f"MCT illustration generation skipped: {ill_err}")
 
         # Spaced Image Generation: Generate at turns 1, 2, 4, 7, 11, 16, 22...
         # Pattern: 1, +1=2, +2=4, +3=7, +4=11, +5=16, +6=22...

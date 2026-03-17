@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 from app.services.story_service import story_service
+from app.services.illustration_service import illustration_service
 from app.api.dependencies import get_current_user
 
 
@@ -61,6 +62,20 @@ async def generate_story(request: StoryRequest):
             language=request.language,
             difficulty_level=request.difficulty_level
         )
+        
+        # Generate illustration for the story concept
+        try:
+            illustration = await illustration_service.generate_illustration(
+                topic=request.concept,
+                subject="General",
+                context=result.get("story", request.concept),
+                turn_number=1  # First turn always gets illustration
+            )
+            if illustration:
+                result["illustration"] = illustration
+        except Exception:
+            pass
+        
         return result
     except Exception as e:
         raise HTTPException(

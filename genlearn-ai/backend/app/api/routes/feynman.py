@@ -20,6 +20,7 @@ from app.models.feynman_models import (
 from app.services.feynman_service import feynman_ai
 from app.database.feynman_db import feynman_db
 from app.services.content_generator import ContentGenerator
+from app.services.illustration_service import illustration_service
 from app.database.file_handler import FileHandler
 from app.utils.helpers import generate_unique_id
 
@@ -240,7 +241,7 @@ async def get_session_with_conversations(session_id: str):
 
 # ============== LAYER 1: RITTY (CURIOUS CHILD) ==============
 
-@router.post("/layer1/teach", response_model=RittyResponse)
+@router.post("/layer1/teach")
 async def teach_ritty(request: TeachMessageRequest):
     """Send a teaching message to Ritty"""
     
@@ -295,7 +296,37 @@ async def teach_ritty(request: TeachMessageRequest):
     clarity = (1 - response.confusion_level) * 100
     feynman_db.update_session(request.session_id, {'clarity_score': clarity})
     
-    return response
+    # Generate educational illustration (first 5 always, then every 2)
+    user_turns = len([h for h in history if h.get('role') == 'user'])
+    illustration = None
+    try:
+        illustration = await illustration_service.generate_illustration(
+            topic=session['topic'],
+            subject=session.get('subject', 'General'),
+            context=request.message,
+            turn_number=user_turns
+        )
+    except Exception as ill_err:
+        logger.warning(f"Illustration generation skipped: {ill_err}")
+
+    # Return response with illustration data
+    response_dict = response.dict() if hasattr(response, 'dict') else {
+        "response": response.response,
+        "confusion_level": response.confusion_level,
+        "curiosity_level": response.curiosity_level,
+        "question_type": response.question_type,
+        "follow_up_question": response.follow_up_question,
+        "gap_detected": response.gap_detected,
+        "encouragement": response.encouragement,
+        "emoji_reaction": response.emoji_reaction,
+        "layer_complete": response.layer_complete,
+        "avatar_state": response.avatar_state
+    }
+    
+    if illustration:
+        response_dict["illustration"] = illustration
+    
+    return response_dict
 
 
 @router.post("/layer1/start")

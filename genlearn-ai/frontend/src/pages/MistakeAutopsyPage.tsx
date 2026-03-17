@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import api, { BACKEND_URL } from '../services/api';
 import { formatChatContent } from '../utils/helpers';
+import { AIIllustration, IllustrationData } from '../components/common/AIIllustration';
 
 interface Diagnosis {
     most_likely_error: string;
@@ -29,6 +30,7 @@ interface MCTMessage {
     phase?: string;
     diagnosticQuestion?: string;
     imageUrl?: string;
+    illustration?: IllustrationData;
 }
 
 interface CascadeTracking {
@@ -436,7 +438,8 @@ export const MistakeAutopsyPage: React.FC = () => {
                 content: response.data.message || "I see...",
                 phase: response.data.phase,
                 diagnosticQuestion: response.data.diagnostic_question,
-                imageUrl: response.data.image  // Base64 image from backend
+                imageUrl: response.data.image,  // Base64 image from backend
+                illustration: response.data.illustration || undefined
             }]);
         } catch (err) {
             console.error('MCT chat failed:', err);
@@ -867,6 +870,10 @@ export const MistakeAutopsyPage: React.FC = () => {
                                             alt="Explanation"
                                             className="mt-2 rounded-lg max-w-full max-h-64"
                                         />
+                                    )}
+
+                                    {msg.illustration && (
+                                        <AIIllustration data={msg.illustration} compact />
                                     )}
                                 </div>
                             </div>
