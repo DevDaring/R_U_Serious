@@ -20,6 +20,7 @@ import { RevisionPage } from './pages/RevisionPage';
 import { MistakeAutopsyPage } from './pages/MistakeAutopsyPage';
 import { FeynmanEnginePage } from './pages/FeynmanEnginePage';
 import StoryLearningPage from './pages/StoryLearningPage';
+import { AvatarPage } from './pages/AvatarPage';
 
 // Admin Pages
 import { AdminHomePage } from './pages/admin/AdminHomePage';
@@ -113,6 +114,16 @@ function App() {
           />
 
           {/* Core Features */}
+          <Route
+            path="/avatar"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <AvatarPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/feynman"
             element={

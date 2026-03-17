@@ -7,7 +7,7 @@ interface MainContentProps {
 
 export const MainContent: React.FC<MainContentProps> = ({ children }) => {
   return (
-    <main className="flex-1 overflow-y-auto relative" style={{ background: 'linear-gradient(135deg, #e0f0fe 0%, #f0f4ff 30%, #ede9fe 50%, #f0f4ff 70%, #d1fae5 100%)' }}>
+    <main className="flex-1 overflow-y-auto relative" style={{ background: 'linear-gradient(135deg, #bddcf5 0%, #d4ddf7 30%, #d5cdf7 50%, #d4ddf7 70%, #b3ebd4 100%)' }}>
       {/* Animated mesh gradient blobs */}
       <div className="mesh-blob mesh-blob-1" />
       <div className="mesh-blob mesh-blob-2" />

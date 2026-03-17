@@ -143,3 +143,8 @@ Dockerfile
 docker-compose*.yml
 firebase.json
 nginx.conf
+
+
+
+#Folder-specific ignores
+Submission

@@ -20,10 +20,24 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
     play_mode: 'solo',
   });
 
-  const [avatars, setAvatars] = useState<Avatar[]>([]);
+  const [avatars, setAvatars] = useState<any[]>([]);
   const [characters, setCharacters] = useState<Character[]>([]);
   const [selectedCharacters, setSelectedCharacters] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  // Built-in default avatars from DiceBear
+  const defaultAvatars = [
+    { avatar_id: 'default-1', name: 'Felix', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Felix' },
+    { avatar_id: 'default-2', name: 'Luna', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Luna' },
+    { avatar_id: 'default-3', name: 'Max', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Max' },
+    { avatar_id: 'default-4', name: 'Sophie', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sophie' },
+    { avatar_id: 'default-5', name: 'Oliver', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Oliver' },
+    { avatar_id: 'default-6', name: 'Emma', image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Emma' },
+    { avatar_id: 'default-7', name: 'Midnight', image_url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Midnight' },
+    { avatar_id: 'default-8', name: 'Sunny', image_url: 'https://api.dicebear.com/7.x/adventurer/svg?seed=Sunny' },
+    { avatar_id: 'default-9', name: 'Buster', image_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Buster' },
+    { avatar_id: 'default-10', name: 'Coco', image_url: 'https://api.dicebear.com/7.x/bottts/svg?seed=Coco' },
+  ];
 
   useEffect(() => {
     loadUserAssets();
@@ -32,14 +46,16 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
   const loadUserAssets = async () => {
     try {
       setIsLoading(true);
-      const [avatarRes, characterRes] = await Promise.all([
+      const [avatarRes, characterRes] = await Promise.allSettled([
         api.get('/avatar/list'),
         api.get('/characters/list')
       ]);
-      setAvatars(avatarRes.data || []);
-      setCharacters(characterRes.data || []);
+      const backendAvatars = avatarRes.status === 'fulfilled' ? (avatarRes.value.data || []) : [];
+      setAvatars([...defaultAvatars, ...backendAvatars]);
+      setCharacters(characterRes.status === 'fulfilled' ? (characterRes.value.data || []) : []);
     } catch (err) {
       console.error('Failed to load assets:', err);
+      setAvatars(defaultAvatars);
     } finally {
       setIsLoading(false);
     }
@@ -117,11 +133,6 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
           </label>
           {isLoading ? (
             <div className="text-gray-500">Loading avatars...</div>
-          ) : avatars.length === 0 ? (
-            <div className="bg-gray-50 rounded-xl p-4 text-center">
-              <p className="text-gray-600">No avatars yet!</p>
-              <a href="/avatar" className="text-primary-600 hover:underline text-sm">Create your avatar →</a>
-            </div>
           ) : (
             <div className="flex gap-3 overflow-x-auto pb-2">
               {/* No avatar option */}
@@ -144,14 +155,12 @@ export const CourseSetup: React.FC<CourseSetupProps> = ({ onStart }) => {
                       ? 'border-primary-600 ring-2 ring-primary-300'
                       : 'border-gray-200 hover:border-gray-300'
                     }`}
+                  title={avatar.name}
                 >
                   <img
-                    src={`${BACKEND_URL}${avatar.image_url}`}
+                    src={avatar.image_url.startsWith('http') ? avatar.image_url : `${BACKEND_URL}${avatar.image_url}`}
                     alt={avatar.name}
                     className="w-full h-full object-cover"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23e5e7eb" width="100" height="100"/><text x="50" y="55" text-anchor="middle" fill="%239ca3af" font-size="40">👤</text></svg>';
-                    }}
                   />
                 </button>
               ))}

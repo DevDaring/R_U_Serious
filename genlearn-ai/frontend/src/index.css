@@ -147,7 +147,7 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.55;
+  opacity: 0.7;
   pointer-events: none;
   will-change: transform;
 }
@@ -155,7 +155,7 @@ body {
 .mesh-blob-1 {
   width: 400px;
   height: 400px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.4) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(14, 140, 210, 0.55) 0%, transparent 70%);
   animation: blobFloat1 20s ease-in-out infinite;
   top: -100px;
   right: -100px;
@@ -164,7 +164,7 @@ body {
 .mesh-blob-2 {
   width: 350px;
   height: 350px;
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.35) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(120, 70, 220, 0.50) 0%, transparent 70%);
   animation: blobFloat2 25s ease-in-out infinite;
   bottom: -80px;
   left: -80px;
@@ -173,7 +173,7 @@ body {
 .mesh-blob-3 {
   width: 300px;
   height: 300px;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(40, 180, 130, 0.45) 0%, transparent 70%);
   animation: blobFloat3 18s ease-in-out infinite;
   top: 40%;
   left: 30%;
