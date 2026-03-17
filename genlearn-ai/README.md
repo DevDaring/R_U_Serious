@@ -115,6 +115,7 @@ The student explains the concept in plain language. Ritty responds with:
 | `emoji_reaction` | Expressive emoji feedback |
 | `avatar_state` | Ritty's visual state (`thinking`, `confused`, `excited`, etc.) |
 | `layer_complete` | True when the explanation satisfies Ritty |
+| `illustration` | AI-generated educational illustration card (see below) |
 
 **API endpoints:**
 | Method | Path | Description |
@@ -130,6 +131,50 @@ The student explains the concept in plain language. Ritty responds with:
 | POST | `/api/feynman/session/{id}/change-layer` | Jump to a layer |
 | GET | `/api/feynman/session/{id}/summary` | Session summary + gaps |
 | GET | `/api/feynman/gaps/{user_id}` | All detected gaps |
+
+### AI-Generated Educational Illustrations
+
+Every learning interaction generates **visual illustration cards** alongside text responses. The system uses the AI provider to create structured illustration data — not bitmap images — rendered as beautiful gradient cards with:
+
+- **Title & emoji icon** — Quick visual anchor for the concept
+- **Visual type badge** — `diagram`, `process`, `comparison`, `concept`, `timeline`, or `formula`
+- **Element list** — Key components with contextual icons
+- **Key insight** — One-line takeaway
+
+**Adaptive frequency**: The first 5 turns always include an illustration. After that, illustrations appear every 2 turns — keeping engagement high without overwhelming.
+
+This approach works without any external image API, using zero additional infrastructure.
+
+---
+
+## 🎨 Visual Effects & Animations
+
+FunLearn uses ambient particle effects and page transitions to create an immersive learning environment:
+
+### Ambient Particles (7 themes)
+
+| Theme | Effect | Used On |
+|-------|--------|---------|
+| `snow` | Gentle falling snowflakes | — |
+| `rain` | Blue streaking raindrops | — |
+| `sunny` | Warm golden floating orbs | Main content background |
+| `sparkle` | Purple/pink twinkling stars | Home page hero |
+| `bubbles` | Rising cyan bubbles | — |
+| `neural` | Connected network nodes | — |
+| `fireflies` | Pulsing multicolor dots | Login page |
+
+### Page Transitions
+
+All pages use motion-based animations:
+- **PageTransition** — Fade + slide-up on route change
+- **FadeIn** — Staggered opacity reveal (configurable delay)
+- **ScaleIn** — Scale-up entrance for cards and stats
+- **FloatingElement** — Gentle infinite bounce for mascot images
+- **PulseGlow** — Subtle scale pulse for active elements
+
+### CSS Gradient Animations
+
+Background gradient shifts, shimmer effects, and floating keyframes add life to the UI — all GPU-accelerated and lightweight.
 
 ---
 
@@ -205,6 +250,10 @@ Language compliance is enforced at the **prompt level** — a critical instructi
 │  Pages: Dashboard · Feynman · MCT · Story Learning ·            │
 │         History · Profile · Settings                             │
 │                                                                  │
+│  Effects: AmbientParticles (tsparticles) ·                       │
+│           PageTransition / FadeIn / ScaleIn (motion) ·           │
+│           AIIllustration cards · CSS gradient animations          │
+│                                                                  │
 │  State: Zustand   Routing: React Router v6   HTTP: Axios         │
 │  Styling: Tailwind CSS                                            │
 └───────────────────────────┬──────────────────────────────────────┘
@@ -218,7 +267,8 @@ Language compliance is enforced at the **prompt level** — a critical instructi
 │                                                                  │
 │  Services: ContentGenerator · QuestionGenerator ·               │
 │            AnswerEvaluator · FeynmanAIService ·                 │
-│            StoryService · ScoringService                         │
+│            StoryService · IllustrationService ·                  │
+│            ScoringService                                        │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │           PROVIDER FACTORY  (Plug & Play)                │   │
@@ -243,6 +293,8 @@ Language compliance is enforced at the **prompt level** — a critical instructi
 | State management | Zustand | 4.4 |
 | Routing | React Router | 6.20 |
 | HTTP client | Axios | 1.6 |
+| Animations | motion (framer-motion) | 12.x |
+| Particles | @tsparticles/react + slim | 3.x |
 | Backend framework | FastAPI | 0.109 |
 | Backend language | Python | 3.11+ |
 | Data validation | Pydantic v2 | 2.5 |
@@ -284,6 +336,7 @@ genlearn-ai/
 │       │   ├── provider_factory.py  # Single config point for all providers
 │       │   ├── feynman_service.py   # Feynman Engine AI logic
 │       │   ├── story_service.py     # Story Learning AI logic
+│       │   ├── illustration_service.py # AI-generated visual illustration cards
 │       │   ├── content_generator.py
 │       │   ├── question_generator.py
 │       │   ├── answer_evaluator.py
@@ -324,6 +377,16 @@ genlearn-ai/
 │       │
 │       ├── services/
 │       │   └── api.ts               # Axios instance + all API functions
+│       ├── components/
+│       │   ├── common/
+│       │   │   └── AIIllustration.tsx # Educational illustration cards
+│       │   ├── effects/
+│       │   │   ├── AmbientParticles.tsx # 7-theme particle backgrounds
+│       │   │   └── PageTransition.tsx   # Motion-based animation wrappers
+│       │   ├── auth/
+│       │   │   └── LoginForm.tsx
+│       │   └── layout/
+│       │       └── MainContent.tsx
 │       ├── contexts/
 │       │   └── LanguageContext.tsx   # Global language selector
 │       ├── store/

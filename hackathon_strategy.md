@@ -20,6 +20,8 @@ A **Gradient™ Knowledge Base** is attached to Ritty's agent, ingesting NCERT a
 
 All AI features in FunLearn — Story Learning, Misconception Cascade Tracing (MCT), and Feynman Engine scoring — call the **DO Gradient Serverless Inference API** using the `meta-llama/Meta-Llama-3.3-70B-Instruct` model via the OpenAI-compatible endpoint at `https://inference.do-ai.run/v1`. This is a pay-per-token, zero-infrastructure managed inference layer .
 
+The same inference API also powers the **IllustrationService** — which generates structured educational illustration data (title, visual type, elements, key insight) alongside every learning interaction. The first 5 turns always produce illustrations; after that, one appears every 2 turns. This provides rich visual context without requiring any external image generation API.
+
 ***
 
 ### 🖥️ 4. DigitalOcean Droplet (Compute)
@@ -42,7 +44,7 @@ A **5GB Block Storage Volume** is attached to the Droplet and mounted at `/mnt/f
 | **Quality software development**  | Provider Factory pattern allows clean DO integration; Terraform IaC for all infra |
 | **Potential Impact**  | Targets 1.5M Indian students who fail board exams yearly; 9 languages including Hindi and Bengali |
 | **Creative & unique idea**  | Feynman Engine (teach the AI to learn), Story-Based Learning, MCT root-cause diagnosis — all novel pedagogy |
-| **Design**  | React + Tailwind UI with full multilingual support and accessible voice-free UX |
+| **Design**  | React + Tailwind UI with full multilingual support, AI-generated educational illustration cards, ambient particle effects (7 themes), motion-based page transitions, and accessible voice-free UX |
 
 ***
 
