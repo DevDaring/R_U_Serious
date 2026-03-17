@@ -401,8 +401,62 @@ async def start_compression(session_id: str):
     session = feynman_db.get_session(session_id)
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
-    
-    return {
+        # Check if there's already conversation history for layer 2
+    history = feynman_db.get_conversation_history(session_id, layer=2)
+    if history:
+        # Reconstruct compression history from saved turns
+        compression_entries = []
+        current_limit = 100
+        for i in range(0, len(history), 2):  # pairs of user + assistant
+            user_turn = history[i] if i < len(history) else None
+            assistant_turn = history[i+1] if i+1 < len(history) else None
+            if user_turn and user_turn['role'] == 'user':
+                # Parse word limit and text from stored format "[100 words]: explanation"
+                msg = user_turn['message']
+                try:
+                    limit_part = msg.split(']')[0].replace('[', '').split()[0]
+                    explanation = msg.split(']: ')[1] if ']: ' in msg else msg
+                    limit_val = int(limit_part)
+                except:
+                    limit_val = current_limit
+                    explanation = msg
+                
+                score = 3
+                feedback = ""
+                if assistant_turn and assistant_turn['role'] == 'assistant':
+                    # Parse "Score: X/5 - feedback"
+                    a_msg = assistant_turn['message']
+                    try:
+                        score = int(a_msg.split('/')[0].split()[-1])
+                        feedback = a_msg.split(' - ', 1)[1] if ' - ' in a_msg else a_msg
+                    except:
+                        feedback = a_msg
+                
+                compression_entries.append({
+                    "limit": limit_val,
+                    "text": explanation,
+                    "score": score,
+                    "feedback": feedback,
+                    "image_url": assistant_turn.get('image_url', '') if assistant_turn else ''
+                })
+                current_limit = limit_val
+        
+        # Determine current word limit from progression
+        progression = [100, 50, 25, 15, 10, 1]
+        completed_limits = [e['limit'] for e in compression_entries if e['score'] >= 3]
+        next_limit = 100
+        for p in progression:
+            if p not in completed_limits:
+                next_limit = p
+                break
+        
+        return {
+            "message": f"Welcome back! Continue your compression challenge for {session['topic']}.",
+            "current_word_limit": next_limit,
+            "progression": progression,
+            "history": compression_entries
+        }
+        return {
         "message": f"🎯 **Compression Challenge**\n\nNow let's see if you truly understand {session['topic']}!\n\nExplain it in **100 words or less**.\n\nThe better you understand something, the more simply you can explain it.",
         "current_word_limit": 100,
         "progression": [100, 50, 25, 15, 10, 1]

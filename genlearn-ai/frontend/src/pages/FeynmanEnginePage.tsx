@@ -314,7 +314,18 @@ export const FeynmanEnginePage: React.FC = () => {
                 setAvatarState('curious');
             } else if (layer === 2) {
                 setCurrentWordLimit(data.current_word_limit || 100);
-                // History for compression is handled separately via compressionHistory state
+                // Load compression history if returning to this layer
+                if (data.history && data.history.length > 0) {
+                    const entries = data.history.map((h: any) => ({
+                        limit: h.limit,
+                        text: h.text,
+                        score: h.score,
+                        feedback: h.feedback,
+                        suggestion: h.suggestion || undefined,
+                        image_url: h.image_url || undefined
+                    }));
+                    setCompressionHistory(entries);
+                }
             } else if (layer === 3) {
                 // Handle existing history for Why Spiral
                 if (data.history && data.history.length > 0) {

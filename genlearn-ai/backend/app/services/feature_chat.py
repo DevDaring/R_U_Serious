@@ -372,16 +372,16 @@ RESPONSE FORMAT (JSON only):
             full_prompt = f"{lang_instruction}\n\n{system_prompt}\n\nUser: {user_message}\n\nRespond with valid JSON only."
             
             # Call AI provider
-            if image_base64:
+            if image_base64 and hasattr(self.ai_provider, 'generate_content_with_image'):
                 response = await self.ai_provider.generate_content_with_image(
                     prompt=full_prompt,
                     image_base64=image_base64
                 )
+                response_text = response.get("text", "{}")
             else:
-                response = await self.ai_provider.generate_text(full_prompt)
-            
-            # Parse JSON response
-            response_text = response.get("text", "{}")
+                # Use _call_llm directly for text-only prompts
+                messages = [{"role": "user", "content": full_prompt}]
+                response_text = await self.ai_provider._call_llm(messages)
             
             # Try to extract JSON from response
             try:
