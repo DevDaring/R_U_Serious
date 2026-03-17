@@ -145,6 +145,18 @@ Every learning interaction generates **visual illustration cards** alongside tex
 
 This approach works without any external image API, using zero additional infrastructure.
 
+### AI-Generated Images (Bria.ai FIBO v2)
+
+FunLearn also generates **real AI images** during learning sessions using the **Bria.ai FIBO v2** pipeline:
+
+1. **Prompt → VLM Bridge** — Bria's hosted Gemini 2.5 Flash VLM converts text prompts into structured JSON (~1000 words of scene description)
+2. **JSON → FIBO Model** — The 8B-parameter FIBO DiT model generates deterministic, high-fidelity images from the structured JSON
+3. **Fallback** — If Bria is unavailable, **Google Imagen 4.0** serves as an automatic fallback
+
+Images are generated at spaced intervals during MCT sessions (turns 1, 2, 4, 7, 11…) to reinforce concepts visually.
+
+Set `IMAGE_PROVIDER=bria` (or `gemini`, `pollinations`) in `.env` to enable.
+
 ---
 
 ## 🎨 Visual Effects & Animations
@@ -274,7 +286,8 @@ Language compliance is enforced at the **prompt level** — a critical instructi
 │  │           PROVIDER FACTORY  (Plug & Play)                │   │
 │  │                                                          │   │
 │  │  AI:     DigitalOcean Gradient ✓ · OpenAI · Anthropic   │   │
-│  │  Image:  None (disabled for hackathon)                   │   │
+│  │  Image:  Bria.ai FIBO v2 ✓ · Gemini Imagen 4.0 ✓ ·     │   │
+│  │          Pollinations · Stability · None                 │   │
 │  │  Voice:  None (disabled for hackathon)                   │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
@@ -302,6 +315,8 @@ Language compliance is enforced at the **prompt level** — a critical instructi
 | Data storage | pandas (CSV) | 2.2 |
 | Authentication | JWT + bcrypt | — |
 | AI model | DigitalOcean Gradient | Llama 3.3 70B |
+| Image generation | Bria.ai FIBO v2 | JSON-native DiT |
+| Image fallback | Google Imagen 4.0 | via Generative Language API |
 
 ---
 
@@ -341,7 +356,8 @@ genlearn-ai/
 │       │   ├── question_generator.py
 │       │   ├── answer_evaluator.py
 │       │   ├── scoring_service.py
-│       │   └── ai_providers/        # digitalocean · gemini · openai · anthropic
+│       │   ├── ai_providers/        # digitalocean · openai · anthropic
+│       │   └── image_providers/     # bria · gemini · pollinations · fibo · stability · none
 │       │
 │       ├── models/                  # Pydantic models
 │       │   ├── user.py
@@ -419,7 +435,7 @@ FRONTEND_URL=http://localhost:5173
 
 # ── Provider Selection ────────────────────────────────────────
 AI_PROVIDER=digitalocean
-IMAGE_PROVIDER=none
+IMAGE_PROVIDER=bria          # bria, gemini, pollinations, fibo, stability, none
 VOICE_TTS_PROVIDER=none
 VOICE_STT_PROVIDER=none
 
@@ -433,6 +449,10 @@ RITTY_AGENT_UUID=your_ritty_agent_uuid_from_terraform
 DATA_DIR=./data
 CSV_DIR=./data/csv
 MEDIA_DIR=./data/media
+
+# ── Image Generation ──────────────────────────────────────────
+BRIA_API_KEY=your_bria_api_key_here
+GEMINI_API_KEY=your_gemini_api_key_here
 
 # ── Security ──────────────────────────────────────────────────
 APP_API_KEY=kd_dreaming007
