@@ -99,7 +99,6 @@ select {
   color: #111827;
   border-color: #d1d5db;
 }
-}
 
 input[type="text"]::placeholder,
 input[type="password"]::placeholder,
