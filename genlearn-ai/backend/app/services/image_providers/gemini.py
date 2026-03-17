@@ -26,14 +26,18 @@ class GeminiImageProvider(BaseImageProvider):
 
     async def _call_imagen(self, prompt: str) -> bytes:
         """Call Imagen 4.0 predict endpoint and return image bytes."""
-        url = f"{API_BASE}/models/{MODEL}:predict?key={self.api_key}"
+        url = f"{API_BASE}/models/{MODEL}:predict"
         payload = {
             "instances": [{"prompt": prompt}],
             "parameters": {"sampleCount": 1},
         }
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": self.api_key,
+        }
 
         async with httpx.AsyncClient(timeout=self.timeout) as client:
-            resp = await client.post(url, json=payload, headers={"Content-Type": "application/json"})
+            resp = await client.post(url, json=payload, headers=headers)
             resp.raise_for_status()
             data = resp.json()
 
