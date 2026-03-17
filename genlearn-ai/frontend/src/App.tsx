@@ -21,6 +21,7 @@ import { MistakeAutopsyPage } from './pages/MistakeAutopsyPage';
 import { FeynmanEnginePage } from './pages/FeynmanEnginePage';
 import StoryLearningPage from './pages/StoryLearningPage';
 import { AvatarPage } from './pages/AvatarPage';
+import { CharacterPage } from './pages/CharacterPage';
 
 // Admin Pages
 import { AdminHomePage } from './pages/admin/AdminHomePage';
@@ -120,6 +121,16 @@ function App() {
               <ProtectedRoute>
                 <Layout>
                   <AvatarPage />
+                </Layout>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/characters"
+            element={
+              <ProtectedRoute>
+                <Layout>
+                  <CharacterPage />
                 </Layout>
               </ProtectedRoute>
             }

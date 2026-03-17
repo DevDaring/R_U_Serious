@@ -17,6 +17,7 @@ from app.api.routes import (
     quiz,
     admin,
     chat,
+    characters,
     features,
     feynman,
     sessions,
@@ -113,6 +114,7 @@ app.include_router(features.router, prefix="/api/features", tags=["MCT Diagnosti
 app.include_router(feynman.router, prefix="/api")  # Feynman Engine
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])
 app.include_router(video.router, prefix="/api/video", tags=["Video"])
+app.include_router(characters.router, prefix="/api/characters", tags=["Characters"])
 app.include_router(story_learning.router)  # Story Learning
 
 
