@@ -1,4 +1,4 @@
-# 🎓 FunLearn — AI-Powered Adaptive Learning Platform
+# 🎓 R U Serious? — FunLearn: AI-Powered Adaptive Learning Platform
 
 <div align="center">
 

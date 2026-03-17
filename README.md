@@ -1,10 +1,10 @@
-# 🎓 FunLearn — AI-Powered Adaptive Learning Platform
+# 🎓 R U Serious? — FunLearn: AI-Powered Adaptive Learning Platform
 
 <div align="center">
 
 **🏆 Built for the [DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)**
 
-*Learn by Teaching. Powered by DigitalOcean Gradient™ AI.*
+*Team: R U Serious? · Learn by Teaching. Powered by DigitalOcean Gradient™ AI.*
 
 [![DigitalOcean](https://img.shields.io/badge/Powered%20by-DigitalOcean%20Gradient%20AI-0080FF?style=for-the-badge&logo=digitalocean&logoColor=white)](https://www.digitalocean.com/products/ai/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
