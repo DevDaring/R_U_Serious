@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ChatWindow } from '../chat/ChatWindow';
 
 export const RightPanel: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <aside
