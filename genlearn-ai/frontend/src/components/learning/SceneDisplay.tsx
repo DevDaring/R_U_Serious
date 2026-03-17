@@ -43,11 +43,11 @@ export const SceneDisplay: React.FC<SceneDisplayProps> = ({
 
     if (isLoading) {
         return (
-            <div className="relative w-full aspect-[3/4] bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl overflow-hidden animate-pulse">
+            <div className="relative w-full aspect-video bg-gradient-to-br from-primary-100 via-blue-50 to-indigo-100 rounded-2xl overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                        <div className="text-4xl mb-2">🎨</div>
-                        <p className="text-gray-600">Generating scene...</p>
+                        <div className="text-5xl mb-3 animate-bounce">🎨</div>
+                        <p className="text-gray-600 font-medium">Generating scene...</p>
                     </div>
                 </div>
             </div>
@@ -55,16 +55,29 @@ export const SceneDisplay: React.FC<SceneDisplayProps> = ({
     }
 
     return (
-        <div className="relative w-full aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl">
-            {/* Scene Image */}
-            <img
-                src={imageUrl}
-                alt="Story scene"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect fill="%23f3f4f6" width="300" height="400"/><text x="150" y="200" text-anchor="middle" fill="%239ca3af" font-size="60">📖</text></svg>';
-                }}
-            />
+        <div className="relative w-full aspect-video rounded-2xl overflow-hidden shadow-xl">
+            {/* Scene Image with gradient fallback */}
+            {imageUrl ? (
+                <img
+                    src={imageUrl}
+                    alt="Story scene"
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                        const parent = (e.target as HTMLImageElement).parentElement;
+                        if (parent) {
+                            (e.target as HTMLImageElement).style.display = 'none';
+                            const div = document.createElement('div');
+                            div.className = 'w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-400 via-indigo-400 to-purple-500';
+                            div.innerHTML = '<span style="font-size:5rem">📖</span>';
+                            parent.insertBefore(div, parent.firstChild);
+                        }
+                    }}
+                />
+            ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-400 via-indigo-400 to-purple-500">
+                    <span className="text-7xl">📖</span>
+                </div>
+            )}
 
             {/* Text Overlay */}
             {textOverlay && textOverlay.text && (
