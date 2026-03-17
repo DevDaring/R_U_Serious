@@ -122,7 +122,7 @@ async def upload_questions(
                     question_data = {
                         "question_id": question_id,
                         "topic": str(row["topic"]),
-                        "difficulty_level": int(row["difficulty_level"]),
+                        "difficulty_level": int(row["difficulty_level"] if row["difficulty_level"] is not None else 5),
                         "question_text": str(row["question_text"]),
                         "option_a": str(row["option_a"]),
                         "option_b": str(row["option_b"]),
@@ -162,11 +162,11 @@ async def upload_questions(
                     question_data = {
                         "question_id": question_id,
                         "topic": str(row["topic"]),
-                        "difficulty_level": int(row["difficulty_level"]),
+                        "difficulty_level": int(row["difficulty_level"] if row["difficulty_level"] is not None else 5),
                         "question_text": str(row["question_text"]),
                         "model_answer": str(row["model_answer"]),
                         "keywords": str(row["keywords"]),  # Comma-separated
-                        "max_score": int(row["max_score"]),
+                        "max_score": int(row["max_score"] if row["max_score"] is not None else 10),
                         "created_by": current_user["user_id"],
                         "is_ai_generated": False,
                         "created_at": datetime.now().isoformat()

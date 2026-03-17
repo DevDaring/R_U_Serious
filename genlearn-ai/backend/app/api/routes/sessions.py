@@ -37,11 +37,11 @@ async def get_all_sessions(limit: int = 10, offset: int = 0):
                 "session_id": session.get("session_id"),
                 "topic": session.get("topic"),
                 "subject": "Learning Session",
-                "difficulty_level": int(session.get("difficulty_level", 5)),
+                "difficulty_level": int(session.get("difficulty_level", 5) or 5),
                 "status": session.get("status"),
                 "story_style": session.get("story_style", ""),
                 "visual_style": session.get("visual_style", "cartoon"),
-                "score": int(session.get("score", 0)),
+                "score": int(session.get("score", 0) or 0),
                 "started_at": session.get("started_at"),
                 "completed_at": session.get("completed_at")
             })

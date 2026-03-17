@@ -7,7 +7,7 @@ interface MainContentProps {
 
 export const MainContent: React.FC<MainContentProps> = ({ children }) => {
   return (
-    <main className="flex-1 overflow-y-auto relative" style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #ffffff 30%, #f5f3ff 50%, #ffffff 70%, #ecfdf5 100%)' }}>
+    <main className="flex-1 overflow-y-auto relative" style={{ background: 'linear-gradient(135deg, #e0f0fe 0%, #f0f4ff 30%, #ede9fe 50%, #f0f4ff 70%, #d1fae5 100%)' }}>
       {/* Animated mesh gradient blobs */}
       <div className="mesh-blob mesh-blob-1" />
       <div className="mesh-blob mesh-blob-2" />
@@ -16,7 +16,7 @@ export const MainContent: React.FC<MainContentProps> = ({ children }) => {
       {/* Dot pattern overlay */}
       <div className="absolute inset-0 dot-pattern pointer-events-none" />
       
-      <AmbientParticles theme="sunny" className="opacity-30" />
+      <AmbientParticles theme="sunny" className="opacity-50" />
       <div className="container mx-auto p-6 relative z-10">
         {children}
       </div>

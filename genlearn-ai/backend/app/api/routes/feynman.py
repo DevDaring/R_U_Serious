@@ -77,8 +77,8 @@ async def get_session(session_id: str):
         user_id=session['user_id'],
         topic=session['topic'],
         subject=session['subject'],
-        difficulty_level=int(session.get('difficulty_level', 5)),
-        current_layer=int(session.get('current_layer', 1)),
+        difficulty_level=int(session.get('difficulty_level', 5) or 5),
+        current_layer=int(session.get('current_layer', 1) or 1),
         status=session.get('status', 'active'),
         clarity_score=float(session.get('clarity_score', 0) or 0),
         teaching_xp_earned=int(session.get('teaching_xp_earned', 0) or 0),
@@ -168,7 +168,7 @@ async def complete_session(session_id: str):
             gap_id=g['id'],
             topic=g['gap_topic'],
             description=g['gap_description'],
-            layer_discovered=int(g['layer_discovered']),
+            layer_discovered=int(g.get('layer_discovered', 1) or 1),
             why_depth=int(g['why_depth']) if g.get('why_depth') else None,
             resolved=bool(g.get('resolved', False))
         )
@@ -267,7 +267,7 @@ async def teach_ritty(request: TeachMessageRequest):
         subject=session['subject'],
         user_message=request.message,
         conversation_history=history,
-        difficulty_level=int(session.get('difficulty_level', 5))
+        difficulty_level=int(session.get('difficulty_level', 5) or 5)
     )
     
     # Save AI response
@@ -620,8 +620,8 @@ async def submit_analogy(request: AnalogySubmitRequest):
     analogy_image_file_url = None
     
     # Get current tracking values from session
-    analogy_image_count = int(session.get('analogy_image_count', 0))
-    interactions_since_image = int(session.get('interactions_since_image', 0))
+    analogy_image_count = int(session.get('analogy_image_count', 0) or 0)
+    interactions_since_image = int(session.get('interactions_since_image', 0) or 0)
     
     # Calculate next trigger interval (increases by 1 each time)
     next_trigger_interval = analogy_image_count  # 0, 1, 2, 3...

@@ -159,7 +159,7 @@ async def submit_mcq_answer(
         csv_handler.create("scores", score_data)
 
         # Update session score
-        session["score"] = int(session.get("score", 0)) + points_earned
+        session["score"] = int(session.get("score", 0) or 0) + points_earned
         csv_handler.update("sessions", session_id, session, "session_id")
 
         return {
@@ -297,7 +297,7 @@ async def submit_descriptive_answer(
             model_answer=question["model_answer"],
             user_answer=answer_data.answer_text,
             keywords=question["keywords"].split(",") if isinstance(question["keywords"], str) else question["keywords"],
-            max_score=int(question["max_score"])
+            max_score=int(question.get("max_score", 10) or 10)
         )
 
         # Save score
@@ -308,7 +308,7 @@ async def submit_descriptive_answer(
             "question_id": answer_data.question_id,
             "question_type": "descriptive",
             "user_answer": answer_data.answer_text,
-            "is_correct": str(evaluation["score"] >= int(question["max_score"]) * 0.6).lower(),
+            "is_correct": str(evaluation["score"] >= int(question.get("max_score", 10) or 10) * 0.6).lower(),
             "points_earned": evaluation["score"],
             "time_taken_seconds": 60,  # Default, should be tracked by frontend
             "evaluated_at": datetime.now().isoformat()
@@ -316,7 +316,7 @@ async def submit_descriptive_answer(
         csv_handler.create("scores", score_data)
 
         # Update session score
-        session["score"] = int(session.get("score", 0)) + evaluation["score"]
+        session["score"] = int(session.get("score", 0) or 0) + evaluation["score"]
         csv_handler.update("sessions", session_id, session, "session_id")
 
         return {

@@ -385,8 +385,8 @@ async def end_learning_session(
         xp_earned = session_end.final_score * session["difficulty_level"]
 
         # Update user XP
-        current_user["xp_points"] = int(current_user.get("xp_points", 0)) + xp_earned
-        current_user["level"] = max(1, int(current_user["xp_points"]) // 500 + 1)
+        current_user["xp_points"] = int(current_user.get("xp_points", 0) or 0) + xp_earned
+        current_user["level"] = max(1, int(current_user.get("xp_points", 0) or 0) // 500 + 1)
         csv_handler.update("users", current_user["user_id"], current_user, "user_id")
 
         return {
@@ -444,11 +444,11 @@ async def get_sessions_list(
                 "session_id": session.get("session_id"),
                 "topic": session.get("topic"),
                 "subject": "General Learning",
-                "difficulty_level": int(session.get("difficulty_level", 5)),
+                "difficulty_level": int(session.get("difficulty_level", 5) or 5),
                 "status": session.get("status"),
                 "story_style": session.get("story_style", ""),
                 "visual_style": session.get("visual_style", "cartoon"),
-                "score": int(session.get("score", 0)),
+                "score": int(session.get("score", 0) or 0),
                 "started_at": session.get("started_at"),
                 "completed_at": session.get("completed_at")
             })
@@ -490,11 +490,11 @@ async def get_session_history(
             history.append({
                 "session_id": session["session_id"],
                 "topic": session["topic"],
-                "difficulty_level": int(session.get("difficulty_level", 5)),
-                "duration_minutes": int(session.get("duration_minutes", 10)),
+                "difficulty_level": int(session.get("difficulty_level", 5) or 5),
+                "duration_minutes": int(session.get("duration_minutes", 10) or 10),
                 "story_style": session.get("story_style", "fun"),
                 "visual_style": session.get("visual_style", "cartoon"),
-                "score": int(session.get("score", 0)),
+                "score": int(session.get("score", 0) or 0),
                 "status": session.get("status", "unknown"),
                 "started_at": session.get("started_at", ""),
                 "completed_at": session.get("completed_at", "")
@@ -589,11 +589,11 @@ async def get_session_revision(
         return {
             "session_id": session_id,
             "topic": session["topic"],
-            "difficulty_level": int(session.get("difficulty_level", 5)),
-            "duration_minutes": int(session.get("duration_minutes", 10)),
+            "difficulty_level": int(session.get("difficulty_level", 5) or 5),
+            "duration_minutes": int(session.get("duration_minutes", 10) or 10),
             "story_style": session.get("story_style", "fun"),
             "visual_style": session.get("visual_style", "cartoon"),
-            "score": int(session.get("score", 0)),
+            "score": int(session.get("score", 0) or 0),
             "status": session.get("status", "unknown"),
             "started_at": session.get("started_at", ""),
             "completed_at": session.get("completed_at", ""),
