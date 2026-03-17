@@ -12,6 +12,7 @@ import os
 from app.config import settings
 from app.api.routes import (
     auth,
+    avatars,
     users,
     learning,
     quiz,
@@ -115,6 +116,7 @@ app.include_router(feynman.router, prefix="/api")  # Feynman Engine
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])
 app.include_router(video.router, prefix="/api/video", tags=["Video"])
 app.include_router(characters.router, prefix="/api/characters", tags=["Characters"])
+app.include_router(avatars.router, prefix="/api/avatar", tags=["Avatars"])
 app.include_router(story_learning.router)  # Story Learning
 
 
