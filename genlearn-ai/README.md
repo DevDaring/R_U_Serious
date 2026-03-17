@@ -2,7 +2,7 @@
 
 <div align="center">
 
-**🏆 Built for the [DigitalOcean GenAI Hackathon](https://dogenai.devpost.com/)**
+**🏆 Built for the [DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)**
 
 *Learn by Teaching. Powered by DigitalOcean Gradient™ AI.*
 
@@ -555,7 +555,7 @@ See `infra/` directory for complete infrastructure setup.
 
 <div align="center">
 
-**Built for the [DigitalOcean GenAI Hackathon](https://dogenai.devpost.com/)**
+**Built for the [DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)**
 
 *FunLearn — Where understanding happens by teaching, not by being taught.*
 

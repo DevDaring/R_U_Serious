@@ -1,32 +1,36 @@
-# 🎓 FunLearn — Feynman AI for Every Student
+# 🎓 FunLearn — AI-Powered Adaptive Learning Platform
 
 <div align="center">
 
-**🏆 Built for DigitalOcean Gradient™ AI Hackathon**
+**🏆 Built for the [DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)**
 
 *Learn by Teaching. Powered by DigitalOcean Gradient™ AI.*
 
 [![DigitalOcean](https://img.shields.io/badge/Powered%20by-DigitalOcean%20Gradient%20AI-0080FF?style=for-the-badge&logo=digitalocean&logoColor=white)](https://www.digitalocean.com/products/ai/)
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-165.22.218.159-00C853?style=for-the-badge&logo=googlechrome&logoColor=white)](http://165.22.218.159)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+
+**[Live Demo](http://165.22.218.159)** · **Login:** `DebK` / `password123`
 
 </div>
 
 ---
 
-## 🔗 Live Demo & Testing
+## Table of Contents
 
-| | |
-|---|---|
-| **Live App** | **http://165.22.218.159** |
-| **API Docs** | **http://165.22.218.159:8000/docs** |
-| **Username** | `DebK` |
-| **Password** | `password123` |
-
-> Deployed on a DigitalOcean Droplet (Ubuntu 22.04) with Nginx reverse proxy + FastAPI backend. Infrastructure provisioned via Terraform (see [`infra/`](infra/)).
+1. [The Problem & Solution](#-the-problem--solution)
+2. [Hackathon Qualification](#-hackathon-qualification--digitalocean-services-used)
+3. [Key Features](#-key-features)
+4. [Core Feature: The Feynman Engine](#-core-feature-the-feynman-engine)
+5. [Story-Based Learning](#-story-based-learning)
+6. [Misconception Cascade Tracing](#-misconception-cascade-tracing)
+7. [AI-Generated Images](#-ai-generated-images)
+8. [Multi-Language Support](#-multi-language-support)
+9. [Technical Architecture](#-technical-architecture)
+10. [Quick Start](#-quick-start)
+11. [Project Structure](#-project-structure)
+12. [Deployment](#-deployment)
 
 ---
 
@@ -34,111 +38,113 @@
 
 **1.5 million students fail board exams in India every year.** Not because they're not smart enough — because passive learning doesn't work. Reading textbooks, watching videos, memorizing answers — it's broken.
 
-**FunLearn** flips the script. Instead of AI teaching students, **students teach the AI**. This activates the **Feynman Technique** at scale — the proven method where explaining a concept in your own words reveals what you truly understand and where your gaps are.
-
-### Why This Matters (Potential Impact)
-
-- **Target**: 250M+ students in India alone, 1.5B+ globally
-- **Problem**: 93% of learning apps are passive (watch/read/memorize)
-- **Solution**: Active learning through teaching — proven 2.5x more effective than passive methods
-- **Languages**: 11 languages supported (English, Hindi, Bengali, Spanish, Portuguese, Mandarin, Japanese, Arabic, Russian, Punjabi, Vietnamese)
-- **Accessibility**: Works on any device with a browser — no app install needed
-
----
-
-## 🧠 How DigitalOcean Gradient™ AI Powers FunLearn
-
-FunLearn is built entirely on **DigitalOcean's full-stack AI platform**. Here's exactly how we use it:
-
-### 1. Gradient AI Inference API — The Brain
-
-All AI interactions use **Meta Llama 3.3 70B Instruct** via DigitalOcean's Gradient AI inference endpoint:
-
-```
-Endpoint: https://inference.do-ai.run/v1
-Model:    meta-llama/Meta-Llama-3.3-70B-Instruct
-```
-
-This powers:
-- **Feynman Engine** (5-layer Socratic AI dialogue)
-- **Story-Based Learning** (AI-generated educational stories)
-- **Misconception Cascade Tracing** (5-phase diagnostic probing)
-- **Content generation** (questions, evaluations, feedback)
-- **AI illustration data** (structured visual cards)
-- **Multi-language responses** (11 languages)
-
-### 2. Gradient AI Agent — Ritty's Persona
-
-We provision a **custom Gradient AI Agent** via Terraform that gives Ritty (the AI tutor character) a persistent persona with NCERT knowledge base context. This agent is created using the DigitalOcean GenAI Agent API.
-
-```hcl
-# From infra/gradient_ai.tf
-resource "digitalocean_gen_ai_agent" "ritty_agent" {
-  name        = "ritty-feynman-tutor"
-  model       = { uuid = "..." }
-  instruction = "You are Ritty, a curious 8-year-old..."
-}
-```
-
-### 3. DigitalOcean Droplet — Hosting
-
-The full application runs on a **DigitalOcean Droplet** provisioned via Terraform:
-- Ubuntu 22.04 LTS
-- Nginx (serves React frontend + reverse proxies to FastAPI)
-- systemd service for the Python backend
-- Persistent volume for data storage
-
-### 4. DigitalOcean Volume — Data Persistence
-
-A **5GB Block Storage Volume** attached to the Droplet stores all CSV data files and generated media (images, audio).
-
-### 5. Provider Factory — Plug & Play Architecture
-
-All AI/Image/Voice providers are abstracted behind a **Provider Factory** pattern. Switching providers requires only changing an environment variable:
-
-```env
-AI_PROVIDER=digitalocean    # ← Uses Gradient AI inference
-IMAGE_PROVIDER=bria         # Bria.ai FIBO v2 for image generation
-```
-
-This design demonstrates deep integration with DigitalOcean while maintaining extensibility.
-
----
-
-## ✨ Core Features
-
-### Feature 1: The Feynman Engine (5 Progressive Layers)
+**FunLearn** flips the script. Instead of AI teaching students, **students teach the AI**. This activates the Feynman Technique at scale, powered by DigitalOcean's Gradient™ AI.
 
 > *"If you can't explain it simply, you don't understand it well enough."* — Richard Feynman
 
-Students explain topics to **Ritty** — an AI-powered curious 8-year-old. The AI probes understanding through 5 progressive layers:
+---
+
+## 🏆 Hackathon Qualification — DigitalOcean Services Used
+
+FunLearn is purpose-built for the **[DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)** and deeply leverages **5 DigitalOcean services** across compute, storage, and the full Gradient™ AI stack.
+
+### 1. Gradient™ AI Agent Builder — *Ritty, the Feynman Agent*
+
+FunLearn deploys **Ritty** as a fully managed DigitalOcean Gradient™ AI Agent with a defined persona (curious 8-year-old), system instructions, and safe Guardrails to ensure age-appropriate, non-toxic responses. Ritty is not a raw LLM prompt — she is a named, versioned agent deployed on the Gradient platform with persistent configuration, provisioned via Terraform.
+
+### 2. Gradient™ AI Knowledge Base (RAG)
+
+A **Gradient™ Knowledge Base** is attached to Ritty's agent, ingesting NCERT and CBSE curriculum content via the web crawler data source. This grounds every Feynman Engine and Story Learning session in actual Indian curriculum — not generic world knowledge — making AI responses educationally accurate and curriculum-aligned.
+
+### 3. Gradient™ Serverless LLM Inference
+
+All AI features — Story Learning, Misconception Cascade Tracing, and Feynman Engine scoring — call the **DigitalOcean Gradient Serverless Inference API** using the `meta-llama/Meta-Llama-3.3-70B-Instruct` model via the OpenAI-compatible endpoint at `https://inference.do-ai.run/v1`. This is a pay-per-token, zero-infrastructure managed inference layer. The same inference API also powers the **IllustrationService** for AI-generated educational illustration cards.
+
+### 4. DigitalOcean Droplet (Compute)
+
+The entire application — FastAPI backend + React frontend served via Nginx — is hosted on a **Ubuntu 22.04 Droplet** (`s-2vcpu-4gb`). The app runs as a `systemd` service for auto-restart on failure, with a firewall allowing only ports 22, 80, and 443.
+
+### 5. DigitalOcean Volume (Persistent Storage)
+
+A **5GB Block Storage Volume** is attached to the Droplet and mounted at `/mnt/funlearn-data/csv`. All user data — accounts, learning sessions, Feynman conversations, MCT diagnostic history, and XP/streak records — is persisted on this volume, surviving Droplet reboots and redeployments.
+
+### How We Meet the Judging Criteria
+
+| Criterion | How FunLearn Addresses It |
+|---|---|
+| **Thoroughly leverage the required tool** | 3 distinct Gradient™ AI services: Agent Builder, Knowledge Base, Serverless Inference |
+| **Quality software development** | Provider Factory pattern for clean DO integration; full Terraform IaC for all infrastructure |
+| **Potential Impact** | Targets 1.5M Indian students who fail board exams yearly; 11 languages including Hindi and Bengali |
+| **Creative & unique idea** | Feynman Engine (teach the AI to learn), Story-Based Learning, MCT root-cause diagnosis — novel pedagogy |
+| **Design** | React + Tailwind UI with multilingual support, AI illustration cards, ambient particle effects, motion transitions |
+
+### Prize Categories Targeted
+
+| Prize | Why FunLearn Qualifies |
+|-------|----------------------|
+| **Best Program for the People** | Grassroots education impact — free adaptive learning for underserved Indian students across 11 languages |
+| **Best AI Agent Persona** | Ritty is a fully deployed, character-rich Gradient AI Agent with Guardrails and a curriculum-grounded Knowledge Base |
+| **The Great Whale Prize** | Deep platform usage across 5 DigitalOcean services including the full Gradient AI stack |
+
+---
+
+## ✨ Key Features
+
+| Feature | Description |
+|---------|-------------|
+| **Feynman Engine** | 5-layer progressive teaching system — students teach the AI to learn |
+| **Story-Based Learning** | AI generates engaging stories around any concept with Socratic follow-up dialogue |
+| **Misconception Cascade Tracing** | 5-phase diagnostic that traces misunderstandings to their root cause |
+| **AI-Generated Images** | Every AI response includes a contextual educational image (Bria FIBO v2 + Imagen 4.0 fallback) |
+| **AI Illustration Cards** | Structured visual cards with title, visual type, key elements, and insights |
+| **11-Language Support** | English, Hindi, Bengali, Spanish, Portuguese, Chinese, Japanese, Arabic, Russian, Punjabi, Vietnamese |
+| **Custom Avatars** | Draw, upload, or pick from gallery to personalize the experience |
+| **Story Characters** | Create custom characters that appear in AI-generated learning stories |
+| **Ambient Visual Effects** | 7 particle themes — snow, rain, sparkle, bubbles, neural, fireflies, sunny |
+| **Gamification** | XP, streaks, leveling system, and score tracking |
+| **Admin Panel** | Manage users, upload questions via CSV, and configure the platform |
+| **Terraform IaC** | Full infrastructure-as-code for one-command deployment to DigitalOcean |
+
+---
+
+## 🧠 Core Feature: The Feynman Engine
+
+The Feynman Engine is the heart of FunLearn. Students explain topics to **Ritty** — an AI-powered curious 8-year-old deployed as a DigitalOcean Gradient AI Agent — progressing through **5 layers of depth**:
 
 | Layer | Name | What Happens |
 |-------|------|-------------|
-| 1 | **Curious Child** 🧒 | Student explains concept in plain language. Ritty asks "why?" questions. |
-| 2 | **Compression Challenge** 📝 | Student compresses explanation into fewer words. Reveals shallow understanding. |
-| 3 | **Why Spiral** 🌀 | Recursive "but why?" questioning — drills to the foundation of knowledge. |
-| 4 | **Analogy Bridge** 🌉 | Student creates analogies. AI generates images to visualize them. |
-| 5 | **Lecture Hall** 🎓 | Student teaches a skeptical audience. Highest difficulty. |
+| **1** | Curious Child | Student explains the concept in plain language; Ritty asks probing "why?" questions |
+| **2** | Compression Challenge | Student must compress the entire concept into a single sentence |
+| **3** | Why Spiral | Ritty asks progressively deeper "why?" questions — 3 to 5 levels deep |
+| **4** | Analogy Builder | Student creates a real-world analogy for the concept |
+| **5** | Lecture Hall | Student delivers a complete mini-lecture to a virtual classroom |
 
-Each layer response includes:
-- AI text feedback with gap detection
-- **AI-generated educational image** (via Bria.ai FIBO v2)
-- Structured illustration cards
-- Confusion/curiosity level tracking
-- Knowledge gap logging
+Each interaction includes:
+- Real-time confusion & curiosity meters (0–10)
+- Knowledge gap detection
+- AI-generated educational illustration cards
+- AI-generated contextual images
+- Emoji reactions and avatar state changes
 
-### Feature 2: Story-Based Learning 📖
+Sessions are persisted and can be resumed. Knowledge gaps are tracked across sessions for long-term learning.
 
-1. Enter any concept (e.g., "Gravity", "Democracy")
-2. AI generates a 150-250 word engaging story with relatable characters
-3. Each story comes with an **AI-generated image**
-4. Follow-up questions test understanding via Socratic dialogue
-5. Every discussion response includes a new contextual image
+---
 
-### Feature 3: Misconception Cascade Tracing (MCT) 🔬
+## 📖 Story-Based Learning
 
-The most advanced diagnostic tool — a 5-phase Socratic dialogue that traces a misunderstanding back to its root:
+1. Enter any concept (e.g., "Gravity", "Democracy", "Photosynthesis")
+2. AI generates a 150–250 word engaging story with relatable characters
+3. An AI-generated educational image accompanies each story
+4. A follow-up question checks understanding
+5. Socratic dialogue continues to deepen knowledge, each response paired with a new image
+
+Students can add their own **custom characters** to stories for a personalized experience.
+
+---
+
+## 🔬 Misconception Cascade Tracing (MCT)
+
+The most advanced diagnostic tool. MCT runs a **5-phase Socratic dialogue** to find the *root* of a misunderstanding — not just the symptom:
 
 ```
 Phase 1: Surface Capture    → Record the wrong answer
@@ -148,25 +154,34 @@ Phase 4: Remediation        → Fix from root up to surface
 Phase 5: Verification       → Confirm understanding is restored
 ```
 
-Every MCT response includes an **AI-generated educational image** for visual reinforcement.
+---
 
-### Feature 4: AI Image Generation with Every Response 🎨
+## 🎨 AI-Generated Images
 
-Every AI response across all features generates a contextual educational image using **Bria.ai FIBO v2**:
-1. **Prompt → VLM Bridge** — Bria's hosted Gemini 2.5 Flash VLM converts prompts into structured JSON
-2. **JSON → FIBO Model** — 8B-parameter DiT model generates high-fidelity images
-3. **Fallback** — Google Imagen 4.0 serves as automatic fallback
+FunLearn generates **real AI images with every AI response** across all learning features using the **Bria.ai FIBO v2** pipeline:
 
-### Feature 5: Multi-Language Support 🌍
+1. **Prompt → VLM Bridge** — Bria's hosted Gemini 2.5 Flash VLM converts text prompts into structured JSON (~1000 words of scene description)
+2. **JSON → FIBO Model** — The 8B-parameter FIBO DiT model generates deterministic, high-fidelity images
+3. **Fallback** — If Bria is unavailable, **Google Imagen 4.0** serves as an automatic fallback
 
-11 languages with language compliance enforced at the prompt level — every AI request includes a critical instruction ensuring responses match the selected language.
+Every AI response — in the Feynman Engine (all 5 layers), Story Learning, and MCT — includes a contextual educational image for visual reinforcement.
 
-### Feature 6: Immersive Visual Experience 🎪
+---
 
-- 7 ambient particle themes (snow, rain, sunny, sparkle, bubbles, neural, fireflies)
-- Motion-based page transitions (fade, slide, scale)
-- AI illustration cards with gradient rendering
-- Deep blue/purple ambient backgrounds
+## 🌍 Multi-Language Support
+
+FunLearn supports **11 languages** across all AI features:
+
+| Code | Language | Code | Language |
+|------|----------|------|----------|
+| `en` | English | `ja` | Japanese |
+| `hi` | Hindi | `ar` | Arabic |
+| `bn` | Bengali | `ru` | Russian |
+| `es` | Spanish | `pa` | Punjabi |
+| `pt` | Portuguese | `vi` | Vietnamese |
+| `zh` | Mandarin Chinese | | |
+
+Language compliance is enforced at the **prompt level** — injected into every AI request.
 
 ---
 
@@ -177,10 +192,13 @@ Every AI response across all features generates a contextual educational image u
 │                     FRONTEND  (React 18 + TypeScript + Vite)     │
 │                                                                  │
 │  Pages: Dashboard · Feynman · MCT · Story Learning ·            │
-│         History · Profile · Settings                             │
+│         History · Profile · Characters · Avatar                  │
+│                                                                  │
+│  Effects: AmbientParticles (7 themes) · PageTransitions ·       │
+│           AIIllustration cards · CSS gradient animations          │
 │                                                                  │
 │  State: Zustand   Routing: React Router v6   HTTP: Axios         │
-│  Styling: Tailwind CSS   Animations: motion + tsparticles        │
+│  Styling: Tailwind CSS                                            │
 └───────────────────────────┬──────────────────────────────────────┘
                             │ REST API (JSON)
                             ▼
@@ -188,10 +206,11 @@ Every AI response across all features generates a contextual educational image u
 │                     BACKEND  (FastAPI + Python 3.11+)            │
 │                                                                  │
 │  Routers: auth · users · learning · quiz · features ·            │
-│           feynman · sessions · story · admin                      │
+│           feynman · sessions · story · characters · admin         │
 │                                                                  │
-│  Services: FeynmanAIService · StoryService · ContentGenerator ·  │
-│            QuestionGenerator · AnswerEvaluator · ScoringService   │
+│  Services: FeynmanAIService · StoryService · ContentGenerator · │
+│            QuestionGenerator · AnswerEvaluator ·                │
+│            IllustrationService · ScoringService                  │
 │                                                                  │
 │  ┌──────────────────────────────────────────────────────────┐   │
 │  │           PROVIDER FACTORY  (Plug & Play)                │   │
@@ -199,64 +218,49 @@ Every AI response across all features generates a contextual educational image u
 │  │  AI:     DigitalOcean Gradient ✓ · OpenAI · Anthropic   │   │
 │  │  Image:  Bria.ai FIBO v2 ✓ · Gemini Imagen 4.0 ✓ ·     │   │
 │  │          Pollinations · Stability · None                 │   │
-│  │  Voice:  None (disabled for hackathon)                   │   │
 │  └──────────────────────────────────────────────────────────┘   │
 │                                                                  │
-│  Data: CSV files (pandas)   Auth: JWT + bcrypt                   │
-└──────────────────────────────────────────────────────────────────┘
-                            │
-                            ▼
-┌──────────────────────────────────────────────────────────────────┐
-│              DIGITALOCEAN INFRASTRUCTURE (Terraform)             │
-│                                                                  │
-│  Droplet: Ubuntu 22.04 + Nginx + systemd                        │
-│  Volume:  5GB persistent block storage                           │
-│  Agent:   Gradient AI Agent (Ritty persona)                      │
-│  Firewall: HTTP/HTTPS/SSH                                        │
+│  Data: CSV files (pandas) on DO Volume · Auth: JWT + bcrypt      │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
 ### Technology Stack
 
-| Layer | Technology | Purpose |
+| Layer | Technology | Details |
 |-------|-----------|---------|
-| AI Model | **DigitalOcean Gradient AI** | Llama 3.3 70B Instruct — all AI interactions |
-| AI Agent | **DigitalOcean GenAI Agent** | Ritty's persistent persona |
-| Hosting | **DigitalOcean Droplet** | Ubuntu 22.04 server |
-| Storage | **DigitalOcean Volume** | 5GB block storage for data |
-| IaC | **Terraform** | DigitalOcean provider for all infrastructure |
-| Frontend | React 18 + TypeScript + Vite | Modern SPA |
-| Styling | Tailwind CSS | Utility-first CSS |
-| State | Zustand | Lightweight state management |
-| Backend | FastAPI + Python 3.11+ | Async REST API |
-| Data | pandas (CSV) | Lightweight data persistence |
-| Auth | JWT + bcrypt | Secure authentication |
-| Images | Bria.ai FIBO v2 | AI image generation |
-| Image Fallback | Google Imagen 4.0 | Automatic failover |
+| Frontend | React 18.3 + TypeScript 5.2 | Vite, Tailwind CSS, Zustand, React Router v6 |
+| Backend | FastAPI + Python 3.11+ | Pydantic v2, Uvicorn, pandas |
+| AI Model | DigitalOcean Gradient | Llama 3.3 70B Instruct (Serverless Inference) |
+| AI Agent | DigitalOcean Gradient Agent Builder | Ritty persona + NCERT Knowledge Base |
+| Image Gen | Bria.ai FIBO v2 | Google Imagen 4.0 fallback |
+| Compute | DigitalOcean Droplet | Ubuntu 22.04, s-2vcpu-4gb |
+| Storage | DigitalOcean Volume | 5GB Block Storage for persistent data |
+| IaC | Terraform | Full infrastructure-as-code |
+| Auth | JWT + bcrypt | Secure token-based authentication |
 
 ---
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Quick Start
 
 ### Prerequisites
 
 - Python 3.11+
 - Node.js 18+
-- DigitalOcean Gradient API Key ([get one here](https://cloud.digitalocean.com/))
+- DigitalOcean Gradient API Key
 
 ### Backend
 
 ```bash
 cd genlearn-ai/backend
 python -m venv venv
-source venv/bin/activate          # macOS/Linux
-# venv\Scripts\activate           # Windows
+source venv/bin/activate        # Linux/macOS
+# venv\Scripts\activate         # Windows
 pip install -r requirements.txt
-cp .env.example .env              # Edit .env — add GRADIENT_API_KEY
+cp .env.example .env            # Edit .env with your API keys
 python run.py
 ```
 
-Backend: **http://localhost:8000** | API docs: **http://localhost:8000/docs**
+Backend: **http://localhost:8000** · API Docs: **http://localhost:8000/docs**
 
 ### Frontend
 
@@ -268,107 +272,98 @@ npm run dev
 
 Frontend: **http://localhost:5173**
 
+### Default Login
+
+| Username | Password |
+|----------|----------|
+| `DebK` | `password123` |
+
 ---
 
 ## 🏗️ Project Structure
 
 ```
-R_U_Serious/
-├── LICENSE                          # MIT License (OSI-approved)
-├── README.md                        # ← You are here
-│
 ├── genlearn-ai/
 │   ├── backend/
 │   │   ├── app/
-│   │   │   ├── main.py             # FastAPI app entry point
-│   │   │   ├── config.py           # Environment config
-│   │   │   ├── api/routes/         # All REST endpoints
-│   │   │   ├── services/           # Business logic + AI providers
-│   │   │   ├── models/             # Pydantic models
-│   │   │   ├── database/           # CSV handler + file I/O
-│   │   │   └── utils/              # Helpers, validators, rate limiter
-│   │   ├── data/csv/               # CSV database files
-│   │   └── requirements.txt
+│   │   │   ├── main.py                  # FastAPI app + router registration
+│   │   │   ├── config.py                # Environment configuration
+│   │   │   ├── api/routes/              # All API route handlers
+│   │   │   │   ├── auth.py              # Authentication
+│   │   │   │   ├── feynman.py           # Feynman Engine (5 layers)
+│   │   │   │   ├── story_learning.py    # Story-Based Learning
+│   │   │   │   ├── features.py          # MCT diagnostics
+│   │   │   │   ├── characters.py        # Character management
+│   │   │   │   ├── learning.py          # Learning sessions
+│   │   │   │   └── admin.py             # Admin panel
+│   │   │   ├── services/                # Business logic
+│   │   │   │   ├── provider_factory.py  # AI/Image provider switching
+│   │   │   │   ├── feynman_service.py   # Feynman Engine AI logic
+│   │   │   │   ├── story_service.py     # Story generation AI logic
+│   │   │   │   ├── ai_providers/        # DO Gradient · OpenAI · Anthropic
+│   │   │   │   └── image_providers/     # Bria · Gemini · Pollinations
+│   │   │   ├── database/               # CSV handlers + file I/O
+│   │   │   ├── models/                 # Pydantic data models
+│   │   │   └── utils/                  # Rate limiting, validation, i18n
+│   │   └── data/                       # CSV databases + media files
 │   │
 │   └── frontend/
 │       └── src/
-│           ├── pages/              # React page components
-│           ├── components/         # Reusable UI components
-│           ├── services/api.ts     # API client
-│           ├── store/              # Zustand state
-│           └── contexts/           # Language context
+│           ├── pages/                   # All page components
+│           ├── components/              # Reusable UI components
+│           ├── services/api.ts          # API client
+│           ├── store/                   # Zustand state management
+│           ├── contexts/                # Language context
+│           └── types/                   # TypeScript interfaces
 │
-└── infra/                           # Terraform IaC
-    ├── main.tf                      # Provider config
-    ├── droplet.tf                   # DO Droplet
-    ├── volume.tf                    # DO Volume
-    ├── gradient_ai.tf               # DO Gradient AI Agent
-    ├── variables.tf                 # Variable definitions
-    └── outputs.tf                   # Terraform outputs
+└── infra/                               # Terraform IaC
+    ├── main.tf                          # Provider + Droplet config
+    ├── gradient_ai.tf                   # Gradient Agent + Knowledge Base
+    ├── volume.tf                        # Block Storage Volume
+    └── variables.tf                     # Configurable variables
 ```
 
 ---
 
-## 🔑 Environment Variables
+## 🚀 Deployment
+
+### Terraform (One-Command Deploy)
+
+```bash
+cd infra/
+terraform init
+terraform plan -var-file="terraform.tfvars"
+terraform apply -var-file="terraform.tfvars"
+```
+
+This provisions:
+- **Droplet** — Ubuntu 22.04 with FastAPI + Nginx + systemd
+- **Volume** — 5GB persistent storage for all user data
+- **Gradient AI Agent** — Ritty persona with guardrails
+- **Knowledge Base** — NCERT/CBSE curriculum via web crawler
+- **Firewall** — Ports 22, 80, 443 only
+
+### Environment Variables
+
+Key variables in `backend/.env`:
 
 ```env
-# ── DigitalOcean Gradient AI (REQUIRED) ───────────────────────
 AI_PROVIDER=digitalocean
-GRADIENT_API_KEY=your_gradient_api_key_here
+GRADIENT_API_KEY=your_key_here
 GRADIENT_BASE_URL=https://inference.do-ai.run/v1
 GRADIENT_MODEL=meta-llama/Meta-Llama-3.3-70B-Instruct
-
-# ── Image Generation ──────────────────────────────────────────
 IMAGE_PROVIDER=bria
-BRIA_API_KEY=your_bria_api_key_here
-GEMINI_API_KEY=your_gemini_api_key_here    # Fallback
-
-# ── Application ───────────────────────────────────────────────
-SECRET_KEY=your_secret_key_here
-BACKEND_PORT=8000
+BRIA_API_KEY=your_key_here
 ```
-
----
-
-## 📡 API Endpoints
-
-| Method | Endpoint | Feature |
-|--------|----------|---------|
-| POST | `/api/auth/login` | Authentication |
-| POST | `/api/feynman/session/start` | Start Feynman session |
-| POST | `/api/feynman/teach` | Layer 1: Teach Ritty |
-| POST | `/api/feynman/compress` | Layer 2: Compression |
-| POST | `/api/feynman/why-spiral` | Layer 3: Why Spiral |
-| POST | `/api/feynman/analogy` | Layer 4: Analogy Bridge |
-| POST | `/api/feynman/lecture-hall` | Layer 5: Lecture Hall |
-| GET | `/api/feynman/session/{id}/summary` | Session summary |
-| POST | `/api/story/generate` | Generate learning story |
-| POST | `/api/story/discuss` | Socratic discussion |
-| POST | `/api/features/mct/start` | Start MCT session |
-| POST | `/api/features/mct/chat` | MCT conversation |
-| GET | `/api/features/mct/sessions/user/{id}` | MCT history |
-
-Full interactive docs: **http://165.22.218.159:8000/docs**
-
----
-
-## 🏆 Hackathon Prize Category Fit
-
-| Prize | Why FunLearn Qualifies |
-|-------|----------------------|
-| **1st/2nd/3rd Place** | Full-stack app using Gradient AI for all AI interactions, deployed on DO infrastructure |
-| **Best AI Agent Persona** | **Ritty** — a curious 8-year-old with distinct personality, emoji reactions, confusion levels, and 5 engagement modes. Provisioned via DO GenAI Agent API. |
-| **The Great Whale Prize** | Targets 1.5B+ students globally with 11-language support. Transforms passive learning into active teaching at scale. |
-| **Best Program for the People** | MIT-licensed, open source. Education technology accessible to any student with a browser. No app install required. |
 
 ---
 
 <div align="center">
 
-**Made for DigitalOcean Gradient™ AI Hackathon**
+**Built for the [DigitalOcean GenAI Hackathon](https://digitalocean.devpost.com/)**
 
 *FunLearn — Where understanding happens by teaching, not by being taught.*
 
-*Powered by DigitalOcean Gradient™ AI — Feynman Technique for Every Student*
+*Powered by DigitalOcean Gradient™ AI · Llama 3.3 70B Instruct · Bria FIBO v2*
 
 </div>
