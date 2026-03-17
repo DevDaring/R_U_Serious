@@ -116,6 +116,7 @@ The student explains the concept in plain language. Ritty responds with:
 | `avatar_state` | Ritty's visual state (`thinking`, `confused`, `excited`, etc.) |
 | `layer_complete` | True when the explanation satisfies Ritty |
 | `illustration` | AI-generated educational illustration card (see below) |
+| `image_url` | AI-generated educational image (base64 data URL) |
 
 **API endpoints:**
 | Method | Path | Description |
@@ -147,13 +148,13 @@ This approach works without any external image API, using zero additional infras
 
 ### AI-Generated Images (Bria.ai FIBO v2)
 
-FunLearn also generates **real AI images** during learning sessions using the **Bria.ai FIBO v2** pipeline:
+FunLearn generates **real AI images with every AI response** across all learning features using the **Bria.ai FIBO v2** pipeline:
 
 1. **Prompt → VLM Bridge** — Bria's hosted Gemini 2.5 Flash VLM converts text prompts into structured JSON (~1000 words of scene description)
 2. **JSON → FIBO Model** — The 8B-parameter FIBO DiT model generates deterministic, high-fidelity images from the structured JSON
 3. **Fallback** — If Bria is unavailable, **Google Imagen 4.0** serves as an automatic fallback
 
-Images are generated at spaced intervals during MCT sessions (turns 1, 2, 4, 7, 11…) to reinforce concepts visually.
+**Every AI response includes a contextual educational image** — whether it's a Feynman Engine interaction (all 5 layers), a Story Learning session, or an MCT diagnostic conversation. This ensures students always receive both textual and visual reinforcement of concepts.
 
 Set `IMAGE_PROVIDER=bria` (or `gemini`, `pollinations`) in `.env` to enable.
 
@@ -197,8 +198,9 @@ Our newest feature replaces "Time Travel Interview" with a more focused learning
 **How it works:**
 1. Enter any concept (e.g., "Gravity", "Democracy", "Photosynthesis")
 2. AI generates a 150-250 word engaging story with relatable characters
-3. A follow-up question checks understanding
-4. Socratic dialogue continues to deepen knowledge
+3. An AI-generated educational image accompanies each story and discussion response
+4. A follow-up question checks understanding
+5. Socratic dialogue continues to deepen knowledge, each response paired with a new image
 
 **API endpoints:**
 | Method | Path | Description |
