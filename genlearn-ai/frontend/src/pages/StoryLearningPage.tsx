@@ -59,13 +59,13 @@ const StoryLearning: React.FC = () => {
         <p className="text-gray-600">
           Any concept. One story. Deep understanding.
         </p>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-400 mt-1">
           Powered by DigitalOcean Gradient AI
         </p>
       </div>
 
       {!story && (
-        <div className="bg-white rounded-lg p-6 shadow-md border border-gray-200">
+        <div className="glass-card-strong rounded-2xl p-6 border border-gray-200/50">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             What concept should the story teach?
           </label>
@@ -91,17 +91,17 @@ const StoryLearning: React.FC = () => {
             <AIIllustration data={illustration} />
           )}
           
-          <div className="bg-amber-50 border-l-4 border-amber-400 p-5 rounded-lg">
+          <div className="bg-amber-50/80 border-l-4 border-amber-400 p-5 rounded-2xl backdrop-blur-sm">
             <h2 className="text-sm font-semibold text-amber-800 mb-2">📚 The Story</h2>
             <p className="text-gray-800 leading-relaxed whitespace-pre-wrap">{story}</p>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+          <div className="bg-blue-50/80 border border-blue-200/50 p-4 rounded-2xl backdrop-blur-sm">
             <p className="font-semibold text-blue-800">🤔 {followUp}</p>
           </div>
 
           {!feedback && (
-            <div className="bg-white rounded-lg p-4 shadow-md border border-gray-200">
+            <div className="glass-card-strong rounded-2xl p-4">
               <textarea
                 className="w-full border border-gray-300 rounded-lg p-3 mb-3 bg-white text-gray-900 focus:ring-2 focus:ring-green-500 focus:outline-none"
                 rows={3}
@@ -120,7 +120,7 @@ const StoryLearning: React.FC = () => {
           )}
 
           {feedback && (
-            <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+            <div className="bg-green-50/80 border border-green-200/50 p-4 rounded-2xl backdrop-blur-sm">
               <h3 className="text-sm font-semibold text-green-800 mb-2">💡 Feedback</h3>
               <p className="text-gray-800 whitespace-pre-wrap">{feedback}</p>
             </div>

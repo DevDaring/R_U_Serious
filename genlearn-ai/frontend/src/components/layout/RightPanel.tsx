@@ -7,9 +7,10 @@ export const RightPanel: React.FC = () => {
   return (
     <aside
       className={cn(
-        'bg-white border-l border-gray-200 h-full transition-all duration-300',
+        'h-full transition-all duration-300',
         isOpen ? 'w-80' : 'w-0 overflow-hidden'
       )}
+      style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(240,249,255,0.88) 100%)', backdropFilter: 'blur(16px)', borderLeft: '1px solid rgba(14,165,233,0.1)' }}
     >
       <div className="relative h-full">
         <button

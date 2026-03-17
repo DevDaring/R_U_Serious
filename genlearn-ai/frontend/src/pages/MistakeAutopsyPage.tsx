@@ -480,7 +480,8 @@ export const MistakeAutopsyPage: React.FC = () => {
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
-            <div className="bg-white rounded-xl p-6 shadow-lg">
+            <div className="glass-card-strong rounded-2xl p-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-red-400 via-teal-400 to-cyan-500" />
                 <h1 className="text-3xl font-bold text-gray-900 mb-2">🔬 Mistake Autopsy + MCT</h1>
                 <p className="text-gray-600">
                     Understand WHY you made a mistake and trace it to its root cause!
@@ -488,7 +489,7 @@ export const MistakeAutopsyPage: React.FC = () => {
             </div>
 
             {mode === 'input' && (
-                <div className="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-xl p-6">
+                <div className="glass-card rounded-2xl p-6" style={{ background: 'linear-gradient(135deg, rgba(240,253,250,0.8) 0%, rgba(207,250,254,0.6) 100%)' }}>
                     <h2 className="text-xl font-bold text-gray-800 mb-4">Enter the Mistake Details</h2>
 
                     <div className="space-y-4">
@@ -765,7 +766,7 @@ export const MistakeAutopsyPage: React.FC = () => {
             {/* Basic Result Mode */}
             {mode === 'basic_result' && result && (
                 <div className="space-y-4">
-                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="glass-card-strong rounded-2xl p-6">
                         <h3 className="text-xl font-bold text-red-600 mb-4">🐛 Bug Found in Your Brain!</h3>
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                             <p className="font-medium text-red-800">Error Type: {result.diagnosis?.error_category || 'Unknown'}</p>
@@ -779,7 +780,7 @@ export const MistakeAutopsyPage: React.FC = () => {
                         )}
                     </div>
 
-                    <div className="bg-white rounded-xl p-6 shadow-lg">
+                    <div className="glass-card-strong rounded-2xl p-6">
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xl font-bold text-gray-800">📝 Explanation</h3>
                             <button
@@ -805,9 +806,9 @@ export const MistakeAutopsyPage: React.FC = () => {
 
             {/* MCT Chat Mode */}
             {mode === 'mct_chat' && (
-                <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+                <div className="glass-card-strong rounded-2xl overflow-hidden">
                     {/* Header with Phase Progress */}
-                    <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4">
+                    <div className="bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 text-white p-4">
                         <div className="flex justify-between items-center">
                             <div>
                                 <h2 className="font-bold">🧠 Misconception Cascade Tracing</h2>

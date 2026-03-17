@@ -595,20 +595,22 @@ export const FeynmanEnginePage: React.FC = () => {
     if (step === 'setup') {
         return (
             <div className="max-w-2xl mx-auto space-y-6">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white flex items-center gap-6">
+                <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-2xl p-8 text-white flex items-center gap-6 shadow-xl relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/4" />
+                    <div className="absolute bottom-0 left-1/3 w-20 h-20 bg-white/5 rounded-full translate-y-1/2" />
                     <img
                         src="/assets/site-images/richard.png"
                         alt="Richard Feynman"
-                        className="w-24 h-24 rounded-full border-3 border-white/30 shadow-lg object-cover hidden md:block"
+                        className="w-24 h-24 rounded-full border-3 border-white/30 shadow-lg object-cover hidden md:block relative z-10"
                     />
-                    <div>
+                    <div className="relative z-10">
                         <h1 className="text-3xl font-bold mb-2">🧠 Feynman Technique</h1>
                         <p className="opacity-90">"If you can't explain it simply, you don't understand it."</p>
                         <p className="text-sm opacity-75 mt-2">— Richard Feynman</p>
                     </div>
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-lg space-y-4">
+                <div className="glass-card-strong rounded-2xl p-6 space-y-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">What do you want to teach?</label>
                         <input
@@ -680,7 +682,7 @@ export const FeynmanEnginePage: React.FC = () => {
                 </div>
 
                 {/* Session History Section - Collapsible */}
-                <div className="bg-white rounded-xl p-4 shadow-lg">
+                <div className="glass-card rounded-2xl p-4">
                     <button
                         onClick={toggleHistory}
                         className="w-full flex items-center justify-between p-2 hover:bg-gray-50 rounded-lg transition-all"
@@ -734,7 +736,7 @@ export const FeynmanEnginePage: React.FC = () => {
                 return (
                 <div className="max-w-6xl mx-auto space-y-4">
                     {/* Header with Layer Navigation */}
-                    <div className="bg-white rounded-xl p-4 shadow-lg">
+                    <div className="glass-card-strong rounded-2xl p-4">
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <h1 className="text-xl font-bold text-gray-900">🧠 {session?.topic}</h1>
@@ -770,7 +772,7 @@ export const FeynmanEnginePage: React.FC = () => {
                     {/* Layer Content */}
                     <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
                         {/* Main Chat Area */}
-                        <div className="lg:col-span-3 bg-white rounded-xl shadow-lg overflow-hidden">
+                        <div className="lg:col-span-3 glass-card-strong rounded-2xl overflow-hidden">
                             {/* Layer 1: Ritty */}
                             {currentLayer === 1 && (
                                 <>
@@ -1041,14 +1043,14 @@ export const FeynmanEnginePage: React.FC = () => {
                         <div className="space-y-4">
                             {/* Ritty Avatar (Layer 1) */}
                             {currentLayer === 1 && (
-                                <div className="bg-white rounded-xl p-4 shadow-lg">
+                                <div className="glass-card rounded-2xl p-4">
                                     <RittyAvatar state={avatarState} confusion={confusionLevel} curiosity={curiosityLevel} />
                                 </div>
                             )}
 
                             {/* Persona Satisfaction (Layer 5) */}
                             {currentLayer === 5 && personaFeedback.length > 0 && (
-                                <div className="bg-white rounded-xl p-4 shadow-lg space-y-3">
+                                <div className="glass-card rounded-2xl p-4 space-y-3">
                                     <h3 className="font-bold text-gray-800">Persona Satisfaction</h3>
                                     {personaFeedback.map(p => (
                                         <div key={p.persona} className="flex items-center gap-2">
@@ -1070,7 +1072,7 @@ export const FeynmanEnginePage: React.FC = () => {
                             )}
 
                             {/* Tips */}
-                            <div className="bg-white rounded-xl p-4 shadow-lg">
+                            <div className="glass-card rounded-2xl p-4">
                                 <h3 className="font-bold text-gray-800 mb-2">💡 Tips</h3>
                                 <ul className="text-sm text-gray-600 space-y-1">
                                     {currentLayer === 1 && (

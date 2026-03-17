@@ -33,14 +33,14 @@ export const LeftMenu: React.FC = () => {
   return (
     <aside
       className={cn(
-        'bg-white border-r border-gray-200 h-full overflow-y-auto transition-all duration-300 ease-in-out relative z-50',
+        'glass-sidebar h-full overflow-y-auto transition-all duration-300 ease-in-out relative z-50',
         isExpanded ? 'w-64' : 'w-16'
       )}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
       <nav className={cn(
-        'space-y-2',
+        'space-y-1',
         isExpanded ? 'p-4' : 'px-2 py-4'
       )}>
         {filteredItems.map((item) => (
@@ -48,11 +48,11 @@ export const LeftMenu: React.FC = () => {
             key={item.path}
             to={item.path}
             className={cn(
-              'flex items-center rounded-lg transition-all duration-200',
+              'flex items-center rounded-xl transition-all duration-200',
               isExpanded ? 'space-x-3 px-4 py-3' : 'justify-center px-2 py-3',
               location.pathname.startsWith(item.path)
-                ? 'bg-primary-100 text-primary-700 font-semibold'
-                : 'text-gray-700 hover:bg-gray-100'
+                ? 'bg-gradient-to-r from-primary-500/15 to-primary-500/5 text-primary-700 font-semibold border border-primary-200/50 shadow-sm'
+                : 'text-gray-600 hover:bg-white/60 hover:shadow-sm'
             )}
             title={item.label}
           >
