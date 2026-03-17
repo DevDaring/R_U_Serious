@@ -19,7 +19,7 @@ users_data = {
     "user_id": ["USR001", "USR002", "USR003", "USR004", "USR005"],
     "username": ["admin", "DebK", "priya_sharma", "amit_roy", "sarah_wilson"],
     "email": ["admin@genlearn.ai", "debk@example.com", "priya@example.com", "amit@example.com", "sarah@example.com"],
-    "password_hash": ["$2b$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/X4NwKXkLQPHHKq0Ky"] * 5,
+    "password_hash": ["$2b$12$LLQK3hVmGBg6Wy1mZdGyNOn2ka67iR6Q4xE55.unhivXbxaPpe26i"] * 5,
     "role": ["admin", "user", "user", "user", "user"],
     "display_name": ["Administrator", "DebK", "Priya Sharma", "Amit Roy", "Sarah Wilson"],
     "avatar_id": ["", "AVT001", "AVT002", "AVT003", ""],
