@@ -43,7 +43,7 @@ export const ProfilePage: React.FC = () => {
           </div>
         </div>
 
-        <div className="mt-6 text-sm text-gray-500">
+        <div className="mt-6 text-sm text-gray-600">
           Profile editing features will be available soon.
         </div>
       </div>

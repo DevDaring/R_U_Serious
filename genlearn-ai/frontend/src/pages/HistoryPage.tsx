@@ -138,7 +138,7 @@ export const HistoryPage: React.FC = () => {
         </div>
 
         {sessions.length === 0 ? (
-          <div className="text-center py-16 text-gray-500">
+          <div className="text-center py-16 text-gray-600">
             <div className="text-6xl mb-4">📚</div>
             <p className="text-lg">No learning sessions yet.</p>
             <p className="text-sm mt-2">Start your first learning adventure!</p>

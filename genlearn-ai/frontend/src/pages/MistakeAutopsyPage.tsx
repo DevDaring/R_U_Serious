@@ -627,13 +627,13 @@ export const MistakeAutopsyPage: React.FC = () => {
                                                     >
                                                         <span className="text-xs font-bold text-gray-600">
                                                             {msg.role === 'user' ? '👤 You' : '🤖 AI'}
-                                                            {msg.layer && <span className="ml-1 text-gray-400">(Layer {msg.layer})</span>}
+                                                            {msg.layer && <span className="ml-1 text-gray-500">(Layer {msg.layer})</span>}
                                                         </span>
                                                         <p className="text-gray-700 mt-1 line-clamp-3">{msg.message}</p>
                                                     </div>
                                                 ))}
                                                 {loadedConversation.length > 10 && (
-                                                    <p className="text-xs text-gray-400 text-center">
+                                                    <p className="text-xs text-gray-500 text-center">
                                                         ... and {loadedConversation.length - 10} more messages
                                                     </p>
                                                 )}
@@ -654,7 +654,7 @@ export const MistakeAutopsyPage: React.FC = () => {
                                                 </div>
                                                 <div className="p-2 max-h-48 overflow-y-auto">
                                                     {feynmanHistory.length === 0 ? (
-                                                        <p className="text-sm text-gray-400 p-2">No sessions found</p>
+                                                        <p className="text-sm text-gray-600 p-2">No sessions found</p>
                                                     ) : (
                                                         feynmanHistory.map((item, idx) => (
                                                             <button
@@ -680,7 +680,7 @@ export const MistakeAutopsyPage: React.FC = () => {
                                                 </div>
                                                 <div className="p-2 max-h-48 overflow-y-auto">
                                                     {learningHistory.length === 0 ? (
-                                                        <p className="text-sm text-gray-400 p-2">No history found</p>
+                                                        <p className="text-sm text-gray-600 p-2">No history found</p>
                                                     ) : (
                                                         learningHistory.map((item, idx) => (
                                                             <button
@@ -706,7 +706,7 @@ export const MistakeAutopsyPage: React.FC = () => {
                                                 </div>
                                                 <div className="p-2 max-h-48 overflow-y-auto">
                                                     {sessionsHistory.length === 0 ? (
-                                                        <p className="text-sm text-gray-400 p-2">No sessions found</p>
+                                                        <p className="text-sm text-gray-600 p-2">No sessions found</p>
                                                     ) : (
                                                         sessionsHistory.map((item, idx) => (
                                                             <button
@@ -732,7 +732,7 @@ export const MistakeAutopsyPage: React.FC = () => {
                                                 </div>
                                                 <div className="p-2 max-h-48 overflow-y-auto">
                                                     {mctHistory.length === 0 ? (
-                                                        <p className="text-sm text-gray-400 p-2">No MCT sessions found</p>
+                                                        <p className="text-sm text-gray-600 p-2">No MCT sessions found</p>
                                                     ) : (
                                                         mctHistory.map((item, idx) => (
                                                             <button

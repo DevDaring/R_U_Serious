@@ -23,7 +23,7 @@ export const RightPanel: React.FC = () => {
           <div className="h-full flex flex-col">
             <div className="p-4 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900">AI Assistant</h3>
-              <p className="text-sm text-gray-500">Ask me anything!</p>
+              <p className="text-sm text-gray-600">Ask me anything!</p>
             </div>
             <ChatWindow />
           </div>

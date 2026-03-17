@@ -25,7 +25,7 @@ export const Slider: React.FC<SliderProps> = ({
       {label && (
         <div className="flex justify-between mb-2">
           <label className="text-sm font-medium text-gray-700">{label}</label>
-          <span className="text-sm text-gray-500">{value}</span>
+          <span className="text-sm text-gray-600">{value}</span>
         </div>
       )}
       <input

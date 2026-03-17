@@ -592,10 +592,17 @@ export const FeynmanEnginePage: React.FC = () => {
     if (step === 'setup') {
         return (
             <div className="max-w-2xl mx-auto space-y-6">
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white">
-                    <h1 className="text-3xl font-bold mb-2">🧠 Feynman Technique</h1>
-                    <p className="opacity-90">"If you can't explain it simply, you don't understand it."</p>
-                    <p className="text-sm opacity-75 mt-2">— Richard Feynman</p>
+                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white flex items-center gap-6">
+                    <img
+                        src="/assets/site-images/richard.png"
+                        alt="Richard Feynman"
+                        className="w-24 h-24 rounded-full border-3 border-white/30 shadow-lg object-cover hidden md:block"
+                    />
+                    <div>
+                        <h1 className="text-3xl font-bold mb-2">🧠 Feynman Technique</h1>
+                        <p className="opacity-90">"If you can't explain it simply, you don't understand it."</p>
+                        <p className="text-sm opacity-75 mt-2">— Richard Feynman</p>
+                    </div>
                 </div>
 
                 <div className="bg-white rounded-xl p-6 shadow-lg space-y-4">
@@ -631,7 +638,7 @@ export const FeynmanEnginePage: React.FC = () => {
                             onChange={(e) => setDifficulty(parseInt(e.target.value))}
                             className="w-full"
                         />
-                        <div className="flex justify-between text-xs text-gray-500">
+                        <div className="flex justify-between text-xs text-gray-600">
                             <span>Easy</span>
                             <span>Hard</span>
                         </div>
@@ -678,16 +685,16 @@ export const FeynmanEnginePage: React.FC = () => {
                         <span className="text-lg font-semibold text-gray-700">
                             📚 Recent Teaching Sessions
                         </span>
-                        <span className="text-gray-500 text-xl">
+                        <span className="text-gray-600 text-xl">
                             {showHistory ? '▲' : '▼'}
                         </span>
                     </button>
                     {showHistory && (
                         <div className="mt-4">
-                            {historyLoading && <div className="text-center py-4 text-gray-500">⏳ Loading sessions...</div>}
+                            {historyLoading && <div className="text-center py-4 text-gray-600">⏳ Loading sessions...</div>}
                             {historyError && <div className="text-center py-4 text-red-500">{historyError}</div>}
                             {!historyLoading && !historyError && sessionHistory.length === 0 && (
-                                <div className="text-center py-4 text-gray-500">No previous sessions. Start your first teaching session!</div>
+                                <div className="text-center py-4 text-gray-600">No previous sessions. Start your first teaching session!</div>
                             )}
                             {!historyLoading && sessionHistory.length > 0 && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -704,7 +711,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                 </span>
                                             </div>
                                             <h4 className="font-semibold text-gray-800 group-hover:text-indigo-700 mb-1 line-clamp-2">{s.topic}</h4>
-                                            <div className="flex items-center gap-2 text-xs text-gray-500">
+                                            <div className="flex items-center gap-2 text-xs text-gray-600">
                                                 <span>Layer {s.current_layer || 1}</span>
                                                 <span>•</span>
                                                 <span>{new Date(s.started_at).toLocaleDateString()}</span>
@@ -728,7 +735,7 @@ export const FeynmanEnginePage: React.FC = () => {
                         <div className="flex items-center justify-between mb-4">
                             <div>
                                 <h1 className="text-xl font-bold text-gray-900">🧠 {session?.topic}</h1>
-                                <p className="text-sm text-gray-500">{session?.subject}</p>
+                                <p className="text-sm text-gray-600">{session?.subject}</p>
                             </div>
                             <button
                                 onClick={handleCompleteSession}
@@ -779,7 +786,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                 </div>
                                             </div>
                                         ))}
-                                        {loading && <div className="text-center text-gray-500">Ritty is thinking... 🤔</div>}
+                                        {loading && <div className="text-center text-gray-600">Ritty is thinking... 🤔</div>}
                                         <div ref={chatEndRef} />
                                     </div>
                                     <div className="p-4 border-t flex gap-2">
@@ -818,7 +825,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                         ? 'bg-blue-500 text-white'
                                                         : compressionHistory.some(h => h.limit === limit)
                                                             ? 'bg-green-100 text-green-700'
-                                                            : 'bg-gray-100 text-gray-500'
+                                                            : 'bg-gray-100 text-gray-600'
                                                         }`}
                                                 >
                                                     {limit}
@@ -828,7 +835,7 @@ export const FeynmanEnginePage: React.FC = () => {
 
                                         {compressionHistory.map((h, idx) => (
                                             <div key={idx} className="p-3 bg-gray-50 rounded-lg space-y-2">
-                                                <div className="flex justify-between text-sm text-gray-500">
+                                                <div className="flex justify-between text-sm text-gray-600">
                                                     <span>{h.limit} words</span>
                                                     <span>Score: {h.score}/5 {'⭐'.repeat(h.score)}</span>
                                                 </div>
@@ -850,7 +857,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                 className="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 h-32"
                                             />
                                             <div className="flex justify-between items-center mt-2">
-                                                <span className={`text-sm ${compressionInput.split(/\s+/).filter(Boolean).length > currentWordLimit ? 'text-red-500' : 'text-gray-500'}`}>
+                                                <span className={`text-sm ${compressionInput.split(/\s+/).filter(Boolean).length > currentWordLimit ? 'text-red-500' : 'text-gray-600'}`}>
                                                     {compressionInput.split(/\s+/).filter(Boolean).length} / {currentWordLimit} words
                                                 </span>
                                                 <button
@@ -884,7 +891,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                 </div>
                                             </div>
                                         ))}
-                                        {loading && <div className="text-center text-gray-500">Thinking of the next question... 🌀</div>}
+                                        {loading && <div className="text-center text-gray-600">Thinking of the next question... 🌀</div>}
                                         <div ref={chatEndRef} />
                                     </div>
                                     <div className="p-4 border-t space-y-2">
@@ -957,7 +964,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                             </div>
                                         )}
 
-                                        {loading && <div className="text-center text-gray-500">Generating feedback... 🎨</div>}
+                                        {loading && <div className="text-center text-gray-600">Generating feedback... 🎨</div>}
                                         <div ref={chatEndRef} />
 
                                         <textarea
@@ -1000,7 +1007,7 @@ export const FeynmanEnginePage: React.FC = () => {
                                                 </div>
                                             </div>
                                         ))}
-                                        {loading && <div className="text-center text-gray-500">Personas are evaluating... 🎓</div>}
+                                        {loading && <div className="text-center text-gray-600">Personas are evaluating... 🎓</div>}
                                         <div ref={chatEndRef} />
                                     </div>
                                     <div className="p-4 border-t flex gap-2">

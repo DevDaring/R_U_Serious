@@ -12,9 +12,16 @@ export const DashboardPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg p-8 text-white">
-        <h1 className="text-3xl font-bold mb-2">Welcome back, {user.display_name}!</h1>
-        <p className="text-primary-100">Ready to continue your learning journey?</p>
+      <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-lg p-8 text-white flex items-center gap-6">
+        <img
+          src="/assets/site-images/ritty.png"
+          alt="Ritty"
+          className="w-20 h-20 rounded-full border-3 border-white/30 shadow-lg object-cover hidden md:block"
+        />
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Welcome back, {user.display_name}!</h1>
+          <p className="text-primary-100">Ready to continue your learning journey?</p>
+        </div>
       </div>
 
       <div className="grid md:grid-cols-3 gap-6">
@@ -29,7 +36,7 @@ export const DashboardPage: React.FC = () => {
             label="XP Progress"
             color="primary"
           />
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-gray-600 mt-2">
             {xpForNextLevel(user.xp_points)} XP to next level
           </p>
         </div>
@@ -59,19 +66,19 @@ export const DashboardPage: React.FC = () => {
               📚 Start Learning
             </Button>
           </Link>
-          <Link to="/tournaments">
+          <Link to="/story-learning">
             <Button variant="secondary" size="lg" className="w-full">
-              🏆 Join Tournament
+              📖 Story Learning
             </Button>
           </Link>
-          <Link to="/avatar">
+          <Link to="/feynman">
             <Button variant="secondary" size="lg" className="w-full">
-              👤 Create Avatar
+              🧠 Feynman Technique
             </Button>
           </Link>
-          <Link to="/leaderboard">
+          <Link to="/mistake-autopsy">
             <Button variant="secondary" size="lg" className="w-full">
-              📈 View Leaderboard
+              🔬 Mistake Autopsy
             </Button>
           </Link>
         </div>
@@ -79,7 +86,7 @@ export const DashboardPage: React.FC = () => {
 
       <div className="bg-white rounded-lg p-8 shadow-md">
         <h2 className="text-2xl font-bold mb-6">Recent Activity</h2>
-        <div className="text-center text-gray-500 py-8">
+        <div className="text-center text-gray-600 py-8">
           <p>No recent activity yet.</p>
           <p className="text-sm mt-2">Start a learning session to see your activity here!</p>
         </div>

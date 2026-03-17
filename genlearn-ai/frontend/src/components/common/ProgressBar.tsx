@@ -33,7 +33,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         <div className="flex justify-between mb-1">
           {label && <span className="text-sm font-medium text-gray-700">{label}</span>}
           {showPercentage && (
-            <span className="text-sm text-gray-500">{Math.round(percentage)}%</span>
+            <span className="text-sm text-gray-600">{Math.round(percentage)}%</span>
           )}
         </div>
       )}

@@ -7,7 +7,7 @@
   line-height: 1.5;
   color-scheme: light;
 
-  color: rgba(17, 24, 39, 0.87);
+  color: #111827;
   background-color: #ffffff;
 
   font-synthesis: none;
@@ -87,7 +87,7 @@ body {
   padding: 0 1rem;
 }
 
-/* Default input field styles - can be overridden with Tailwind classes */
+/* Default input field styles */
 input[type="text"],
 input[type="password"],
 input[type="email"],
@@ -95,9 +95,10 @@ input[type="number"],
 input[type="search"],
 textarea,
 select {
-  background-color: #ffffff !important;
-  color: #111827 !important;
-  font-weight: 500;
+  background-color: #ffffff;
+  color: #111827;
+  border-color: #d1d5db;
+}
 }
 
 input[type="text"]::placeholder,
@@ -106,9 +107,8 @@ input[type="email"]::placeholder,
 input[type="number"]::placeholder,
 input[type="search"]::placeholder,
 textarea::placeholder {
-  color: #6b7280;
+  color: #9ca3af;
   opacity: 1;
-  font-weight: 400;
 }
 
 /* Text selection visibility */
@@ -124,32 +124,9 @@ input[type="email"]:disabled,
 input[type="number"]:disabled,
 textarea:disabled,
 select:disabled {
-  background-color: #f3f4f6 !important;
-  color: #6b7280 !important;
+  background-color: #f3f4f6;
+  color: #6b7280;
   cursor: not-allowed;
-}
-
-/* Better text contrast for all text elements */
-.text-gray-600 {
-  color: #4b5563 !important;
-}
-
-.text-gray-700 {
-  color: #374151 !important;
-}
-
-.text-gray-800 {
-  color: #1f2937 !important;
-}
-
-.text-gray-900 {
-  color: #111827 !important;
-}
-
-/* Ensure labels are always readable */
-label {
-  color: #374151 !important;
-  font-weight: 500;
 }
 
 /* Print styles */

@@ -58,7 +58,7 @@ export const SettingsPage: React.FC = () => {
           <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
             <div>
               <h3 className="font-medium text-gray-900">Full Vocal Mode</h3>
-              <p className="text-sm text-gray-500">Enable hands-free voice-controlled learning</p>
+              <p className="text-sm text-gray-600">Enable hands-free voice-controlled learning</p>
             </div>
             <button
               onClick={toggleFullVocalMode}
