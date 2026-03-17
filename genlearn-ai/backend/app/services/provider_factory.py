@@ -20,6 +20,7 @@ from app.services.image_providers.base import BaseImageProvider
 from app.services.image_providers.fibo import FiboProvider
 from app.services.image_providers.stability import StabilityProvider
 from app.services.image_providers.none_provider import NoneImageProvider
+from app.services.image_providers.pollinations import PollinationsProvider
 from app.services.voice_providers.base import BaseTTSProvider, BaseSTTProvider
 from app.services.voice_providers.azure_voice import AzureTTSProvider, AzureSTTProvider
 from app.services.voice_providers.none_provider import NoneTTSProvider, NoneSTTProvider
@@ -78,6 +79,7 @@ class ProviderFactory:
     _image_providers = {
         "fibo": FiboProvider,
         "stability": StabilityProvider,
+        "pollinations": PollinationsProvider,
         "none": NoneImageProvider,
     }
 
