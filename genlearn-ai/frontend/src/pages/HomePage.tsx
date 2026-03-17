@@ -106,17 +106,44 @@ export const HomePage: React.FC = () => {
       </div>
 
       {/* Powered By Section */}
-      <div className="bg-white py-16">
+      <div className="bg-gradient-to-b from-white to-blue-50 py-16">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-sm uppercase tracking-wider text-gray-500 mb-4">Powered by</p>
-          <div className="flex justify-center items-center gap-8 flex-wrap">
-            <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-lg">
+          <p className="text-sm uppercase tracking-wider text-gray-500 mb-6">Built on the Full DigitalOcean Stack</p>
+          <div className="flex justify-center items-center gap-6 flex-wrap">
+            <div className="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-sm border border-blue-100">
               <span className="text-2xl">🤖</span>
-              <span className="font-semibold text-gray-700">DigitalOcean Gradient AI</span>
+              <div className="text-left">
+                <span className="font-semibold text-gray-800 block text-sm">Gradient AI Agent Builder</span>
+                <span className="text-xs text-gray-500">Ritty — Feynman Teaching Agent</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 px-6 py-3 bg-gray-50 rounded-lg">
-              <span className="text-2xl">☁️</span>
-              <span className="font-semibold text-gray-700">DigitalOcean Cloud</span>
+            <div className="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-sm border border-blue-100">
+              <span className="text-2xl">📚</span>
+              <div className="text-left">
+                <span className="font-semibold text-gray-800 block text-sm">Gradient Knowledge Base (RAG)</span>
+                <span className="text-xs text-gray-500">NCERT curriculum grounding</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-sm border border-blue-100">
+              <span className="text-2xl">⚡</span>
+              <div className="text-left">
+                <span className="font-semibold text-gray-800 block text-sm">Gradient Serverless Inference</span>
+                <span className="text-xs text-gray-500">Llama 3.3 70B Instruct</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-sm border border-blue-100">
+              <span className="text-2xl">🖥️</span>
+              <div className="text-left">
+                <span className="font-semibold text-gray-800 block text-sm">DigitalOcean Droplet</span>
+                <span className="text-xs text-gray-500">Ubuntu 22.04 + Nginx</span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 px-5 py-3 bg-white rounded-xl shadow-sm border border-blue-100">
+              <span className="text-2xl">💾</span>
+              <div className="text-left">
+                <span className="font-semibold text-gray-800 block text-sm">DigitalOcean Volume</span>
+                <span className="text-xs text-gray-500">Persistent block storage</span>
+              </div>
             </div>
           </div>
         </div>
@@ -124,8 +151,12 @@ export const HomePage: React.FC = () => {
 
       {/* Footer */}
       <div className="bg-gray-900 py-8 text-center">
-        <p className="text-gray-400 text-sm">
-          Built for the DigitalOcean GenAI Hackathon 2025
+        <div className="flex justify-center items-center gap-2 mb-2">
+          <svg className="w-5 h-5 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 5.46 4.45 9.91 9.91 9.91v-3.57c-3.57 0-6.34-2.77-6.34-6.34s2.77-6.34 6.34-6.34 6.34 2.77 6.34 6.34h3.57C21.95 6.45 17.5 2 12.04 2z"/></svg>
+          <span className="text-blue-400 font-semibold text-sm">Powered by DigitalOcean Gradient™ AI</span>
+        </div>
+        <p className="text-gray-500 text-xs">
+          Built for the DigitalOcean Gradient™ AI Hackathon 2025
         </p>
       </div>
     </div>

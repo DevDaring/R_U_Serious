@@ -111,6 +111,11 @@ export const LoginForm: React.FC = () => {
           <p className="text-gray-600 mb-2">Demo credentials:</p>
           <p className="font-mono text-gray-800 font-medium">DebK / password123</p>
         </div>
+
+        <div className="mt-4 pt-4 border-t border-gray-200 flex justify-center items-center gap-1.5">
+          <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 5.46 4.45 9.91 9.91 9.91v-3.57c-3.57 0-6.34-2.77-6.34-6.34s2.77-6.34 6.34-6.34 6.34 2.77 6.34 6.34h3.57C21.95 6.45 17.5 2 12.04 2z"/></svg>
+          <span className="text-xs font-medium text-gray-500">Powered by DigitalOcean Gradient™ AI</span>
+        </div>
       </div>
       </div>
       </FadeIn>

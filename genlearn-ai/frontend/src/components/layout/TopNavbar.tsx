@@ -23,6 +23,12 @@ export const TopNavbar: React.FC = () => {
           <span className="text-2xl font-bold text-gray-900">{APP_NAME}</span>
         </Link>
 
+        {/* Powered by DO badge */}
+        <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-full">
+          <svg className="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 5.46 4.45 9.91 9.91 9.91v-3.57c-3.57 0-6.34-2.77-6.34-6.34s2.77-6.34 6.34-6.34 6.34 2.77 6.34 6.34h3.57C21.95 6.45 17.5 2 12.04 2z"/></svg>
+          <span className="text-xs font-semibold text-blue-700">Powered by DO Gradient AI</span>
+        </div>
+
         <div className="flex items-center space-x-6">
           {user && (
             <>
