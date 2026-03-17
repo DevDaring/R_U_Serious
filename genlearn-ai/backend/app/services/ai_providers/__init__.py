@@ -11,7 +11,7 @@ from .base import (
     QuestionGenerationRequest,
     AnswerEvaluationRequest
 )
-from .gemini import GeminiProvider
+from .digitalocean import DigitalOceanAIProvider
 from .openai import OpenAIProvider
 from .anthropic import AnthropicProvider
 
@@ -20,7 +20,7 @@ __all__ = [
     "ContentGenerationRequest",
     "QuestionGenerationRequest",
     "AnswerEvaluationRequest",
-    "GeminiProvider",
+    "DigitalOceanAIProvider",
     "OpenAIProvider",
     "AnthropicProvider",
 ]

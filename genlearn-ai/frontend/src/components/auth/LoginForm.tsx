@@ -39,7 +39,7 @@ export const LoginForm: React.FC = () => {
           />
           <h2 className="text-white text-xl font-bold text-center">"If you can't explain it simply, you don't understand it well enough."</h2>
           <p className="text-primary-200 mt-3 text-sm font-medium">— Richard Feynman</p>
-          <div className="absolute bottom-4 text-primary-300 text-xs">Powered by Gemini 3</div>
+          <div className="absolute bottom-4 text-primary-300 text-xs">Powered by DigitalOcean Gradient AI</div>
         </div>
 
         {/* Right: Login Form */}

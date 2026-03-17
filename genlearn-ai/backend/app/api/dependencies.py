@@ -185,6 +185,14 @@ async def get_optional_user(
         return None
 
     try:
-        return await get_current_user(credentials)
-    except HTTPException:
+        token = credentials.credentials
+        payload = decode_access_token(token)
+        user_id = payload.get("sub")
+        if user_id is None:
+            return None
+
+        csv_handler = CSVHandler()
+        user = csv_handler.read_by_id("users", user_id, "user_id")
+        return user
+    except (HTTPException, Exception):
         return None

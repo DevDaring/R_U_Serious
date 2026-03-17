@@ -20,7 +20,8 @@ from app.api.routes import (
     features,
     feynman,
     sessions,
-    story_learning
+    story_learning,
+    video
 )
 from app.services.provider_factory import ProviderFactory
 from app.utils.json_utils import NaNSafeJSONResponse
@@ -108,9 +109,10 @@ app.include_router(learning.router, prefix="/api/learning", tags=["Learning"])
 app.include_router(quiz.router, prefix="/api/quiz", tags=["Quiz"])
 app.include_router(admin.router, prefix="/api/admin", tags=["Admin"])
 app.include_router(chat.router, prefix="/api/chat", tags=["Chat"])
-app.include_router(features.router, prefix="/api/features", tags=["Enhanced Features"])
+app.include_router(features.router, prefix="/api/features", tags=["MCT Diagnostics"])
 app.include_router(feynman.router, prefix="/api")  # Feynman Engine
 app.include_router(sessions.router, prefix="/api/sessions", tags=["Sessions"])
+app.include_router(video.router, prefix="/api/video", tags=["Video"])
 app.include_router(story_learning.router)  # Story Learning
 
 

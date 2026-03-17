@@ -71,17 +71,7 @@ class Settings(BaseSettings):
     GRADIENT_MODEL: str = os.getenv("GRADIENT_MODEL", "meta-llama/Meta-Llama-3.3-70B-Instruct")
     RITTY_AGENT_UUID: str = os.getenv("RITTY_AGENT_UUID", "")
 
-    # Legacy API Keys (kept for compatibility)
-    GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
-    GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-pro-preview")
-    GEMINI_IMAGE_MODEL: str = os.getenv("GEMINI_IMAGE_MODEL", "gemini-3-pro-image-preview")
-
-    # Legacy GCP
-    GCP_PROJECT_ID: str = os.getenv("GCP_PROJECT_ID", "")
-    GCP_STT_API_KEY: str = os.getenv("GCP_STT_API_KEY", "")
-    GCP_TTS_API_KEY: str = os.getenv("GCP_TTS_API_KEY", "")
-
-    # Legacy FIBO
+    # Legacy FIBO (kept for image generation if needed in future)
     FIBO_API_KEY: str = os.getenv("FIBO_API_KEY", "")
     FIBO_API_ENDPOINT: str = os.getenv("FIBO_API_ENDPOINT", "https://api.fibo.ai/v1")
 
@@ -95,9 +85,9 @@ class Settings(BaseSettings):
 
     # File Paths
     BASE_DIR: Path = Path(__file__).parent.parent
-    DATA_DIR: Path = BASE_DIR / "data"
-    CSV_DIR: Path = DATA_DIR / "csv"
-    MEDIA_DIR: Path = DATA_DIR / "media"
+    DATA_DIR: Path = Path(os.getenv("DATA_DIR", "")) if os.getenv("DATA_DIR") else Path(__file__).parent.parent / "data" / "csv"
+    CSV_DIR: Path = Path(os.getenv("DATA_DIR", "")) if os.getenv("DATA_DIR") else Path(__file__).parent.parent / "data" / "csv"
+    MEDIA_DIR: Path = Path(__file__).parent.parent / "data" / "media"
 
     # JWT Settings
     JWT_ALGORITHM: str = "HS256"

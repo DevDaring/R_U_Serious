@@ -4,6 +4,13 @@
 .env.*.local
 *.env
 
+# Terraform secrets
+*.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
+.terraform.lock.hcl
+
 # Python
 __pycache__/
 *.py[cod]
@@ -105,6 +112,9 @@ temp/
 *.key
 credentials.json
 service-account*.json
+terraform.tfvars
+*.tfvars
+secrets/
 
 # Deployment scripts and configs (contain project-specific details)
 deploy-*.ps1

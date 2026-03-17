@@ -254,19 +254,18 @@ class ApiService {
   }
 
   // ============================================================
-  // VIDEO - DISABLED FOR MVP
+  // VIDEO
   // ============================================================
-  // Video generation has been disabled. These methods are commented out.
 
-  // async getVideo(sessionId: string, cycleNumber: number) {
-  //   const response = await this.client.get(`/video/session/${sessionId}/cycle/${cycleNumber}`);
-  //   return response.data;
-  // }
+  async getVideo(sessionId: string, cycleNumber: number) {
+    const response = await this.client.get(`/video/session/${sessionId}/cycle/${cycleNumber}`);
+    return response.data;
+  }
 
-  // async checkVideoStatus(sessionId: string, cycleNumber: number) {
-  //   const response = await this.client.get(`/video/session/${sessionId}/cycle/${cycleNumber}/status`);
-  //   return response.data;
-  // }
+  async checkVideoStatus(sessionId: string, cycleNumber: number) {
+    const response = await this.client.get(`/video/session/${sessionId}/cycle/${cycleNumber}/status`);
+    return response.data;
+  }
 
   // ============================================================
   // TOURNAMENTS & TEAMS

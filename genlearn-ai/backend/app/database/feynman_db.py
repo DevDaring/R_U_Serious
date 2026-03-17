@@ -12,13 +12,14 @@ from datetime import datetime
 from typing import Optional, List, Dict, Any
 
 
+from app.config import settings
+
+
 class FeynmanDatabase:
     """Handles all CSV operations for Feynman Engine"""
     
     def __init__(self):
-        self.csv_dir = os.path.join(
-            os.path.dirname(__file__), '..', '..', 'data', 'csv'
-        )
+        self.csv_dir = str(settings.CSV_DIR)
         self.sessions_path = os.path.join(self.csv_dir, 'feynman_sessions.csv')
         self.conversations_path = os.path.join(self.csv_dir, 'feynman_conversations.csv')
         self.gaps_path = os.path.join(self.csv_dir, 'feynman_gaps.csv')

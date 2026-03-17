@@ -2,10 +2,10 @@
 Provider Factory - SINGLE POINT OF CONFIGURATION FOR ALL API PROVIDERS
 
 To switch providers, change the corresponding environment variable:
-- AI_PROVIDER: digitalocean, gemini, openai, anthropic
+- AI_PROVIDER: digitalocean, openai, anthropic
 - IMAGE_PROVIDER: fibo, stability, none (none = disable image features)
-- VOICE_TTS_PROVIDER: gcp, azure, none (none = disable voice features)
-- VOICE_STT_PROVIDER: gcp, azure, none (none = disable voice features)
+- VOICE_TTS_PROVIDER: azure, none (none = disable voice features)
+- VOICE_STT_PROVIDER: azure, none (none = disable voice features)
 
 No other code changes required!
 """
@@ -14,16 +14,13 @@ import os
 from typing import Optional
 from app.services.ai_providers.base import BaseAIProvider
 from app.services.ai_providers.digitalocean import DigitalOceanAIProvider
-from app.services.ai_providers.gemini import GeminiProvider
 from app.services.ai_providers.openai import OpenAIProvider
 from app.services.ai_providers.anthropic import AnthropicProvider
 from app.services.image_providers.base import BaseImageProvider
 from app.services.image_providers.fibo import FiboProvider
 from app.services.image_providers.stability import StabilityProvider
-from app.services.image_providers.gemini_imagen import GeminiImagenProvider
+from app.services.image_providers.none_provider import NoneImageProvider
 from app.services.voice_providers.base import BaseTTSProvider, BaseSTTProvider
-from app.services.voice_providers.gcp_tts import GCPTTSProvider
-from app.services.voice_providers.gcp_stt import GCPSTTProvider
 from app.services.voice_providers.azure_voice import AzureTTSProvider, AzureSTTProvider
 from app.services.voice_providers.none_provider import NoneTTSProvider, NoneSTTProvider
 
@@ -47,7 +44,6 @@ class ProviderFactory:
 
     _ai_providers = {
         "digitalocean": DigitalOceanAIProvider,
-        "gemini": GeminiProvider,
         "openai": OpenAIProvider,
         "anthropic": AnthropicProvider,
     }
@@ -82,8 +78,7 @@ class ProviderFactory:
     _image_providers = {
         "fibo": FiboProvider,
         "stability": StabilityProvider,
-        "gemini": GeminiImagenProvider,
-        "imagen": GeminiImagenProvider,
+        "none": NoneImageProvider,
     }
 
     @classmethod
@@ -114,7 +109,6 @@ class ProviderFactory:
     # ============================================================
 
     _tts_providers = {
-        "gcp": GCPTTSProvider,
         "azure": AzureTTSProvider,
         "none": NoneTTSProvider,
     }
@@ -131,7 +125,7 @@ class ProviderFactory:
         Returns:
             Configured TTS provider instance
         """
-        name = provider_name or os.getenv("VOICE_TTS_PROVIDER", "gcp")
+        name = provider_name or os.getenv("VOICE_TTS_PROVIDER", "none")
         provider_class = cls._tts_providers.get(name.lower())
 
         if not provider_class:
@@ -147,7 +141,6 @@ class ProviderFactory:
     # ============================================================
 
     _stt_providers = {
-        "gcp": GCPSTTProvider,
         "azure": AzureSTTProvider,
         "none": NoneSTTProvider,
     }
@@ -164,7 +157,7 @@ class ProviderFactory:
         Returns:
             Configured STT provider instance
         """
-        name = provider_name or os.getenv("VOICE_STT_PROVIDER", "gcp")
+        name = provider_name or os.getenv("VOICE_STT_PROVIDER", "none")
         provider_class = cls._stt_providers.get(name.lower())
 
         if not provider_class:

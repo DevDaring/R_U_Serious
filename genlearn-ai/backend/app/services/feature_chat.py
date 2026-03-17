@@ -1,12 +1,12 @@
 """
 Feature Chat Service - Common service for all AI-powered feature chats
-Handles communication with Gemini for all enhanced features
+Handles communication with DigitalOcean Gradient AI for all enhanced features
 """
 
 import logging
 import json
 from typing import Optional, Any
-from app.services.ai_providers.gemini import GeminiProvider
+from app.services.provider_factory import ProviderFactory
 from app.utils.languages import get_language_instruction
 
 logger = logging.getLogger(__name__)
@@ -346,7 +346,7 @@ RESPONSE FORMAT (JSON only):
     }
     
     def __init__(self):
-        self.ai_provider = GeminiProvider()
+        self.ai_provider = ProviderFactory.get_ai_provider()
     
     async def get_response(
         self,
@@ -371,7 +371,7 @@ RESPONSE FORMAT (JSON only):
             # Build the prompt with language instruction
             full_prompt = f"{lang_instruction}\n\n{system_prompt}\n\nUser: {user_message}\n\nRespond with valid JSON only."
             
-            # Call Gemini
+            # Call AI provider
             if image_base64:
                 response = await self.ai_provider.generate_content_with_image(
                     prompt=full_prompt,
