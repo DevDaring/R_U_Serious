@@ -239,6 +239,22 @@ class FeynmanDatabase:
         except Exception as e:
             print(f"Error getting conversation history: {e}")
             return []
+
+    def update_last_assistant_image(self, session_id: str, layer: int, image_url: str) -> bool:
+        """Update the image_url on the most recent assistant turn for a session/layer"""
+        try:
+            df = pd.read_csv(self.conversations_path)
+            mask = (df['session_id'] == session_id) & (df['layer'] == layer) & (df['role'] == 'assistant')
+            matching = df[mask]
+            if matching.empty:
+                return False
+            last_idx = matching.index[-1]
+            df.at[last_idx, 'image_url'] = image_url
+            df.to_csv(self.conversations_path, index=False)
+            return True
+        except Exception as e:
+            print(f"Error updating conversation image: {e}")
+            return False
     
     def _sanitize_records(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """Sanitize NaN values in records to make them JSON-serializable"""

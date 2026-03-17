@@ -294,6 +294,7 @@ export const FeynmanEnginePage: React.FC = () => {
                     const messages = data.history.map((h: any) => ({
                         role: h.role,
                         content: h.message,
+                        image_url: h.image_url || undefined,
                         avatar_state: h.role === 'assistant' ? 'curious' : undefined,
                         confusion_level: h.confusion_level,
                         curiosity_level: h.curiosity_level
@@ -319,7 +320,8 @@ export const FeynmanEnginePage: React.FC = () => {
                 if (data.history && data.history.length > 0) {
                     const messages = data.history.map((h: any) => ({
                         role: h.role,
-                        content: h.message
+                        content: h.message,
+                        image_url: h.image_url || undefined
                     }));
                     setWhySpiralMessages(messages);
                     setWhyDepth(data.current_depth || 1);
@@ -350,7 +352,8 @@ export const FeynmanEnginePage: React.FC = () => {
                 if (data.history && data.history.length > 0) {
                     const messages = data.history.map((h: any) => ({
                         role: h.role,
-                        content: h.message
+                        content: h.message,
+                        image_url: h.image_url || undefined
                     }));
                     setLectureMessages(messages);
                 } else {
@@ -756,19 +759,19 @@ export const FeynmanEnginePage: React.FC = () => {
                         </div>
 
                         {/* Layer Tabs */}
-                        <div className="flex gap-2 overflow-x-auto pb-2">
+                        <div className="flex gap-1 overflow-x-auto pb-1">
                             {layerNames.map(layer => (
                                 <button
                                     key={layer.id}
                                     onClick={() => handleChangeLayer(layer.id)}
                                     disabled={loading}
-                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg whitespace-nowrap transition-all cursor-pointer ${currentLayer === layer.id
-                                        ? `bg-gradient-to-r ${layer.color} text-white shadow-lg scale-105`
-                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:scale-102'
+                                    className={`flex items-center gap-1 px-2 py-1.5 rounded-lg whitespace-nowrap transition-all cursor-pointer text-sm ${currentLayer === layer.id
+                                        ? `bg-gradient-to-r ${layer.color} text-white shadow-md`
+                                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                                         } ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
                                     <span>{layer.emoji}</span>
-                                    <span className="font-medium">{layer.name}</span>
+                                    <span className={`font-medium ${currentLayer === layer.id ? '' : 'hidden md:inline'}`}>{layer.name}</span>
                                 </button>
                             ))}
                         </div>

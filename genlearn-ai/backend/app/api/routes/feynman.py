@@ -30,9 +30,9 @@ content_generator = ContentGenerator()
 file_handler = FileHandler()
 
 
-async def _generate_context_image(topic: str, context: str, session_id: str, style: str = "cartoon") -> Optional[str]:
+async def _generate_context_image(topic: str, context: str, session_id: str, style: str = "cartoon") -> tuple:
     """Generate an educational image for any Feynman layer response.
-    Returns base64 data URL or None on failure."""
+    Returns (base64_data_url, file_url) or (None, None) on failure."""
     try:
         prompt = f"""Educational illustration about {topic}.
 Context: {context[:300]}
@@ -42,11 +42,13 @@ Style: Clean, vibrant, child-friendly educational illustration. No text in image
 
         image_bytes = await content_generator.generate_image(prompt=prompt, style=style)
         image_filename = f"feynman_{generate_unique_id('FIM')}.png"
-        file_handler.save_file(image_bytes, image_filename, "generated_images")
-        return f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+        success, image_path = file_handler.save_file(image_bytes, image_filename, "generated_images")
+        base64_url = f"data:image/png;base64,{base64.b64encode(image_bytes).decode('utf-8')}"
+        file_url = file_handler.get_file_url(image_path) if success else base64_url
+        return base64_url, file_url
     except Exception as e:
         logger.warning(f"Image generation failed for session {session_id}: {e}")
-        return None
+        return None, None
 
 
 router = APIRouter(prefix="/feynman", tags=["Feynman Engine"])
@@ -347,13 +349,14 @@ async def teach_ritty(request: TeachMessageRequest):
         response_dict["illustration"] = illustration
     
     # Generate actual image for the response
-    image_url = await _generate_context_image(
+    image_url, file_url = await _generate_context_image(
         topic=session['topic'],
         context=f"{request.message} - {response.response}",
         session_id=request.session_id
     )
     if image_url:
         response_dict["image_url"] = image_url
+        feynman_db.update_last_assistant_image(request.session_id, 1, file_url)
     
     return response_dict
 
@@ -462,13 +465,14 @@ async def submit_compression(request: CompressionSubmitRequest):
     })
     
     # Generate image for the compressed concept
-    image_url = await _generate_context_image(
+    image_url, file_url = await _generate_context_image(
         topic=session['topic'],
         context=f"Compressed explanation: {request.explanation}",
         session_id=request.session_id
     )
     if image_url:
         evaluation.image_url = image_url
+        feynman_db.update_last_assistant_image(request.session_id, 2, file_url)
     
     return evaluation
 
@@ -586,13 +590,14 @@ async def respond_why_spiral(request: WhySpiralResponseRequest):
     })
     
     # Generate image for the why spiral context
-    image_url = await _generate_context_image(
+    image_url, file_url = await _generate_context_image(
         topic=session['topic'],
         context=f"Why question: {response.next_question or response.boundary_topic or request.response}",
         session_id=request.session_id
     )
     if image_url:
         response.image_url = image_url
+        feynman_db.update_last_assistant_image(request.session_id, 3, file_url)
     
     return response
 
@@ -822,13 +827,14 @@ async def explain_to_lecture_hall(request: LectureHallMessageRequest):
     )
     
     # Generate image for the lecture hall explanation
-    image_url = await _generate_context_image(
+    image_url, file_url = await _generate_context_image(
         topic=session['topic'],
         context=f"Lecture explanation: {request.message}",
         session_id=request.session_id
     )
     if image_url:
         response.image_url = image_url
+        feynman_db.update_last_assistant_image(request.session_id, 5, file_url)
     
     return response
 
