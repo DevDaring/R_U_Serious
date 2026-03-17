@@ -196,6 +196,31 @@ async def get_session_content(
             csv_handler.create("learning_history", history_data)
 
             # Create enhanced story segment with image URL, text overlay, and quiz
+            seg_quiz = segment.get("quiz")
+            if not seg_quiz or not seg_quiz.get("options") or any(opt.get("text", "").startswith("Option ") for opt in seg_quiz.get("options", [])):
+                # AI didn't generate quiz or returned placeholders — generate from narrative
+                narrative = segment.get("narrative", "")
+                facts = segment.get("facts", [])
+                fact_text = facts[0] if facts else f"a key concept about {session['topic']}"
+                seg_quiz = {
+                    "question_id": f"Q{idx + 1}",
+                    "question_text": f"Based on what you just read, which of the following is true about {session['topic']}?",
+                    "options": [
+                        {"key": "A", "text": fact_text, "is_correct": True},
+                        {"key": "B", "text": f"{session['topic']} has no known real-world applications", "is_correct": False},
+                        {"key": "C", "text": f"{session['topic']} was disproved by modern research", "is_correct": False},
+                        {"key": "D", "text": f"{session['topic']} only applies in theoretical scenarios", "is_correct": False}
+                    ],
+                    "correct_answers": ["A"],
+                    "explanation": f"As described in the narrative: {fact_text}",
+                    "is_multi_select": False,
+                    "points": 10
+                }
+            else:
+                seg_quiz["question_id"] = seg_quiz.get("question_id", f"Q{idx + 1}")
+                seg_quiz["is_multi_select"] = seg_quiz.get("is_multi_select", False)
+                seg_quiz["points"] = seg_quiz.get("points", 10)
+
             story_segments.append({
                 "segment_number": segment.get("segment_number", idx + 1),
                 "narrative": segment.get("narrative", ""),
@@ -206,21 +231,8 @@ async def get_session_content(
                     "position": "bottom",
                     "style": "caption"
                 }),
-                "audio_url": None,  # Will be generated on demand
-                "quiz": segment.get("quiz", {
-                    "question_id": f"Q{idx + 1}",
-                    "question_text": f"What did you learn about {session['topic']}?",
-                    "options": [
-                        {"key": "A", "text": "Option A"},
-                        {"key": "B", "text": "Option B"},
-                        {"key": "C", "text": "Option C"},
-                        {"key": "D", "text": "Option D"}
-                    ],
-                    "correct_answers": ["A"],
-                    "explanation": "This is the explanation.",
-                    "is_multi_select": False,
-                    "points": 10
-                })
+                "audio_url": None,
+                "quiz": seg_quiz
             })
 
         # Save session content to CSV for revision/history

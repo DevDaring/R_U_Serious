@@ -128,6 +128,7 @@ Generate {request.num_images} story segments. Each segment should:
 1. Have an engaging narrative (150-200 words)
 2. Include 3-5 key facts
 3. Suggest an image description for visualization
+4. Include a quiz question with 4 meaningful options based on the narrative content
 
 Respond with ONLY a valid JSON object:
 {{
@@ -135,13 +136,29 @@ Respond with ONLY a valid JSON object:
         {{
             "narrative": "<engaging story narrative>",
             "facts": ["<fact1>", "<fact2>", "<fact3>"],
-            "image_prompt": "<description for image generation>"
+            "image_prompt": "<description for image generation>",
+            "quiz": {{
+                "question_text": "<a specific question about this segment's content>",
+                "options": [
+                    {{"key": "A", "text": "<plausible answer>", "is_correct": false}},
+                    {{"key": "B", "text": "<the correct answer>", "is_correct": true}},
+                    {{"key": "C", "text": "<plausible answer>", "is_correct": false}},
+                    {{"key": "D", "text": "<plausible answer>", "is_correct": false}}
+                ],
+                "correct_answers": ["B"],
+                "explanation": "<brief explanation of why the correct answer is right>",
+                "points": 10
+            }}
         }}
     ],
     "topic_summary": "<brief summary of the topic>"
 }}
 
-IMPORTANT: Return ONLY the JSON object. No other text."""
+IMPORTANT:
+- Each quiz question MUST be specifically about the content in that segment's narrative.
+- All 4 options must be substantive and plausible — never use generic text like "Option A".
+- Randomize which option (A/B/C/D) is correct across segments.
+- Return ONLY the JSON object. No other text."""
 
         try:
             response = await self._call_llm([{"role": "user", "content": prompt}])
@@ -152,7 +169,19 @@ IMPORTANT: Return ONLY the JSON object. No other text."""
                 result["story_segments"] = [{
                     "narrative": f"Let's learn about {request.topic}!",
                     "facts": [f"Key concept about {request.topic}"],
-                    "image_prompt": f"Educational illustration about {request.topic}"
+                    "image_prompt": f"Educational illustration about {request.topic}",
+                    "quiz": {
+                        "question_text": f"What is the main concept behind {request.topic}?",
+                        "options": [
+                            {"key": "A", "text": f"It relates to the fundamental principles of {request.topic}", "is_correct": True},
+                            {"key": "B", "text": "It is completely unrelated to science", "is_correct": False},
+                            {"key": "C", "text": "It was only discovered recently", "is_correct": False},
+                            {"key": "D", "text": "It has no practical applications", "is_correct": False}
+                        ],
+                        "correct_answers": ["A"],
+                        "explanation": f"The main concept behind {request.topic} relates to its fundamental principles.",
+                        "points": 10
+                    }
                 }]
             if "topic_summary" not in result:
                 result["topic_summary"] = f"Introduction to {request.topic}"
@@ -164,7 +193,19 @@ IMPORTANT: Return ONLY the JSON object. No other text."""
                 "story_segments": [{
                     "narrative": f"Welcome to learning about {request.topic}!",
                     "facts": [f"Interesting fact about {request.topic}"],
-                    "image_prompt": f"Educational content about {request.topic}"
+                    "image_prompt": f"Educational content about {request.topic}",
+                    "quiz": {
+                        "question_text": f"What is an important aspect of {request.topic}?",
+                        "options": [
+                            {"key": "A", "text": f"Understanding {request.topic} helps build foundational knowledge", "is_correct": True},
+                            {"key": "B", "text": "It has no educational value", "is_correct": False},
+                            {"key": "C", "text": "It cannot be studied systematically", "is_correct": False},
+                            {"key": "D", "text": "It is only theoretical with no real examples", "is_correct": False}
+                        ],
+                        "correct_answers": ["A"],
+                        "explanation": f"Understanding {request.topic} is fundamental to building knowledge.",
+                        "points": 10
+                    }
                 }],
                 "topic_summary": f"Overview of {request.topic}"
             }

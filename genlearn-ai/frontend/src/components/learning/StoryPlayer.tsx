@@ -124,14 +124,11 @@ export const StoryPlayer: React.FC<StoryPlayerProps> = ({ session, onComplete })
                 quiz: seg.quiz ? {
                     question_id: seg.quiz.question_id || `Q${idx + 1}`,
                     question_text: seg.quiz.question_text || `What did you learn about ${topic}?`,
-                    options: seg.quiz.options || [
-                        { key: 'A', text: 'Option A', is_correct: false },
-                        { key: 'B', text: 'Option B', is_correct: false },
-                        { key: 'C', text: 'Option C', is_correct: false },
-                        { key: 'D', text: 'Option D', is_correct: false }
-                    ],
+                    options: seg.quiz.options && seg.quiz.options.length === 4
+                        ? seg.quiz.options
+                        : generateMockQuiz(idx + 1, topic).options,
                     correct_answers: seg.quiz.correct_answers || ['A'],
-                    explanation: seg.quiz.explanation || 'This is the explanation.',
+                    explanation: seg.quiz.explanation || 'Review the narrative for the answer.',
                     is_multi_select: seg.quiz.is_multi_select || false,
                     points: seg.quiz.points || 10
                 } : generateMockQuiz(idx + 1, topic)
